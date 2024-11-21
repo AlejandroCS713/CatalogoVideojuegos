@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Launchers extends Model
+class Reseña extends Model
 {
     //
 }
