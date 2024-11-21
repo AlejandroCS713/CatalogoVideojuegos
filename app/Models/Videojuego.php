@@ -8,11 +8,11 @@ class Videojuego extends Model
 {
     public function favoritos()
     {
-        return $this->hasMany(Favorito::class);
+        return $this->hasMany(Favoritos::class);
     }
 
     public function reseñas()
     {
-        return $this->hasMany(Reseña::class);
+        return $this->hasMany(Reseñas::class);
     }
 }
