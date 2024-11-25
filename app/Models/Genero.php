@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Genero extends Model
 {
-    //
+    public function videojuegos()
+    {
+        return $this->belongsToMany(Videojuego::class, 'videojuego_genero');
+    }
 }

@@ -20,4 +20,9 @@ class Videojuego extends Model
     {
         return $this->belongsToMany(Genero::class, 'videojuego_genero');
     }
+
+    public function launchers()
+    {
+        return $this->belongsToMany(Launcher::class, 'videojuego_launcher');
+    }
 }
