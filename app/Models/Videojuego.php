@@ -25,4 +25,9 @@ class Videojuego extends Model
     {
         return $this->belongsToMany(Launcher::class, 'videojuego_launcher');
     }
+
+    public function plataformas()
+    {
+        return $this->belongsToMany(Plataforma::class, 'videojuego_plataforma');
+    }
 }
