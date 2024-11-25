@@ -15,4 +15,9 @@ class Videojuego extends Model
     {
         return $this->hasMany(Reseña::class);
     }
+
+    public function generos()
+    {
+        return $this->belongsToMany(Genero::class, 'videojuego_genero');
+    }
 }
