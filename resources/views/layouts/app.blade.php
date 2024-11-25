@@ -19,5 +19,7 @@
 <script src="{{ asset('forty/js/breakpoints.min.js') }}"></script>
 <script src="{{ asset('forty/js/util.js') }}"></script>
 <script src="{{ asset('forty/js/main.js') }}"></script>
+<script src="{{ asset('forty/js/jquery.scrollex.min.js') }}"></script>
+<script src="{{ asset('forty/js/jquery.scrolly.min.js') }}"></script>
 </body>
 </html>
