@@ -10,4 +10,5 @@ class Launcher extends Model
     {
         return $this->belongsToMany(Videojuego::class, 'videojuego_launcher');
     }
+    
 }
