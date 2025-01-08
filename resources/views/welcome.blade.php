@@ -41,8 +41,7 @@
             </div>
         </div>
     </section>
-
-    <!-- Main -->
+<!-- Main -->
     <div id="main">
         <!-- Section One -->
         <section id="one" class="tiles">
