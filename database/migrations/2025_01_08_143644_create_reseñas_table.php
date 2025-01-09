@@ -26,6 +26,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('reseñas', function (Blueprint $table) {
+
+            $table->dropForeign(['usuario_id']);
+            $table->dropForeign(['videojuego_id']);
+        });
+
+        Schema::dropIfExists('reseñas');
     }
-};
+    };
