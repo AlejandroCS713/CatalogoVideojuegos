@@ -27,4 +27,14 @@ class Videojuego extends Model
     {
         return $this->belongsToMany(Plataforma::class, 'videojuego_plataforma');
     }
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Aseguramos que las relaciones se eliminan al borrar el videojuego
+        static::deleting(function ($videojuego) {
+            $videojuego->generos()->detach(); // Eliminar relaciones con géneros
+            $videojuego->plataformas()->detach(); // Eliminar relaciones con plataformas
+        });
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Genero;
+use App\Models\Plataforma;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -39,6 +41,61 @@ class VideojuegoTest extends TestCase
         $this->assertDatabaseHas('videojuegos', [
             'nombre' => 'Juego de prueba',
         ]);
+    }
+
+    public function test_no_se_puede_crear_videojuego_con_nombre_duplicado()
+    {
+        Videojuego::factory()->create(['nombre' => 'Juego Único']);
+
+        $response = $this->post('/videojuegos', ['nombre' => 'Juego Único', 'descripcion' => 'Descripción duplicada']);
+
+        $response->assertSessionHasErrors(['nombre']);
+    }
+
+    public function test_videojuego_se_asocia_a_generos()
+    {
+        $genero = Genero::factory()->create(['nombre' => 'Aventura']);
+        $videojuego = Videojuego::factory()->create();
+
+        $videojuego->generos()->attach($genero);
+
+        $this->assertTrue($videojuego->generos->contains($genero));
+    }
+    public function test_nombre_no_debe_exceder_longitud_maxima()
+    {
+        $nombreLargo = str_repeat('a', 256); // Suponiendo que el límite es 255 caracteres
+        $response = $this->post('/videojuegos', ['nombre' => $nombreLargo, 'descripcion' => 'Descripción válida']);
+
+        $response->assertSessionHasErrors(['nombre']);
+    }
+
+    public function test_eliminar_videojuego_tambien_elimina_relaciones()
+    {
+        $videojuego = Videojuego::factory()->hasGeneros(2)->hasPlataformas(3)->create();
+
+        $videojuego->delete();
+
+        $this->assertDatabaseMissing('videojuegos', ['id' => $videojuego->id]);
+        $this->assertDatabaseCount('videojuego_genero', 0); // Suponiendo que las relaciones también se eliminan
+    }
+
+    public function test_no_se_puede_crear_videojuego_con_datos_invalidos()
+    {
+        $response = $this->post('/videojuegos', ['nombre' => 12345, 'descripcion' => true]);
+
+        $response->assertSessionHasErrors(['nombre', 'descripcion']);
+    }
+
+    public function test_videojuego_se_asocia_a_plataformas()
+    {
+        $plataforma = Plataforma::factory()->create(); // Creamos una plataforma
+        $videojuego = Videojuego::factory()->create(); // Creamos un videojuego
+
+        // Asociamos la plataforma al videojuego (si la relación es muchos a muchos)
+        $videojuego->plataformas()->attach($plataforma);
+
+        // Comprobamos que el videojuego tiene asociada la plataforma
+        $this->assertTrue($videojuego->plataformas->contains($plataforma));
     }
 
 }
