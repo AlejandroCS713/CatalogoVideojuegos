@@ -7,7 +7,7 @@
 @section('content')
     <!-- Header -->
     <header id="header" class="alt">
-        <a href="{{ route('welcome') }}" class="logo"><strong>Forty</strong> <span>by HTML5 UP</span></a>
+        <a href="{{ route('welcome') }}" class="logo"><strong>GameQuest</strong></a>
         <nav>
             <a href="#menu">Menu</a>
         </nav>
@@ -18,7 +18,6 @@
         <ul class="links">
             <li><a href="{{ route('welcome') }}">Home</a></li>
             <li><a href="#one">Features</a></li>
-            <li><a href="#contact">Contact</a></li>
         </ul>
         <ul class="actions stacked">
             <li><a href="#" class="button primary fit">Get Started</a></li>
@@ -27,14 +26,14 @@
     </nav>
 
     <!-- Banner -->
-    <section id="banner" class="major">
+
+    <section id="banner" class="major" style="background-image: url('{{ asset('forty/images/Designer (4).jpeg') }}'); background-size: cover; background-position: center; height: 100vh;">
         <div class="inner">
             <header class="major">
-                <h1>Hi, my name is Forty</h1>
+                <h1>¡Hola, gamer!</h1>
             </header>
             <div class="content">
-                <p>A responsive site template designed by HTML5 UP<br />
-                    and released under the Creative Commons.</p>
+                <p>¡Encuentra tu próxima aventura hoy!</p>
                 <ul class="actions">
                     <li><a href="#one" class="button next scrolly">Get Started</a></li>
                 </ul>
@@ -73,55 +72,4 @@
         </section>
     </div>
 
-    <!-- Contact -->
-    <section id="contact">
-        <div class="inner">
-            <section>
-                <form method="post" action="#">
-                    <div class="fields">
-                        <div class="field half">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" />
-                        </div>
-                        <div class="field half">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="email" />
-                        </div>
-                        <div class="field">
-                            <label for="message">Message</label>
-                            <textarea name="message" id="message" rows="6"></textarea>
-                        </div>
-                    </div>
-                    <ul class="actions">
-                        <li><input type="submit" value="Send Message" class="primary" /></li>
-                        <li><input type="reset" value="Clear" /></li>
-                    </ul>
-                </form>
-            </section>
-            <section class="split">
-                <section>
-                    <div class="contact-method">
-                        <span class="icon solid alt fa-envelope"></span>
-                        <h3>Email</h3>
-                        <a href="mailto:info@example.com">info@example.com</a>
-                    </div>
-                </section>
-                <section>
-                    <div class="contact-method">
-                        <span class="icon solid alt fa-phone"></span>
-                        <h3>Phone</h3>
-                        <span>(000) 000-0000</span>
-                    </div>
-                </section>
-                <section>
-                    <div class="contact-method">
-                        <span class="icon solid alt fa-home"></span>
-                        <h3>Address</h3>
-                        <span>123 Somewhere Road<br />
-                            City, Country</span>
-                    </div>
-                </section>
-            </section>
-        </div>
-    </section>
 @endsection

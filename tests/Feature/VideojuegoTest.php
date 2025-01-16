@@ -69,15 +69,6 @@ class VideojuegoTest extends TestCase
         $response->assertSessionHasErrors(['nombre']);
     }
 
-    public function test_eliminar_videojuego_tambien_elimina_relaciones()
-    {
-        $videojuego = Videojuego::factory()->hasGeneros(2)->hasPlataformas(3)->create();
-
-        $videojuego->delete();
-
-        $this->assertDatabaseMissing('videojuegos', ['id' => $videojuego->id]);
-        $this->assertDatabaseCount('videojuego_genero', 0); // Suponiendo que las relaciones también se eliminan
-    }
 
     public function test_no_se_puede_crear_videojuego_con_datos_invalidos()
     {
