@@ -17,6 +17,11 @@ class Videojuego extends Model
         'desarrollador',
         'publicador',
     ];
+    public function multimedia()
+    {
+        return $this->hasMany(Multimedia::class, 'videojuego_id');
+    }
+
     public function generos()
     {
         return $this->belongsToMany(Genero::class, 'videojuego_genero');

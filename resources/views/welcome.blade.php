@@ -41,23 +41,34 @@
         </div>
     </section>
 <!-- Main -->
-    <div id="main">
-        <!-- Section One -->
-        <section id="one" class="tiles">
-            @foreach ([1, 2, 3, 4, 5, 6] as $i)
-                <article>
-                    <span class="image">
-                        <img src="{{ asset('forty/images/pic0'.$i.'.jpg') }}" alt="" />
-                    </span>
-                    <header class="major">
-                        <h3><a href="#" class="link">Heading {{ $i }}</a></h3>
-                        <p>Description {{ $i }}</p>
-                    </header>
-                </article>
-            @endforeach
-        </section>
+    <section id="one" class="tiles">
+        @foreach ($videojuegos as $videojuego)
+            <article>
+                <!-- Imagen predeterminada como fondo -->
+                <span>
+                @if ($videojuego->multimedia->isNotEmpty())
+                        <!-- Si hay multimedia, muestra la imagen relacionada como fondo -->
+                        <img class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/>
+                    @else
 
-        <!-- Section Two -->
+                    @endif
+            </span>
+
+
+                <header class="major" style="position: relative; z-index: 2;">
+                    <h3>{{ $videojuego->nombre }}</h3>
+                    <p>{{ Str::limit($videojuego->descripcion, 150) }}</p>
+                    <p>Rating de usuarios: {{ number_format($videojuego->rating_usuario, 1) }}</p>
+                </header>
+            </article>
+        @endforeach
+    </section>
+
+
+
+
+
+    <!-- Section Two -->
         <section id="two">
             <div class="inner">
                 <header class="major">

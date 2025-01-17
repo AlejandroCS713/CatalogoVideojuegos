@@ -15,19 +15,19 @@ class GamesTableSeeder extends Seeder
     {
         // Inicializar el número total de iteraciones que deseas hacer
         $iterations = 1000; // Número de veces que deseas hacer la petición (esto puede cambiar dependiendo de tus necesidades)
-
+        $startValue = 18000;
         // Repetir el proceso 1000 veces
         for ($i = 0; $i < $iterations; $i++) {
             // Calcular el offset actual (500 * $i) para obtener diferentes bloques de juegos
             $offset = $i * 500;
-
+            $currentValue = $startValue + $offset;
             // Consulta a la API de IGDB
             $response = Http::withHeaders([
                 'Client-ID' => 'c5ew8x39828zbf5ccvewq5qsifet9p', // Tu Client-ID real
                 'Authorization' => 'Bearer lslp9plhz9orvhsj916zbik9eyuyau', // Tu Bearer token real
                 'Accept' => 'application/json',
             ])
-                ->withBody("fields id,name,summary,first_release_date,rating,aggregated_rating,involved_companies.company.name,genres.id,genres.name,platforms.id,platforms.name,cover.url; limit 500; offset $offset;", 'application/x-www-form-urlencoded')  // Enviamos el cuerpo como raw con el offset dinámico
+                ->withBody("fields id,name,summary,first_release_date,rating,aggregated_rating,involved_companies.company.name,genres.id,genres.name,platforms.id,platforms.name,cover.url; limit 500; offset $currentValue;", 'application/x-www-form-urlencoded')  // Enviamos el cuerpo como raw con el offset dinámico
                 ->post('https://api.igdb.com/v4/games');
 
             if ($response->failed()) {

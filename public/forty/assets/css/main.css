@@ -2713,6 +2713,8 @@ input, select, textarea {
 
 /* Tiles */
 
+
+
 	.tiles {
 		display: -moz-flex;
 		display: -webkit-flex;
@@ -2792,7 +2794,7 @@ input, select, textarea {
 				display: block;
 				height: 100%;
 				left: 0;
-				opacity: 0.85;
+				opacity: 0.45;
 				position: absolute;
 				width: 100%;
 				z-index: 2;
@@ -2825,6 +2827,11 @@ input, select, textarea {
 				filter: blur(0.5em);
 				opacity: 0;
 			}
+
+            .imagenes{
+                margin-right: 15px;
+                margin-top: 30px;
+            }
 
 			.tiles article:nth-child(4n - 1), .tiles article:nth-child(4n - 2) {
 				width: 60%;
@@ -3421,7 +3428,6 @@ input, select, textarea {
 			width: 100%;
 			z-index: 1;
 		}
-
 
 
 		#banner h1 {
