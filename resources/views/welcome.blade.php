@@ -26,6 +26,7 @@
 
     <!-- Banner -->
 
+
     <section id="banner" class="major" style="background-image: url('{{ asset('forty/images/Designer (4).jpeg') }}'); background-size: cover; background-position: center; height: 100vh;">
         <div class="inner">
             <header class="major">
@@ -34,7 +35,7 @@
             <div class="content">
                 <p>¡Encuentra tu próxima aventura hoy!</p>
                 <ul class="actions">
-                    <li><a href="#one" class="button next scrolly">Get Started</a></li>
+                    <li><a href="#one" class="button next scrolly">Vamos</a></li>
                 </ul>
             </div>
         </div>
@@ -71,15 +72,14 @@
         <section id="two">
             <div class="inner">
                 <header class="major">
-                    <h2>Massa libero</h2>
+                    <h2>Únete a nuestra comunidad de jugadores</h2>
                 </header>
-                <p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed
-                    nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna.</p>
+                <p>Crea tu cuenta y desbloquea la experiencia completa: guarda tus juegos favoritos, comparte tus opiniones en los foros y conecta con otros apasionados por los videojuegos. ¡Empieza a formar parte de algo épico hoy mismo!</p>
                 <ul class="actions">
-                    <li><a href="#" class="button next">Get Started</a></li>
+                    <li><a href="#" class="button next">Comienza tu aventura</a></li>
                 </ul>
             </div>
         </section>
-    </div>
+
 
 @endsection
