@@ -15,12 +15,12 @@ class GamesTableSeeder extends Seeder
     {
         // Inicializar el número total de iteraciones que deseas hacer
         $iterations = 1000; // Número de veces que deseas hacer la petición (esto puede cambiar dependiendo de tus necesidades)
-        $startValue = 18000;
+
         // Repetir el proceso 1000 veces
         for ($i = 0; $i < $iterations; $i++) {
             // Calcular el offset actual (500 * $i) para obtener diferentes bloques de juegos
             $offset = $i * 500;
-            $currentValue = $startValue + $offset;
+
             // Consulta a la API de IGDB
             $response = Http::withHeaders([
                 'Client-ID' => 'c5ew8x39828zbf5ccvewq5qsifet9p', // Tu Client-ID real
@@ -105,9 +105,12 @@ class GamesTableSeeder extends Seeder
 
                 // Procesar portada (imagen)
                 if (isset($game['cover']['url'])) {
+                    $imageUrl = 'https:' . $game['cover']['url'];
+                    $imageUrl = str_replace(['{width}', '{height}'], ['600', '800'], $imageUrl); // Cambiar tamaño
+
                     Multimedia::updateOrCreate(
                         ['videojuego_id' => $videojuego->id, 'tipo' => 'imagen'],
-                        ['url' => 'https:' . $game['cover']['url']] // Completar la URL
+                        ['url' => $imageUrl]
                     );
                 }
 
