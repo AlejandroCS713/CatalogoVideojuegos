@@ -1,6 +1,5 @@
 @extends('layouts.app') <!-- Usa el layout base -->
-
-@section('title', 'Forty by HTML5 UP') <!-- Título dinámico -->
+@section('title', 'GAME QUEST') <!-- Título dinámico -->
 
 @section('body_class', 'is-preload') <!-- Clase para el body -->
 

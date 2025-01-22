@@ -25,7 +25,7 @@ class GamesTableSeeder extends Seeder
             $response = Http::withHeaders([
                 'Client-ID' => 'c5ew8x39828zbf5ccvewq5qsifet9p', // Tu Client-ID real
                 'Authorization' => 'Bearer lslp9plhz9orvhsj916zbik9eyuyau', // Tu Bearer token real
-                'Accept' => 'application/json',
+                'Accept' => 'application/json   ',
             ])
                 ->withBody("fields id,name,summary,first_release_date,rating,aggregated_rating,involved_companies.company.name,genres.id,genres.name,platforms.id,platforms.name,cover.url; limit 500; offset $currentValue;", 'application/x-www-form-urlencoded')  // Enviamos el cuerpo como raw con el offset dinámico
                 ->post('https://api.igdb.com/v4/games');
