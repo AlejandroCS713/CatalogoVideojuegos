@@ -23,13 +23,14 @@
             <div class="content">
                 <p>¡Encuentra tu próxima aventura hoy!</p>
                 <ul class="actions">
-                    <li><a href="#one" class="button next scrolly">Vamos</a></li>
+                    <li><a href="{{ route('register') }}" class="button next">Comienza tu aventura</a></li>
                 </ul>
             </div>
         </div>
     </section>
 <!-- Main -->
     <section id="one" class="tiles">
+
         @foreach ($videojuegos as $videojuego)
             <article>
                 <!-- Imagen predeterminada como fondo -->
@@ -64,7 +65,7 @@
                 </header>
                 <p>Crea tu cuenta y desbloquea la experiencia completa: guarda tus juegos favoritos, comparte tus opiniones en los foros y conecta con otros apasionados por los videojuegos. ¡Empieza a formar parte de algo épico hoy mismo!</p>
                 <ul class="actions">
-                    <li><a href="#" class="button next">Comienza tu aventura</a></li>
+                    <li><a href="{{ route('register') }}" class="button next">Comienza tu aventura</a></li>
                 </ul>
             </div>
         </section>

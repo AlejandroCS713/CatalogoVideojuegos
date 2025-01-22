@@ -3958,3 +3958,119 @@ input, select, textarea {
 			opacity: 1;
 			visibility: visible;
 		}
+
+.videojuegos-container {
+    width: 80%; /* Deja un 10% de margen en cada lateral */
+    margin: 0 auto;
+    padding: 20px;
+}
+/* Título principal */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* Contenedor principal para las tarjetas */
+.videojuegos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Estilo para cada tarjeta de videojuego */
+.videojuego-card {
+    background-color: #2f364f;
+    border: 1px solid #3c4460;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+/* Efecto hover */
+.videojuego-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen del videojuego */
+.videojuego-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Información del videojuego */
+.videojuego-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.videojuego-info h3 {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #00d4ff;
+    margin: 10px 0;
+}
+
+.videojuego-info p {
+    font-size: 0.9em;
+    color: #d3d7f0;
+}
+
+/* Botón de ver más */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.pagination li {
+    margin: 0 5px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #3c4460;
+    color: #f5f5f5;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #00d4ff;
+    color: #242943;
+}
+
+.pagination a svg,
+.pagination span svg {
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+}

@@ -6,20 +6,27 @@
 @include('layouts.menu')
 
 @section('title', 'Todos los Videojuegos')
-
 @section('content')
-    <h1>Videojuegos Disponibles</h1>
-    <ul>
+    <div class="videojuegos-container">
+    <h1 class="text-center mb-5">Videojuegos Disponibles</h1>
+    <div class="videojuegos-grid">
         @foreach ($videojuegos as $videojuego)
-            <li>
-                <a href="{{ route('videojuegos.show', $videojuego->id) }}">
-                    {{ $videojuego->nombre }}
-                </a>
-                <p>{{ Str::limit($videojuego->descripcion, 100) }}</p>
-            </li>
+            <div class="videojuego-card">
+                <div class="videojuego-image">
+                    <img class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/>
+                </div>
+                <div class="videojuego-info">
+                    <h3>{{ $videojuego->nombre }}</h3>
+                    <p>{{ Str::limit($videojuego->descripcion, 100) }}</p>
+                    <a href="{{ route('videojuegos.show', $videojuego->id) }}" class="btn btn-primary">Ver más</a>
+                </div>
+            </div>
         @endforeach
-    </ul>
+    </div>
 
     <!-- Paginación -->
-    {{ $videojuegos->links() }}
+        <ul class="pagination">
+            {{ $videojuegos->links() }}
+        </ul>
+    </div>
 @endsection
