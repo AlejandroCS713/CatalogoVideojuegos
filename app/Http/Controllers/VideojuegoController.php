@@ -24,7 +24,7 @@ class VideojuegoController extends Controller
         // Retornar la respuesta, por ejemplo, con el videojuego recién creado
         return response()->json($videojuego, 201);
     }
-    public function index()
+    public function mejoresValoraciones()
     {
         // Obtener los 6 videojuegos mejor valorados por los usuarios (rating de usuario)
         $videojuegos = Videojuego::with('multimedia') // Traemos la relación multimedia
@@ -42,5 +42,23 @@ class VideojuegoController extends Controller
         }
          */
         return view('welcome', compact('videojuegos'));
+    }
+
+    public function index()
+    {
+        // Obtener todos los videojuegos paginados (puedes ajustar el número de elementos por página)
+        $videojuegos = Videojuego::with('multimedia')->paginate(10);
+
+        // Retornar la vista index con los videojuegos
+        return view('videojuegos.index', compact('videojuegos'));
+    }
+
+    public function show($id)
+    {
+        // Buscar el videojuego por ID junto con su multimedia
+        $videojuego = Videojuego::with('multimedia')->findOrFail($id);
+
+        // Retornar la vista show con el videojuego
+        return view('videojuegos.show', compact('videojuego'));
     }
 }

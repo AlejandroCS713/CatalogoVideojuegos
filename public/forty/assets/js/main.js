@@ -109,12 +109,6 @@
 		if (browser.name == 'ie' || browser.name == 'edge')
 			$body.addClass('is-ie');
 
-	// Scrolly.
-		$('.scrolly').scrolly({
-			offset: function() {
-				return $header.height() - 2;
-			}
-		});
 
 	// Tiles.
 		var $tiles = $('.tiles > article');
@@ -331,5 +325,6 @@
 						$menu._hide();
 
 			});
+    console.log("Main JS cargado");
 
 })(jQuery);

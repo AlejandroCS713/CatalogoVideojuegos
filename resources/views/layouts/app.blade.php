@@ -18,15 +18,17 @@
 <div id="wrapper">
     @yield('content') <!-- Contenido específico de cada página -->
 </div>
-
-<!-- Scripts comunes -->
+<!-- Cargar jQuery primero -->
 <script src="{{ asset('forty/assets/js/jquery.min.js') }}"></script>
+
+<!-- Otros scripts -->
 <script src="{{ asset('forty/assets/js/browser.min.js') }}"></script>
 <script src="{{ asset('forty/assets/js/breakpoints.min.js') }}"></script>
 <script src="{{ asset('forty/assets/js/util.js') }}"></script>
-<script src="{{ asset('forty/assets/js/main.js') }}"></script>
+<script src="{{ asset('forty/assets/js/main.js') }}"></script> <!-- Aquí está tu lógica de menú -->
 <script src="{{ asset('forty/assets/js/jquery.scrollex.min.js') }}"></script>
 <script src="{{ asset('forty/assets/js/jquery.scrolly.min.js') }}"></script>
+
 
 <!-- Scripts adicionales si es necesario -->
 @stack('scripts') <!-- Para agregar scripts específicos desde las vistas -->
