@@ -24,5 +24,6 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.for
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form');
 
 // Procesar formularios de autenticación
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
