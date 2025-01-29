@@ -32,6 +32,12 @@ class Videojuego extends Model
     {
         return $this->belongsToMany(Plataforma::class, 'videojuego_plataforma');
     }
+
+    public function precios()
+    {
+        return $this->hasMany(Precio::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

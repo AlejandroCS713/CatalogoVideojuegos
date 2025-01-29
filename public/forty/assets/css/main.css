@@ -4074,3 +4074,69 @@ h1 {
     height: 12px;
     vertical-align: middle;
 }
+
+.game-container {
+    width: 80%;
+    margin: 0 auto;
+    background: #2c3154;
+    padding: 20px;
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+/* Título */
+.game-title {
+    text-align: center;
+    font-size: 2.5em;
+    color: #00d4ff;
+}
+
+/* Imágenes */
+.game-images {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.game-image {
+    width: 250px;
+    height: auto;
+    border-radius: 10px;
+    margin: 5px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.game-image:hover {
+    transform: scale(1.1);
+}
+
+/* Información */
+.game-info p {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+/* Géneros */
+.game-genres h2 {
+    color: #00d4ff;
+}
+
+.genre-item {
+    display: inline-block;
+    background: #3c4460;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+/* Plataformas y Precios */
+.game-platforms h2 {
+    color: #00d4ff;
+}
+
+.game-price {
+    font-weight: bold;
+    color: #ffcc00;
+}
+
