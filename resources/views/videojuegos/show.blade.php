@@ -1,5 +1,7 @@
 @extends('layouts.app')
 <!-- Header -->
+@section('title', 'GAME QUEST')
+
 <!-- Menu -->
 @section('body_class', 'is-preload')
 @include('layouts.menu')

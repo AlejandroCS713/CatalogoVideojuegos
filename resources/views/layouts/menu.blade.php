@@ -1,3 +1,4 @@
+
 <header id="header" class="alt">
     <a href="{{ route('welcome') }}" class="logo"><strong style="margin-top: 15px">GameQuest</strong></a>
     <nav>

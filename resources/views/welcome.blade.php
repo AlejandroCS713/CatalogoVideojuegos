@@ -1,5 +1,5 @@
-@extends('layouts.app') <!-- Usa el layout base -->
-@section('title', 'GAME QUEST') <!-- Título dinámico -->
+@extends('layouts.app')
+@section('title', 'GAME QUEST')
 
 @section('body_class', 'is-preload') <!-- Clase para el body -->
 
