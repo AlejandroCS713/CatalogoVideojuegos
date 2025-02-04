@@ -37,7 +37,7 @@
                 <span>
                 @if ($videojuego->multimedia->isNotEmpty())
                         <!-- Si hay multimedia, muestra la imagen relacionada como fondo -->
-                        <img class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/>
+                        <img style="width:200px;position: relative; z-index: 2; padding-right: 20px; padding-bottom: 40px" class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/>
                     @else
 
                     @endif
@@ -46,7 +46,7 @@
 
                 <header class="major" style="position: relative; z-index: 2;">
                     <h3>{{ $videojuego->nombre }}</h3>
-                    <p>{{ Str::limit($videojuego->descripcion, 150) }}</p>
+                    <p>{{ Str::limit($videojuego->descripcion, 120) }}</p>
                     <p>Rating de usuarios: {{ number_format($videojuego->rating_usuario, 1) }}</p>
                 </header>
             </article>

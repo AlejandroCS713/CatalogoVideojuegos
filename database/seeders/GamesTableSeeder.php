@@ -27,7 +27,7 @@ class GamesTableSeeder extends Seeder
                 'Authorization' => 'Bearer lslp9plhz9orvhsj916zbik9eyuyau', // Tu Bearer token real
                 'Accept' => 'application/json   ',
             ])
-                ->withBody("fields id,name,summary,first_release_date,rating,aggregated_rating,involved_companies.company.name,genres.id,genres.name,platforms.id,platforms.name,cover.url; limit 500; offset $currentValue;", 'application/x-www-form-urlencoded')  // Enviamos el cuerpo como raw con el offset dinámico
+                ->withBody("fields id,name,summary,first_release_date,rating,aggregated_rating,involved_companies.company.name,genres.id,genres.name,platforms.id,platforms.name,cover.url; limit 500; offset $offset;", 'application/x-www-form-urlencoded')  // Enviamos el cuerpo como raw con el offset dinámico
                 ->post('https://api.igdb.com/v4/games');
 
             if ($response->failed()) {
@@ -105,9 +105,33 @@ class GamesTableSeeder extends Seeder
 
                 // Procesar portada (imagen)
                 if (isset($game['cover']['url'])) {
+                    // URL base de la portada
                     $imageUrl = 'https:' . $game['cover']['url'];
-                    $imageUrl = str_replace(['{width}', '{height}'], ['600', '800'], $imageUrl); // Cambiar tamaño
 
+                    // Intentar obtener la mejor calidad posible
+                    // Primero, buscamos si hay una versión de alta calidad (por ejemplo, 'cover_big', '1080p')
+                    if (strpos($imageUrl, 'thumb') !== false) {
+                        // Si la URL tiene 'thumb', reemplazamos con una resolución más alta como 'cover_big' o '1080p'
+                        $imageUrl = str_replace('thumb', 'cover_big', $imageUrl);  // 'cover_big' es la opción de mayor calidad disponible
+                    }
+
+                    // Si no se puede encontrar 'thumb', pero está disponible 'cover_medium', usamos eso
+                    if (strpos($imageUrl, 'cover_big') !== false && strpos($imageUrl, 'thumb') === false) {
+                        $imageUrl = str_replace('cover_medium', 'cover_big', $imageUrl); // Si 'cover_big' está disponible, usaremos eso.
+                    }
+
+                    // Si la URL sigue siendo pequeña o con calidad baja, consideramos usar una opción de mayor resolución como '720p' o '1080p'
+                    if (strpos($imageUrl, '720p') === false && strpos($imageUrl, '1080p') === false) {
+                        $imageUrl = str_replace('thumb', '1080p', $imageUrl); // Cambiar a la versión más alta disponible (por ejemplo, 1080p)
+                    }
+
+                    // Verificar que la URL contiene el tamaño adecuado
+                    if (strpos($imageUrl, 'cover_big') === false && strpos($imageUrl, '1080p') === false) {
+                        // Si aún no tenemos una imagen grande, usamos 'cover_small' o la más alta que tengamos
+                        $imageUrl = str_replace('thumb', 'cover_small', $imageUrl); // Usamos el tamaño más pequeño en caso de no encontrar opciones mejores
+                    }
+
+                    // Guardar la URL de la portada en la base de datos
                     Multimedia::updateOrCreate(
                         ['videojuego_id' => $videojuego->id, 'tipo' => 'imagen'],
                         ['url' => $imageUrl]

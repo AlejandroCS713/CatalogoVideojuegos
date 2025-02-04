@@ -31,10 +31,10 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout(); // Cierra sesión
+        Auth::logout();
 
-        $request->session()->invalidate(); // Invalida sesión
-        $request->session()->regenerateToken(); // Regenera token CSRF
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect('/');
     }
