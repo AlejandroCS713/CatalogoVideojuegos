@@ -9,12 +9,7 @@
 
     @include('layouts.menu')
 
-
-
-
     <!-- Banner -->
-
-
     <section id="banner" class="major" style="background-image: url('{{ asset('forty/images/Designer (4).jpeg') }}'); background-size: cover; background-position: center; height: 100vh;">
         <div class="inner">
             <header class="major">
@@ -42,8 +37,6 @@
 
                     @endif
             </span>
-
-
                 <header class="major" style="position: relative; z-index: 2;">
                     <h3>{{ $videojuego->nombre }}</h3>
                     <p>{{ Str::limit($videojuego->descripcion, 120) }}</p>
@@ -52,10 +45,6 @@
             </article>
         @endforeach
     </section>
-
-
-
-
 
     <!-- Section Two -->
         <section id="two">
