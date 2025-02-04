@@ -25,11 +25,9 @@
             <li>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="button fit">Cerrar sesión</button>
+                    <button type="submit">Logout</button>
                 </form>
             </li>
-
         @endguest
-
     </ul>
 </nav>

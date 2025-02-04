@@ -4,6 +4,9 @@
 @include('layouts.menu')
 @section('content')
     <div class="form-container">
+        @if(session('success'))
+            <p style="color: green;">{{ session('success') }}</p>
+        @endif
         <form class="form" action="{{ route('login') }}" method="POST" autocomplete="off">
             @csrf
             <div class="control">
@@ -11,7 +14,7 @@
             </div>
 
             <div class="control block-cube block-input">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="email" placeholder="Email" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
