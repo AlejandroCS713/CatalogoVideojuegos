@@ -133,6 +133,25 @@ h1 {
   top: 100%;
 }
 
+.register-option {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 10%; /* Ocupa todo el alto del contenedor */
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+}
+
+.register-option a {
+    color: #00d4ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-option a:hover {
+    text-decoration: underline;
+}
 
 
 /*# sourceMappingURL=auth.css.map */

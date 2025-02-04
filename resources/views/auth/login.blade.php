@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Iniciar Sesión')
-
+@include('layouts.menu')
 @section('content')
     <div class="form-container">
         <form class="form" action="{{ route('login') }}" method="POST" autocomplete="off">
@@ -32,6 +32,9 @@
             </button>
 
         </form>
+        <div class="register-option">
+            <p>Don't have an account? <a href="{{ route('register') }}">Sign up here</a></p>
+        </div>
     </div>
 
 @endsection
