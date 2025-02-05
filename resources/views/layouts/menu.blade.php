@@ -2,6 +2,15 @@
 <header id="header" class="alt">
     <a href="{{ route('welcome') }}" class="logo"><strong style="margin-top: 15px">GameQuest</strong></a>
     <nav>
+        @auth
+            <div class="user-info">
+
+                <span class="user-name">{{ Auth::user()->name }}</span>
+                <div class="avatar-menu">
+               <a href="{{ route('profile') }}" class="settings-link"><img src="{{ asset('forty/images/avatars/' . Auth::user()->avatar) }}" alt="Avatar de {{ Auth::user()->name }}"></a>
+                </div>
+            </div>
+        @endauth
         <a href="#menu">Menu</a>
     </nav>
 </header>
@@ -21,7 +30,7 @@
             <li><a href="{{ route('register') }}" class="button fit">Crear usuario</a></li>
         @else
             <!-- Si el usuario ha iniciado sesión -->
-            <li><a href="#" class="button primary fit">Mi cuenta</a></li>
+            <li><a href="{{ route('profile') }}" class="button primary fit">My profile</a></li>
             <li>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf

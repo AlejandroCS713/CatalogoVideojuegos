@@ -3,6 +3,7 @@
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MultimediaController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\VideojuegoController;
 use Illuminate\Support\Facades\Route;
@@ -29,3 +30,10 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profile/settings', [ProfileController::class, 'settings'])->name('profile.settings');
+    Route::get('/profile/avatar', [ProfileController::class, 'editAvatar'])->name('profile.avatar');
+    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+});

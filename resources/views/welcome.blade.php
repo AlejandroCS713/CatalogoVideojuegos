@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('title', 'GAME QUEST')
-
 @section('body_class', 'is-preload') <!-- Clase para el body -->
+@include('layouts.menu')
 
 @section('content')
     <!-- Header -->
     <!-- Menu -->
 
-    @include('layouts.menu')
+
 
     <!-- Banner -->
     <section id="banner" class="major" style="background-image: url('{{ asset('forty/images/Designer (4).jpeg') }}'); background-size: cover; background-position: center; height: 100vh;">
