@@ -47,7 +47,7 @@ class VideojuegoController extends Controller
     public function index()
     {
         // Obtener todos los videojuegos paginados (puedes ajustar el número de elementos por página)
-        $videojuegos = Videojuego::with('multimedia')->paginate(10);
+        $videojuegos = Videojuego::with('multimedia')->paginate(9);
 
         // Retornar la vista index con los videojuegos
         return view('videojuegos.index', compact('videojuegos'));

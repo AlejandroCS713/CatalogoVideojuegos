@@ -15,7 +15,6 @@
                 <div>
                     <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img class="game-image" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/> </a>
                 </div>
-
             </div>
         @endforeach
     </div>
