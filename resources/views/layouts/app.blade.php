@@ -7,10 +7,10 @@
 
     <!-- Estilos comunes -->
     <link rel="stylesheet" href="{{ asset('forty/assets/css/main.css') }}" />
-    <link rel="stylesheet" href="{{ asset('forty/assets/css/main.css') }}" />
     <noscript><link rel="stylesheet" href="{{ asset('forty/assets/css/noscript.css') }}" /></noscript>
     <link rel="icon" type="image/x-icon" href="{{ asset('forty/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('forty/assets/css/auth.css') }}">
+    <link rel="stylesheet" href="{{ asset('forty/assets/css/profile.css') }}">
 
     <!-- Otros estilos adicionales si es necesario -->
     @stack('styles') <!-- Para agregar estilos específicos desde las vistas -->

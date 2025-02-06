@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Perfil de Usuario')
+@section('title', 'User Profile')
 @section('body_class', 'is-preload')
 @include('layouts.menu')
 
@@ -11,20 +11,20 @@
                 </a>
             </div>
             <h1>{{ Auth::user()->name }}</h1>
-            <button class="settings-button" onclick="window.location='{{ route('profile.settings') }}'">⚙️ Ajustes</button>
+            <button class="settings-button" onclick="window.location='{{ route('profile.settings') }}'">⚙️ Settings</button>
         </div>
 
         <div class="profile-sections">
             <!-- Juegos Favoritos -->
             <div class="profile-section">
-                <h2>🎮 Juegos Favoritos</h2>
-                <p>Aquí aparecerán tus juegos favoritos próximamente...</p>
+                <h2>🎮 Favorite Games</h2>
+
             </div>
 
             <!-- Amigos -->
             <div class="profile-section">
-                <h2>👥 Amigos</h2>
-                <p>Aquí aparecerá tu lista de amigos próximamente...</p>
+                <h2>👥 Friends</h2>
+
             </div>
         </div>
     </div>

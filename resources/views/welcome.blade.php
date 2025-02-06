@@ -13,12 +13,12 @@
     <section id="banner" class="major" style="background-image: url('{{ asset('forty/images/Designer (4).jpeg') }}'); background-size: cover; background-position: center; height: 100vh;">
         <div class="inner">
             <header class="major">
-                <h1>¡Hola, gamer!</h1>
+                <h1>¡Hello, player!</h1>
             </header>
             <div class="content">
-                <p>¡Encuentra tu próxima aventura hoy!</p>
+                <p>¡Find your next adventure today!</p>
                 <ul class="actions">
-                    <li><a href="{{ route('register') }}" class="button next">Comienza tu aventura</a></li>
+                    <li><a href="{{ route('register') }}" class="button next">Start your adventure</a></li>
                 </ul>
             </div>
         </div>
@@ -50,11 +50,12 @@
         <section id="two">
             <div class="inner">
                 <header class="major">
-                    <h2>Únete a nuestra comunidad de jugadores</h2>
+                    <h2>Join our community of players</h2>
                 </header>
-                <p>Crea tu cuenta y desbloquea la experiencia completa: guarda tus juegos favoritos, comparte tus opiniones en los foros y conecta con otros apasionados por los videojuegos. ¡Empieza a formar parte de algo épico hoy mismo!</p>
+                <p>Create your account and unlock the full experience: save your favorite games, share your opinions in the forums and connect with other gaming enthusiasts. Start being part of something epic today!
+                </p>
                 <ul class="actions">
-                    <li><a href="{{ route('register') }}" class="button next">Comienza tu aventura</a></li>
+                    <li><a href="{{ route('register') }}" class="button next">Start your adventure</a></li>
                 </ul>
             </div>
         </section>

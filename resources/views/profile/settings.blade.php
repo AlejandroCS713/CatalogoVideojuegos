@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Configuración del Perfil')
+@section('title', 'Profile Settings')
 @section('body_class', 'is-preload')
 @include('layouts.menu')
 @section('content')
     <div class="container">
-        <h1>Configuración del Perfil</h1>
-        <p>Aquí podrás cambiar tu nombre y contraseña en el futuro.</p>
+        <h1>Profile Settings</h1>
+
     </div>
 @endsection

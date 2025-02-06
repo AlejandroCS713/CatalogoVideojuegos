@@ -8,7 +8,7 @@
 @section('title', 'Todos los Videojuegos')
     @section('content')
     <div class="videojuegos-container">
-    <h1 class="text-center mb-5">Videojuegos Disponibles</h1>
+    <h1 class="text-center mb-5">Available Video Games</h1>
     <div class="videojuegos-grid">
         @foreach ($videojuegos as $videojuego)
             <div >

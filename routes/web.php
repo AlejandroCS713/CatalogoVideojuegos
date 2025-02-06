@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\auth\LoginController;
+use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\ForoController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MultimediaController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\profile\ProfileController;
 use App\Http\Controllers\VideojuegoController;
 use Illuminate\Support\Facades\Route;
 

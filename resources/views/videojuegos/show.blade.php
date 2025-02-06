@@ -25,16 +25,16 @@
         <!-- Información del videojuego -->
         <div class="game-info">
             <p class="game-description">{{ $videojuego->descripcion }}</p>
-            <p><strong>Fecha de Lanzamiento:</strong> {{ $videojuego->fecha_lanzamiento ?? 'Desconocida' }}</p>
-            <p><strong>Calificación de Usuarios:</strong> ⭐ {{ number_format($videojuego->rating_usuario, 1) }}</p>
-            <p><strong>Calificación de Críticas:</strong> ⭐ {{ number_format($videojuego->rating_criticas, 1) }}</p>
-            <p><strong>Desarrollador:</strong> {{ $videojuego->desarrollador }}</p>
-            <p><strong>Publicador:</strong> {{ $videojuego->publicador }}</p>
+            <p><strong>Release Date:</strong> {{ $videojuego->fecha_lanzamiento ?? 'Desconocida' }}</p>
+            <p><strong>User Rating:</strong> ⭐ {{ number_format($videojuego->rating_usuario, 1) }}</p>
+            <p><strong>Reviews Rating:</strong> ⭐ {{ number_format($videojuego->rating_criticas, 1) }}</p>
+            <p><strong>Developer:</strong> {{ $videojuego->desarrollador }}</p>
+            <p><strong>Publisher:</strong> {{ $videojuego->publicador }}</p>
         </div>
 
         <!-- Géneros -->
         <div class="game-genres">
-            <h2>Géneros</h2>
+            <h2>Genres</h2>
             <ul>
                 @foreach ($videojuego->generos as $genero)
                     <li class="genre-item">{{ $genero->nombre }}</li>
@@ -44,7 +44,7 @@
 
         <!-- Plataformas y precios -->
         <div class="game-platforms">
-            <h2>Disponible en:</h2>
+            <h2>Available in:</h2>
             <ul>
                 @foreach ($videojuego->plataformas as $plataforma)
                     <li>
@@ -55,7 +55,7 @@
                         @if ($precio)
                             - <span class="game-price">💰 {{ number_format($precio->precio, 2) }} €</span>
                         @else
-                            - <span class="game-price">Precio no disponible</span>
+                            - <span class="game-price">Price not available</span>
                         @endif
                     </li>
                 @endforeach

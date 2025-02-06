@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Registro de Usuario')
+@section('title', 'User Registration')
 @include('layouts.menu')
 @section('content')
     <div class="form-container">

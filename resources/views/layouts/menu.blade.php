@@ -19,15 +19,15 @@
         <!-- Página de inicio -->
         <li><a href="{{ route('welcome') }}">Home</a></li>
         <!-- Nuevas opciones -->
-        <li><a href="{{ route('videojuegos.index') }}">Videojuegos</a></li>
-        <li><a href="{{ route('foro.index') }}">Foro</a></li>
+        <li><a href="{{ route('videojuegos.index') }}">Video games</a></li>
+        <li><a href="{{ route('foro.index') }}">Forum</a></li>
     </ul>
     <ul class="actions stacked">
 
         @guest
             <!-- Si el usuario no ha iniciado sesión-->
-            <li><a href="{{ route('login') }}" class="button primary fit">Iniciar sesión</a></li>
-            <li><a href="{{ route('register') }}" class="button fit">Crear usuario</a></li>
+            <li><a href="{{ route('login') }}" class="button primary fit">Login</a></li>
+            <li><a href="{{ route('register') }}" class="button fit">Create user</a></li>
         @else
             <!-- Si el usuario ha iniciado sesión -->
             <li><a href="{{ route('profile') }}" class="button primary fit">My profile</a></li>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Iniciar Sesión')
+@section('title', 'Login')
 @include('layouts.menu')
 @section('content')
     <div class="form-container">
