@@ -39,7 +39,7 @@
             </span>
                 <header class="major" style="position: relative; z-index: 2;">
                     <h3>{{ $videojuego->nombre }}</h3>
-                    <p>{{ Str::limit($videojuego->descripcion, 120) }}</p>
+                    <p>{{ Str::limit($videojuego->descripcion, 70) }}</p>
                     <p>Rating de usuarios: {{ number_format($videojuego->rating_usuario, 1) }}</p>
                 </header>
             </article>

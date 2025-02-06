@@ -2,13 +2,13 @@
 @section('title', 'GAME QUEST')
 <!-- Header -->
 <!-- Menu -->
-@section('body_class', 'is-preload')
+@section('body_class', 'is-preload videojuegos-bg')
 @include('layouts.menu')
 
 @section('title', 'Todos los Videojuegos')
     @section('content')
     <div class="videojuegos-container">
-    <h1 class="text-center mb-5">Available Video Games</h1>
+    <h1 class="text-center mb-5 title-games">Available Video Games</h1>
     <div class="videojuegos-grid">
         @foreach ($videojuegos as $videojuego)
             <div >

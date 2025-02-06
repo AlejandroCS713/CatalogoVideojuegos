@@ -300,6 +300,8 @@ input, select, textarea {
 		cursor: default;
 		list-style: none;
 		padding-left: 0;
+        display: flex;
+        justify-content: center;
 	}
 
 		ul.pagination li {
@@ -315,7 +317,7 @@ input, select, textarea {
 				transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 				border-bottom: 0;
 				display: inline-block;
-				font-size: 0.8em;
+				font-size: 15px;
 				font-weight: 600;
 				height: 1.5em;
 				line-height: 1.5em;
@@ -900,25 +902,22 @@ input, select, textarea {
 			animation: reveal-header 0.35s ease;
 		}
 
-		#header.alt {
-			-moz-transition: opacity 2.5s ease;
-			-webkit-transition: opacity 2.5s ease;
-			-ms-transition: opacity 2.5s ease;
-			transition: opacity 2.5s ease;
-			-moz-transition-delay: 0.75s;
-			-webkit-transition-delay: 0.75s;
-			-ms-transition-delay: 0.75s;
-			transition-delay: 0.75s;
-			-moz-animation: none;
-			-webkit-animation: none;
-			-ms-animation: none;
-			animation: none;
-			background-color: transparent;
-			box-shadow: none;
-			position: absolute;
-		}
+#header.alt {
+    -moz-transition: none;
+    -webkit-transition: none;
+    -ms-transition: none;
+    transition: none;  /* Eliminamos la transición de opacidad */
+    background-color: #212121;
+    box-shadow: none;
+    position: fixed;  /* Cambiamos a 'fixed' para que permanezca fijo en la pantalla */
+    top: 0;  /* Asegura que el header se mantenga en la parte superior */
+    left: 0;
+    width: 100%;  /* Asegura que el header ocupe todo el ancho de la pantalla */
+    z-index: 1000;  /* Asegura que el header esté por encima de otros elementos */
+}
 
-			#header.alt.style1 .logo strong {
+
+#header.alt.style1 .logo strong {
 				color: #6fc3df;
 			}
 
@@ -1603,3 +1602,29 @@ h1 {
     font-weight: bold;
     color: #ffcc00;
 }
+
+.title-games{
+    -moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    -ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    background-color: #ffffff;
+    color: #242943;
+    line-height: 1.65em;
+    margin-right: 0.325em;
+    padding: 0 0.125em 0 0.375em;
+}
+
+/* Fondo para los videojuegos */
+
+
+.videojuegos-bg {
+    background-image:
+        linear-gradient(rgba(33, 33, 33, 0.5), rgba(33, 33, 33, 0.5)), /* Superponer color con opacidad */
+        url('../../images/fondo3.webp'); /* Ruta correcta */
+    background-size: cover;
+    background-attachment: fixed; /* Hace el efecto parallax */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
