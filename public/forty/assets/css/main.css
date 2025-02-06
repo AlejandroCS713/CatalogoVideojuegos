@@ -1508,7 +1508,9 @@ h1 {
     padding: 15px;
     text-align: center;
 }
-
+.game-description{
+    font-size: 14px;
+}
 .videojuego-info h3 {
     font-size: 1.2em;
     font-weight: bold;
@@ -1577,8 +1579,10 @@ h1 {
 
 /* Información */
 .game-info p {
-    font-size: 1.2em;
-    margin: 10px 0;
+    padding-top: 20px;
+    margin: 10px ;
+    margin-right: 50px;
+    margin-left: 50px;
 }
 
 /* Géneros */
@@ -1591,7 +1595,8 @@ h1 {
     background: #3c4460;
     padding: 5px 10px;
     border-radius: 5px;
-    margin: 5px;
+    margin-left: 40px;
+    margin-bottom: 20px;
 }
 
 /* Plataformas y Precios */
@@ -1602,6 +1607,11 @@ h1 {
 .game-price {
     font-weight: bold;
     color: #ffcc00;
+}
+
+.game-platforms strong{
+    margin-left: 40px;
+    margin-bottom: 40px;
 }
 
 .title-games{
