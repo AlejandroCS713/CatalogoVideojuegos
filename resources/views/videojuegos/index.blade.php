@@ -22,7 +22,7 @@
 
     <!-- Paginación -->
         <ul class="pagination">
-            {{ $videojuegos->links() }}
+            {{ $videojuegos->links('vendor.pagination.default') }}
         </ul>
     </div>
 @endsection
