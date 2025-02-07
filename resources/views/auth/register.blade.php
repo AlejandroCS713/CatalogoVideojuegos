@@ -43,6 +43,7 @@
                 <div class="bg"><div class="bg-inner"></div></div>
                 <span class="text">Register</span>
             </button>
+            <br>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

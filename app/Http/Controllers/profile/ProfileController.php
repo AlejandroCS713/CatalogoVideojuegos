@@ -22,7 +22,7 @@ class ProfileController extends Controller
     public function editAvatar()
     {
         $avatars = [
-            '/avatarAngel.png', 'avatarAnimal.png', 'avatarBatman.png',
+            'avatarAngel.png', 'avatarAnimal.png', 'avatarBatman.png',
             'avatarBombero.png', 'avatarCaballera.png', 'avatarCaca.png', 'avatarConejo.png',
             'avatarFlor.png', 'avatarLloron.png', 'avatarMonstruo.png', 'avatarNiñoContento.png',
             'avatarPistola.png', 'avatarPlanta.png', 'avatarPollo.png', 'avatarPro.png',

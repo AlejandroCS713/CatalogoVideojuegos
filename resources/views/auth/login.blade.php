@@ -33,8 +33,18 @@
                 <div class="bg"><div class="bg-inner"></div></div>
                 <span class="text">Log In</span>
             </button>
-
+            <br>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </form>
+
         <div class="register-option">
             <p>Don't have an account? <a href="{{ route('register') }}">Sign up here</a></p>
         </div>

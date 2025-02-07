@@ -6,7 +6,6 @@
 @section('content')
     <!-- Header -->
     <!-- Menu -->
-
     <!-- Banner -->
     <section id="banner" class="major" style="background-image: url('{{ asset('forty/images/Designer (4).jpeg') }}'); background-size: cover; background-position: center; height: 100vh;">
         <div class="inner">
@@ -73,6 +72,4 @@
                 </ul>
             </div>
         </section>
-
-
 @endsection
