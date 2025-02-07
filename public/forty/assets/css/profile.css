@@ -211,3 +211,7 @@
 .dropdown-item:hover {
     background: darkslategrey;
 }
+
+.search-user-cs{
+    color: black;
+}

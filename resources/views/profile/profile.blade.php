@@ -52,7 +52,7 @@
 
             <!-- Buscador de Usuarios -->
             <div class="search-users">
-                <input type="text" id="search" placeholder="Buscar usuarios...">
+                <input type="text" id="search" placeholder="Buscar usuarios..." class="search-user-cs">
                 <ul id="search-results"></ul>
             </div>
 
@@ -70,9 +70,6 @@
                     @endforeach
                 </ul>
             </div>
-
-
-
 
         </div>
     </div>
