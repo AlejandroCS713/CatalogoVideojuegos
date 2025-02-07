@@ -4,7 +4,9 @@ use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\MultimediaController;
-use App\Http\Controllers\profile\ProfileController;
+use App\Http\Controllers\users\FriendController;
+use App\Http\Controllers\users\MessageController;
+use App\Http\Controllers\users\ProfileController;
 use App\Http\Controllers\VideojuegoController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +38,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/settings', [ProfileController::class, 'settings'])->name('profile.settings');
     Route::get('/profile/avatar', [ProfileController::class, 'editAvatar'])->name('profile.avatar');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::post('/send-friend-request/{id}', [FriendController::class, 'sendRequest'])->name('friends.send');
+    Route::post('/accept-friend-request/{id}', [FriendController::class, 'acceptRequest'])->name('friends.accept');
+    Route::post('/remove-friend/{id}', [FriendController::class, 'removeFriend'])->name('friends.remove');
+    Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
+    Route::get('/search-users', [FriendController::class, 'searchUsers'])->name('friends.search');
 });

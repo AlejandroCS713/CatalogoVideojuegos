@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\profile;
+namespace App\Http\Controllers\users;
 
 use App\Http\Controllers\Controller;
+use App\Models\users\Friend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,8 +12,18 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user(); // Obtiene el usuario autenticado
-        return view('/profile/profile', compact('user')); // Envía los datos a la vista
+
+        // Obtener los amigos aceptados del usuario
+        $friends = Friend::where(function ($query) {
+            $query->where('user_id', Auth::id())
+                ->orWhere('friend_id', Auth::id());
+        })
+            ->where('status', 'accepted')
+            ->get();
+
+        return view('profile.profile', compact('user', 'friends')); // Envía los datos a la vista
     }
+
 
     public function settings()
     {

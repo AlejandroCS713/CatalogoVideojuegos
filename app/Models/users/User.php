@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\users;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
+
     ];
 
     /**
@@ -46,4 +47,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function friends() {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+            ->where('status', 'accepted');
+    }
+
+    public function friendRequests() {
+        return $this->hasMany(Friend::class, 'friend_id')->where('status', 'pending');
+    }
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\users\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Reseña extends Model

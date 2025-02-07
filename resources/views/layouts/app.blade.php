@@ -6,6 +6,9 @@
     <title>@yield('title', 'Forty Template')</title> <!-- Título dinámico -->
 
     <!-- Estilos comunes -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="friends-search-url" content="{{ route('friends.search') }}">
+    <meta name="friends-send-url" content="{{ route('friends.send', '') }}">
     <link rel="stylesheet" href="{{ asset('forty/assets/css/main.css') }}" />
     <noscript><link rel="stylesheet" href="{{ asset('forty/assets/css/noscript.css') }}" /></noscript>
     <link rel="icon" type="image/x-icon" href="{{ asset('forty/images/favicon.ico') }}">
