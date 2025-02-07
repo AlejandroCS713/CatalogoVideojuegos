@@ -2,13 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Genero;
-use App\Models\Plataforma;
+use App\Models\games\Genero;
+use App\Models\games\Plataforma;
+use App\Models\games\Videojuego;
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Videojuego;
 
 class VideojuegoTest extends TestCase
 {

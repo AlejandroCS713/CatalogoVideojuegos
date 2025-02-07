@@ -41,7 +41,7 @@
                                 <div class="dropdown-menu">
                                     <form method="POST" action="{{ route('friends.remove', $friendUser->id) }}">
                                         @csrf
-                                        <button type="submit" class="dropdown-item">Eliminar Amigo</button>
+                                        <button type="submit" class="dropdown-item">Delete Friend</button>
                                     </form>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
 
             <!-- Buscador de Usuarios -->
             <div class="search-users">
-                <input type="text" id="search" placeholder="Buscar usuarios..." class="search-user-cs">
+                <input type="text" id="search" placeholder="Search for users..." class="search-user-cs">
                 <ul id="search-results"></ul>
             </div>
 
@@ -64,7 +64,7 @@
                         <li>{{ $request->user->name }}
                             <form method="POST" action="{{ route('friends.accept', $request->user->id) }}">
                                 @csrf
-                                <button type="submit">Aceptar</button>
+                                <button type="submit">Accept</button>
                             </form>
                         </li>
                     @endforeach

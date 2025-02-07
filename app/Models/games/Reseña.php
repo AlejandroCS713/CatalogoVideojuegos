@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\games;
 
 use App\Models\users\User;
 use Illuminate\Database\Eloquent\Model;

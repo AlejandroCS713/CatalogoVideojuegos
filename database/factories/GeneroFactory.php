@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Genero;
+use App\Models\games\Genero;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class GeneroFactory extends Factory

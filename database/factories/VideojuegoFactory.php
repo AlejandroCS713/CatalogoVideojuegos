@@ -5,11 +5,11 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Videojuego>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\games\Videojuego>
  */
 class VideojuegoFactory extends Factory
 {
-    protected $model = \App\Models\Videojuego::class;
+    protected $model = \App\Models\games\Videojuego::class;
 
     public function definition()
     {

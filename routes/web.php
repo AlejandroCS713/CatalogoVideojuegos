@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
-use App\Http\Controllers\ForoController;
-use App\Http\Controllers\MultimediaController;
+use App\Http\Controllers\forum\ForoController;
+use App\Http\Controllers\games\MultimediaController;
+use App\Http\Controllers\games\VideojuegoController;
 use App\Http\Controllers\users\FriendController;
 use App\Http\Controllers\users\MessageController;
 use App\Http\Controllers\users\ProfileController;
-use App\Http\Controllers\VideojuegoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\games;
 
-use App\Models\Multimedia;
-use App\Models\Videojuego;
+use App\Http\Controllers\Controller;
+use App\Models\games\Multimedia;
+use App\Models\games\Videojuego;
 use Illuminate\Http\Request;
 
 class MultimediaController extends Controller

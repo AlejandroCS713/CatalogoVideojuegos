@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Plataforma;
-use App\Models\Videojuego;
+use App\Models\games\Plataforma;
+use App\Models\games\Videojuego;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Plataforma>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\games\Plataforma>
  */
 class PlataformaFactory extends Factory
 {

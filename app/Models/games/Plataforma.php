@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\games;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Genero extends Model
+class Plataforma extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'nombre',
-         ];
+
+    protected $fillable = ['nombre',];
     public function videojuegos()
     {
         return $this->belongsToMany(Videojuego::class);
     }
-
 }

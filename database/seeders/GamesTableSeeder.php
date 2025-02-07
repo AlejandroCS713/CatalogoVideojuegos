@@ -1,13 +1,13 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\games\Genero;
+use App\Models\games\Multimedia;
+use App\Models\games\Plataforma;
+use App\Models\games\Precio;
+use App\Models\games\Videojuego;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
-use App\Models\Videojuego;
-use App\Models\Genero;
-use App\Models\Plataforma;
-use App\Models\Multimedia;
-use App\Models\Precio;
 
 class GamesTableSeeder extends Seeder
 {
