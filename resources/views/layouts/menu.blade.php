@@ -36,7 +36,7 @@
             <div class="dropdown-menu" id="notification-list">
                 @foreach(Auth::user()->unreadNotifications as $notification)
                     <a class="dropdown-item2" href="{{ route('message.chat', $notification->data['sender_id']) }}">
-                        New Message -> {{ \App\Models\users\User::find($notification->data['sender_id'])->name }}
+                            New Message --> {{ \App\Models\users\User::find($notification->data['sender_id'])->name }}
                     </a>
                 @endforeach
             </div>

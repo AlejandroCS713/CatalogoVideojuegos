@@ -14,7 +14,7 @@ class GamesTableSeeder extends Seeder
     public function run()
     {
         // Inicializar el número total de iteraciones que deseas hacer
-        $iterations = 1000; // Número de veces que deseas hacer la petición (esto puede cambiar dependiendo de tus necesidades)
+        $iterations = 100; // Número de veces que deseas hacer la petición (esto puede cambiar dependiendo de tus necesidades)
 
         // Repetir el proceso 1000 veces
         for ($i = 0; $i < $iterations; $i++) {
