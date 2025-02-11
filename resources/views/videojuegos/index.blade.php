@@ -18,8 +18,6 @@
             </div>
         @endforeach
     </div>
-
-    <!-- Paginación -->
         <ul class="pagination">
             {{ $videojuegos->links('vendor.pagination.default') }}
         </ul>

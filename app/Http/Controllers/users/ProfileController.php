@@ -11,9 +11,8 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        $user = Auth::user(); // Obtiene el usuario autenticado
+        $user = Auth::user();
 
-        // Obtener los amigos aceptados del usuario
         $friends = Friend::where(function ($query) {
             $query->where('user_id', Auth::id())
                 ->orWhere('friend_id', Auth::id());
@@ -21,7 +20,7 @@ class ProfileController extends Controller
             ->where('status', 'accepted')
             ->get();
 
-        return view('profile.profile', compact('user', 'friends')); // Envía los datos a la vista
+        return view('profile.profile', compact('user', 'friends'));
     }
 
 

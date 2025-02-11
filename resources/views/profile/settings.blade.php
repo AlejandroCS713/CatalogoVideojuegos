@@ -6,6 +6,5 @@
 @section('content')
     <div class="container">
         <h1>Profile Settings</h1>
-
     </div>
 @endsection

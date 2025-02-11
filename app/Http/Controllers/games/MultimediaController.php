@@ -11,26 +11,20 @@ class MultimediaController extends Controller
 {
     public function store(Request $request, $videojuegoId)
     {
-        // Validar los datos
         $request->validate([
-            'type' => 'required|string',  // Tipo de multimedia (imagen, video, etc.)
-            'url' => 'required|file|mimes:jpg,jpeg,png,mp4',  // Validación del archivo
+            'type' => 'required|string',
+            'url' => 'required|file|mimes:jpg,jpeg,png,mp4',
         ]);
+        $path = $request->file('url')->store('public/multimedia');
 
-        // Subir el archivo multimedia (por ejemplo, imagen o video)
-        $path = $request->file('url')->store('public/multimedia');  // Guardar archivo en almacenamiento público
-
-        // Crear una nueva multimedia para el videojuego especificado
         $multimedia = new Multimedia([
             'type' => $request->type,
-            'url' => basename($path),  // Guardar solo el nombre del archivo
+            'url' => basename($path),
         ]);
 
-        // Relacionar la multimedia con el videojuego
         $videojuego = Videojuego::findOrFail($videojuegoId);
-        $videojuego->multimedia()->save($multimedia);  // Relacionamos con el videojuego
+        $videojuego->multimedia()->save($multimedia);
 
-        // Redirigir a la vista del videojuego
         return redirect()->route('videojuegos.show', $videojuegoId);
     }
 }

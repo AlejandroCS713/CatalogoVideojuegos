@@ -1459,7 +1459,7 @@ input, select, textarea {
 		}
 
 .videojuegos-container {
-    width: 80%; /* Deja un 10% de margen en cada lateral */
+    width: 80%;
     margin: 0 auto;
     padding: 20px;
 }
@@ -1636,10 +1636,10 @@ h1 {
 
 .videojuegos-bg {
     background-image:
-        linear-gradient(rgba(33, 33, 33, 0.5), rgba(33, 33, 33, 0.5)), /* Superponer color con opacidad */
-        url('../../images/fondo3.webp'); /* Ruta correcta */
+        linear-gradient(rgba(33, 33, 33, 0.5), rgba(33, 33, 33, 0.5)),
+        url('../../images/fondo3.webp');
     background-size: cover;
-    background-attachment: fixed; /* Hace el efecto parallax */
+    background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
 }

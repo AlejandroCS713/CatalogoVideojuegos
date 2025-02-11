@@ -29,7 +29,19 @@
             <li><a href="{{ route('login') }}" class="button primary fit">Login</a></li>
             <li><a href="{{ route('register') }}" class="button fit">Create user</a></li>
         @else
-            <!-- Si el usuario ha iniciado sesión -->
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" onclick="markNotificationsAsRead()">
+                🔔 Notificaciones <span id="notif-count" class="badge badge-danger">{{ Auth::user()->unreadNotifications->count() }}</span>
+            </a>
+            <div class="dropdown-menu" id="notification-list">
+                @foreach(Auth::user()->unreadNotifications as $notification)
+                    <a class="dropdown-item2" href="{{ route('message.chat', $notification->data['sender_id']) }}">
+                        New Message -> {{ \App\Models\users\User::find($notification->data['sender_id'])->name }}
+                    </a>
+                @endforeach
+            </div>
+        </li>
+        <!-- Si el usuario ha iniciado sesión -->
             <li><a href="{{ route('profile') }}" class="button primary fit">My profile</a></li>
             <li>
                 <form action="{{ route('logout') }}" method="POST">

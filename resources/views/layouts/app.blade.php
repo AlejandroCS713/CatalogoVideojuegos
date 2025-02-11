@@ -7,6 +7,7 @@
 
     <!-- Estilos comunes -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-id" content="{{ auth()->id() }}">
     <meta name="friends-search-url" content="{{ route('friends.search') }}">
     <meta name="friends-send-url" content="{{ route('friends.send', '') }}">
     <link rel="stylesheet" href="{{ asset('forty/assets/css/main.css') }}" />

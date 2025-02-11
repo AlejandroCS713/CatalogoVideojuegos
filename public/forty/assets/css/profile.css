@@ -207,11 +207,48 @@
     background: none;
     cursor: pointer;
 }
-
+.dropdown-item2{
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
 .dropdown-item:hover {
     background: darkslategrey;
 }
 
 .search-user-cs{
     color: black;
+}
+
+.chat-container {
+    width: 400px;
+    margin: auto;
+}
+
+.chat-box {
+    height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+}
+.message {
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.sent {
+    background: lightblue;
+    text-align: right;
+}
+
+.received {
+    background: lightgray;
+    text-align: left;
 }

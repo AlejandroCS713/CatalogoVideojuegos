@@ -10,10 +10,7 @@
 
 @section('content')
     <div class="game-container">
-        <!-- Título del videojuego -->
         <h1 class="game-title">{{ $videojuego->nombre }}</h1>
-
-        <!-- Imágenes -->
         <div class="game-images">
             @foreach ($videojuego->multimedia as $media)
                 @if ($media->tipo === 'imagen')
@@ -21,8 +18,6 @@
                 @endif
             @endforeach
         </div>
-
-        <!-- Información del videojuego -->
         <div class="game-info">
             <p class="game-description">{{ $videojuego->descripcion }}</p>
             <p><strong>Release Date:</strong> {{ $videojuego->fecha_lanzamiento ?? 'Desconocida' }}</p>
@@ -31,8 +26,6 @@
             <p><strong>Developer:</strong> {{ $videojuego->desarrollador }}</p>
             <p><strong>Publisher:</strong> {{ $videojuego->publicador }}</p>
         </div>
-
-        <!-- Géneros -->
         <div class="game-genres">
             <h2>Genres</h2>
             <ul>
@@ -41,8 +34,6 @@
                 @endforeach
             </ul>
         </div>
-
-        <!-- Plataformas y precios -->
         <div class="game-platforms">
             <h2>Available in:</h2>
             <ul>

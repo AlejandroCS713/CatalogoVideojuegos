@@ -23,8 +23,8 @@ class GamesTableSeeder extends Seeder
 
             // Consulta a la API de IGDB
             $response = Http::withHeaders([
-                'Client-ID' => 'c5ew8x39828zbf5ccvewq5qsifet9p', // Tu Client-ID real
-                'Authorization' => 'Bearer lslp9plhz9orvhsj916zbik9eyuyau', // Tu Bearer token real
+                'Client-ID' => 'c5ew8x39828zbf5ccvewq5qsifet9p',
+                'Authorization' => 'Bearer lslp9plhz9orvhsj916zbik9eyuyau',
                 'Accept' => 'application/json   ',
             ])
                 ->withBody("fields id,name,summary,first_release_date,rating,aggregated_rating,involved_companies.company.name,genres.id,genres.name,platforms.id,platforms.name,cover.url; limit 500; offset $offset;", 'application/x-www-form-urlencoded')  // Enviamos el cuerpo como raw con el offset dinámico
@@ -141,7 +141,7 @@ class GamesTableSeeder extends Seeder
                 // Agregar precios (aleatorio por plataforma)
                 if (isset($game['platforms'])) {
                     foreach ($game['platforms'] as $platform) {
-                        $precio = rand(10, 100); // Precio aleatorio
+                        $precio = rand(10, 100);
                         Precio::updateOrCreate(
                             ['videojuego_id' => $videojuego->id, 'plataforma_id' => $platform['id']],
                             ['precio' => $precio]
@@ -154,7 +154,7 @@ class GamesTableSeeder extends Seeder
             $this->command->info("Iteración $i completada, offset: $offset");
 
             // Puedes agregar un pequeño retraso entre solicitudes para evitar problemas con la API
-            sleep(1); // 1 segundo de espera
+            sleep(1);
         }
     }
 }

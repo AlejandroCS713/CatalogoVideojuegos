@@ -22,7 +22,7 @@ class FriendController extends Controller {
             ->first();
 
         if ($existingRequest) {
-            return back(); // No mostrar mensaje ni redireccionar con error
+            return back();
         }
 
         Friend::create([
@@ -62,7 +62,7 @@ class FriendController extends Controller {
         $query = $request->input('query');
 
         $users = User::where('name', 'LIKE', "%{$query}%")
-            ->where('id', '!=', auth()->id()) // Excluir al usuario autenticado
+            ->where('id', '!=', auth()->id())
             ->get();
 
         return response()->json($users);

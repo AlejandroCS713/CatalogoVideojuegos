@@ -8,7 +8,9 @@ use App\Http\Controllers\games\VideojuegoController;
 use App\Http\Controllers\users\FriendController;
 use App\Http\Controllers\users\MessageController;
 use App\Http\Controllers\users\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/send-friend-request/{id}', [FriendController::class, 'sendRequest'])->name('friends.send');
     Route::post('/accept-friend-request/{id}', [FriendController::class, 'acceptRequest'])->name('friends.accept');
     Route::post('/remove-friend/{id}', [FriendController::class, 'removeFriend'])->name('friends.remove');
-    Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
     Route::get('/search-users', [FriendController::class, 'searchUsers'])->name('friends.search');
+    Route::get('/chat/{friend_id}', [MessageController::class, 'chat'])->name('message.chat');
+    Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
 });
