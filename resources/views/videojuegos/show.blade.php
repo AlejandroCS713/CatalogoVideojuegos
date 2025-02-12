@@ -51,19 +51,19 @@
                     </li>
                 @endforeach
             </ul>
-
+            @auth
             @if(auth()->user()->can('editar juegos'))
-                <a href="{{ route('juegos.edit', $videojuego->id) }}" class="btn btn-warning">Editar</a>
+                <a href="{{ route('videojuegos.edit', $videojuego->id) }}" class="btn btn-warning">Editar</a>
             @endif
 
             @if(auth()->user()->can('eliminar juegos'))
-                <form action="{{ route('juegos.destroy', $videojuego->id) }}" method="POST">
+                <form action="{{ route('videojuegos.destroy', $videojuego->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Eliminar</button>
                 </form>
             @endif
-
+            @endauth
         </div>
     </div>
 @endsection

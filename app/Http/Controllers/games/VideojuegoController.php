@@ -31,7 +31,7 @@ class VideojuegoController extends Controller
 
     public function index()
     {
-        $videojuegos = Videojuego::with('multimedia')->paginate(9);
+        $videojuegos = Videojuego::with('multimedia')->paginate(30);
 
         return view('videojuegos.index', compact('videojuegos'));
     }

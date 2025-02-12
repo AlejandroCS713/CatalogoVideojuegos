@@ -10,9 +10,11 @@
 
     <div class="videojuegos-container">
     <h1 class="text-center mb-5 title-games">Available Video Games</h1>
+        @auth
         @if(auth()->user()->can('crear juegos'))
             <a href="{{ route('videojuegos.create') }}" class="btn btn-success">Crear Juego</a>
         @endif
+        @endauth
     <div class="videojuegos-grid">
         @foreach ($videojuegos as $videojuego)
             <div >
