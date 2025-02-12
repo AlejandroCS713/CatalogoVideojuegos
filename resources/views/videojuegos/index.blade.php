@@ -7,8 +7,12 @@
 
 @section('title', 'Todos los Videojuegos')
     @section('content')
+
     <div class="videojuegos-container">
     <h1 class="text-center mb-5 title-games">Available Video Games</h1>
+        @if(auth()->user()->can('crear juegos'))
+            <a href="{{ route('videojuegos.create') }}" class="btn btn-success">Crear Juego</a>
+        @endif
     <div class="videojuegos-grid">
         @foreach ($videojuegos as $videojuego)
             <div >

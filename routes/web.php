@@ -47,3 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/{friend_id}', [MessageController::class, 'chat'])->name('message.chat');
     Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
 });
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('videojuegos', VideojuegoController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+});
