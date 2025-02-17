@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models\Forum;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Foro extends Model
+{
+    //use HasFactory;
+
+    protected $fillable = ['titulo', 'descripcion', 'imagen', 'usuario_id'];
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'usuario_id');
+    }
+
+    public function videojuegos()
+    {
+        return $this->belongsToMany(Videojuego::class, 'foro_videojuego')->withTimestamps();
+    }
+
+    public function mensajes()
+    {
+        return $this->hasMany(MensajeForo::class, 'foro_id');
+    }
+}

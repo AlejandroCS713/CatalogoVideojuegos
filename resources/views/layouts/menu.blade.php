@@ -20,7 +20,7 @@
         <li><a href="{{ route('welcome') }}">Home</a></li>
         <!-- Nuevas opciones -->
         <li><a href="{{ route('videojuegos.index') }}">Video games</a></li>
-        <li><a href="{{ route('foro.index') }}">Forum</a></li>
+        <li><a href="{{ route('forum.index') }}">Forum</a></li>
     </ul>
     <ul class="actions stacked">
 

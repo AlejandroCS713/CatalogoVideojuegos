@@ -3,6 +3,8 @@
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\forum\ForoController;
+use App\Http\Controllers\forum\MensajeForoController;
+use App\Http\Controllers\forum\RespuestaForoController;
 use App\Http\Controllers\games\MultimediaController;
 use App\Http\Controllers\games\VideojuegoController;
 use App\Http\Controllers\users\FriendController;
@@ -23,7 +25,9 @@ Route::post('/videojuegos/{videojuego}/multimedia', [MultimediaController::class
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
 Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
-Route::get('/foro', [ForoController::class, 'index'])->name('foro.index');
+Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
+Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
+
 
 // Procesar formularios de autenticación
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -43,6 +47,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search-users', [FriendController::class, 'searchUsers'])->name('friends.search');
     Route::get('/chat/{friend_id}', [MessageController::class, 'chat'])->name('message.chat');
     Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
+    Route::post('/forum/{foro}/mensajes', [MensajeForoController::class, 'store'])->name('mensajes.store');
+    Route::post('/mensajes/{mensaje}/respuestas', [RespuestaForoController::class, 'store'])->name('respuestas.store');
+    Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
+    Route::get('/forum/create', [ForoController::class, 'create'])->name('forum.create');
 });
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('videojuegos', VideojuegoController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);

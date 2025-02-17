@@ -2,6 +2,9 @@
 
 namespace App\Models\users;
 
+use App\Models\Forum\Foro;
+use App\Models\Forum\MensajeForo;
+use App\Models\Forum\RespuestaForo;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -61,6 +64,21 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function logros() {
         return $this->belongsToMany(Logro::class, 'logro_usuario')->withTimestamps();
+    }
+
+    public function foros()
+    {
+        return $this->hasMany(Foro::class, 'usuario_id');
+    }
+
+    public function mensajesForo()
+    {
+        return $this->hasMany(MensajeForo::class, 'usuario_id');
+    }
+
+    public function respuestasForo()
+    {
+        return $this->hasMany(RespuestaForo::class, 'usuario_id');
     }
 
 

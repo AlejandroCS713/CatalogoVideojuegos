@@ -2,6 +2,7 @@
 
 namespace App\Models\games;
 
+use App\Models\Forum\Foro;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +28,11 @@ class Videojuego extends Model
         return $this->belongsToMany(Genero::class, 'videojuego_genero');
     }
 
+    public function foros()
+    {
+        return $this->belongsToMany(Foro::class, 'foro_videojuego')->withTimestamps();
+    }
+
 
     public function plataformas()
     {
@@ -41,11 +47,9 @@ class Videojuego extends Model
     protected static function boot()
     {
         parent::boot();
-
-        // Aseguramos que las relaciones se eliminan al borrar el videojuego
         static::deleting(function ($videojuego) {
-            $videojuego->generos()->detach(); // Eliminar relaciones con géneros
-            $videojuego->plataformas()->detach(); // Eliminar relaciones con plataformas
+            $videojuego->generos()->detach();
+            $videojuego->plataformas()->detach();
         });
     }
 }

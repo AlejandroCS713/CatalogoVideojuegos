@@ -55,7 +55,7 @@
                 <p>Welcome back! You're ready to explore even more - keep saving your favorite games, participate in forum discussions, and connect with other players. You're part of an amazing community, and the adventure just keeps getting better
                 </p>
                 <ul class="actions">
-                    <li><a href="{{ route('foro.index') }}" class="button next">Go to the forum</a></li>
+                    <li><a href="{{ route('forum.index') }}" class="button next">Go to the forum</a></li>
                 </ul>
             </div>
         </section>
