@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\users;
 
+use App\Events\AmigoAgregado;
 use App\Http\Controllers\Controller;
 
 
@@ -42,6 +43,9 @@ class FriendController extends Controller {
 
         if ($friendship) {
             $friendship->update(['status' => 'accepted']);
+            if (Auth::user()->friends()->where('status', 'accepted')->count() == 1) {
+                event(new AmigoAgregado(Auth::user()));
+            }
         }
 
         return redirect()->back();

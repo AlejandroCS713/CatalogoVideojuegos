@@ -1,12 +1,15 @@
 <?php
 namespace App\Http\Controllers\games;
+use App\Events\LogroDesbloqueado;
 use App\Http\Controllers\Controller;
+use App\Jobs\NotificarLogroDesbloqueado;
 use App\Models\games\Genero;
 use App\Models\games\Multimedia;
 use App\Models\games\Plataforma;
 use App\Models\games\Precio;
 use App\Models\games\Reseña;
 use App\Models\games\Videojuego;
+use App\Models\users\Logro;
 use Illuminate\Http\Request;
 
 class VideojuegoController extends Controller
@@ -50,7 +53,6 @@ class VideojuegoController extends Controller
         return view('videojuegos.create', compact('plataformas', 'generos'));
     }
 
-    // 🟢 GUARDAR NUEVO VIDEOJUEGO
     public function store(Request $request)
     {
         $request->validate([
@@ -74,7 +76,6 @@ class VideojuegoController extends Controller
         return redirect()->route('videojuegos.index')->with('success', 'Videojuego creado exitosamente.');
     }
 
-    // 🟢 FORMULARIO PARA EDITAR JUEGO
     public function edit($id)
     {
         $videojuego = Videojuego::findOrFail($id);
@@ -83,7 +84,6 @@ class VideojuegoController extends Controller
         return view('videojuegos.edit', compact('videojuego', 'plataformas', 'generos'));
     }
 
-    // 🟢 ACTUALIZAR VIDEOJUEGO
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -108,7 +108,6 @@ class VideojuegoController extends Controller
         return redirect()->route('videojuegos.index')->with('success', 'Videojuego actualizado.');
     }
 
-    // 🟢 ELIMINAR VIDEOJUEGO
     public function destroy($id)
     {
         $videojuego = Videojuego::findOrFail($id);
@@ -123,5 +122,23 @@ class VideojuegoController extends Controller
         $videojuego->delete();
 
         return redirect()->route('videojuegos.index')->with('success', 'Videojuego eliminado.');
+    }
+
+    public function comentar(Request $request, $id) {
+        $request->validate(['contenido' => 'required|string']);
+
+        $videojuego = Videojuego::findOrFail($id);
+        $comentario = $videojuego->comentarios()->create([
+            'user_id' => auth()->id(),
+            'contenido' => $request->contenido,
+        ]);
+
+        $logro = Logro::where('nombre', 'Primer Comentario')->first();
+        if ($logro && !auth()->user()->logros->contains($logro)) {
+            event(new LogroDesbloqueado(auth()->user(), $logro));
+            dispatch(new NotificarLogroDesbloqueado(auth()->user(), $logro));
+        }
+
+        return back()->with('success', 'Comentario añadido.');
     }
 }

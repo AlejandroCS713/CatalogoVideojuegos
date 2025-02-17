@@ -59,6 +59,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Friend::class, 'friend_id')->where('status', 'pending');
     }
 
+    public function logros() {
+        return $this->belongsToMany(Logro::class, 'logro_usuario')->withTimestamps();
+    }
+
 
 
 }
