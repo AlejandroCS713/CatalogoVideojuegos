@@ -24,9 +24,6 @@ Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('wel
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
 Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
 Route::get('/foro', [ForoController::class, 'index'])->name('foro.index');
-// Mostrar formularios de autenticación
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form');
 
 // Procesar formularios de autenticación
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -47,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/{friend_id}', [MessageController::class, 'chat'])->name('message.chat');
     Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
 });
-
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('videojuegos', VideojuegoController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 });
+

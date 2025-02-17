@@ -153,5 +153,10 @@ h1 {
     text-decoration: underline;
 }
 
+.text-message {
+    color: white;
+    text-align: center;
+    margin-top: 50px;
+}
 
 /*# sourceMappingURL=auth.css.map */
