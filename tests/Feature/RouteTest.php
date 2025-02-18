@@ -1,8 +1,10 @@
 <?php
 
+use App\Livewire\BuscarVideojuego;
 use App\Models\games\Videojuego;
 use App\Models\users\User;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Livewire;
 
 it('can access the home route', function () {
     $response = $this->get('/');
@@ -105,5 +107,16 @@ it('allows registered users to access the forum creation page', function () {
     $response->assertStatus(200);
 
     $user->delete();
+});
+it('can search for a video game by name', function () {
+    // Crear videojuegos en la base de datos
+    $videojuego1 = Videojuego::factory()->create(['nombre' => 'Doom']);
+    $videojuego2 = Videojuego::factory()->create(['nombre' => 'Minecraft']);
+
+    // Probar el componente Livewire y simular la búsqueda
+    Livewire::test(BuscarVideojuego::class)
+        ->set('query', 'Doom')  // Simula que el usuario escribe "Doom"
+        ->assertSee($videojuego1->nombre)  // Verifica que "Doom" está en los resultados
+        ->assertDontSee($videojuego2->nombre);  // Verifica que "Minecraft" NO está en los resultados
 });
 

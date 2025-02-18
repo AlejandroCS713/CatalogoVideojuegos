@@ -1,5 +1,6 @@
 <?php
 
+use Livewire\Livewire;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\forum\ForoController;

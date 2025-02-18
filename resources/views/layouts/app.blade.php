@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>@yield('title', 'Forty Template')</title> <!-- Título dinámico -->
+    @livewireStyles
 
     <!-- Estilos comunes -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -38,5 +39,6 @@
 
 <!-- Scripts adicionales si es necesario -->
 @stack('scripts') <!-- Para agregar scripts específicos desde las vistas -->
+@livewireScripts
 </body>
 </html>

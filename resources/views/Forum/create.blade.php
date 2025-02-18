@@ -29,8 +29,21 @@
                 <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
+            <label for="videojuego_id">Selecciona un Videojuego</label>
+            @livewire('buscar-videojuego')
 
+            <input type="hidden" name="videojuego_id" id="videojuego_id">
             <button type="submit" >Crear Foro</button>
         </form>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        window.addEventListener('load', function() {
+            Livewire.on('videojuegoSeleccionado', videojuegoId => {
+                document.getElementById('videojuego_id').value = videojuegoId;
+            });
+        });
+    </script>
+@endpush
+
