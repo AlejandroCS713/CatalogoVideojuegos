@@ -5,7 +5,9 @@
 @section('content')
     <div class="container">
         <h1 class="mb-4">Foros</h1>
+        @auth
         <li><a href="{{ route('forum.create') }}" class="button fit">Create forum</a></li>
+        @endauth
         @foreach($foros as $foro)
             <div class="card mb-3">
                 <div class="card-body">

@@ -18,7 +18,11 @@ class ForoController extends Controller
 
     public function show(Foro $foro)
     {
-        $foro->load('mensajes.usuario', 'mensajes.respuestas.usuario');
+        $foro->load([
+            'mensajes.usuario',
+            'mensajes.respuestas.usuario',
+            'videojuegos'
+        ]);
         return view('forum.show', compact('foro'));
     }
 

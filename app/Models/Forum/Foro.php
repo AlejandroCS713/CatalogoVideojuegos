@@ -2,11 +2,14 @@
 
 namespace App\Models\Forum;
 
+use App\Models\games\Videojuego;
+use App\Models\users\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Foro extends Model
 {
-    //use HasFactory;
+    use HasFactory;
 
     protected $fillable = ['titulo', 'descripcion', 'imagen', 'usuario_id'];
 

@@ -24,9 +24,7 @@ Route::post('/videojuegos/{videojuego}/multimedia', [MultimediaController::class
 // Rutas a vistas
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
-Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
 Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
-Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
 
 
 // Procesar formularios de autenticación
@@ -49,10 +47,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
     Route::post('/forum/{foro}/mensajes', [MensajeForoController::class, 'store'])->name('mensajes.store');
     Route::post('/mensajes/{mensaje}/respuestas', [RespuestaForoController::class, 'store'])->name('respuestas.store');
-    Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
     Route::get('/forum/create', [ForoController::class, 'create'])->name('forum.create');
+    Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
 });
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('videojuegos', VideojuegoController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 });
+Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
+Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
 

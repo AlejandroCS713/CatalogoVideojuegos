@@ -9,8 +9,9 @@ use App\Models\Forum\RespuestaForo;
 
 class MensajeForo extends Model
 {
-    //use HasFactory;
+    use HasFactory;
 
+    protected $table = 'mensajes_foro';
     protected $fillable = ['contenido', 'imagen', 'foro_id', 'usuario_id'];
 
     public function usuario()
