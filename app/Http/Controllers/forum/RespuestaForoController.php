@@ -11,13 +11,16 @@ class RespuestaForoController extends Controller
 {
     public function store(RespuestaForoRequest $request)
     {
+        $validated = $request->validated();
+
         $respuesta = RespuestaForo::create([
-            'contenido' => $request->contenido,
+            'contenido' => $validated['contenido'],
             'imagen' => $request->imagen,
             'mensaje_id' => $request->mensaje_id,
             'usuario_id' => auth()->id(),
         ]);
 
-        return response()->json(['message' => 'Respuesta enviada', 'respuesta' => $respuesta], 201);
+        return redirect()->route('forum.show', $respuesta->mensaje->foro_id)->with('success', '¡Respuesta enviada!');
     }
+
 }

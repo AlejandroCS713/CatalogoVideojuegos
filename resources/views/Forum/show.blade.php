@@ -1,7 +1,9 @@
 @extends('layouts.app')
+
 @section('title', 'Forum')
 @section('body_class', 'is-preload')
 @include('layouts.menu')
+
 @section('content')
     <div class="game-container">
         <h1 class="game-title">{{ $foro->titulo }}</h1>
@@ -11,7 +13,6 @@
 
         <div class="game-genres">
             <h2>Videojuegos Relacionados</h2>
-            <div class="game-genres">
             <ul>
                 @forelse($foro->videojuegos as $videojuego)
                     <li>
@@ -20,9 +21,7 @@
                 @empty
                     <li>No hay videojuegos relacionados con este foro.</li>
                 @endforelse
-                    <br>
             </ul>
-            </div>
         </div>
 
         <div class="game-genres">
@@ -43,21 +42,36 @@
                                 </div>
                             @endforeach
                         </div>
+
+                        @auth
+                            <form action="{{ route('respuestas.store', $mensaje->id) }}" method="POST">
+                                @csrf
+                                <div>
+                                    <textarea name="contenido" required style="color: black; margin-bottom: 20px" placeholder="Responde a este mensaje..."></textarea>
+                                    <input type="hidden" name="mensaje_id" value="{{ $mensaje->id }}">
+                                </div>
+                                <button type="submit">Enviar Respuesta</button>
+                            </form>
+                        @endauth
                     </div>
                 </div>
             @endforeach
         </div>
 
         @auth
+            <!-- Formulario para crear un nuevo mensaje en el foro -->
             <div>
+                <h3>Nuevo Mensaje:</h3>
                 <form action="{{ route('mensajes.store', $foro->id) }}" method="POST">
                     @csrf
                     <div>
-                        <textarea name="contenido" required style="color: black; margin-bottom: 20px" placeholder="Send message"></textarea>
+                        <textarea name="contenido" required style="color: black; margin-bottom: 20px" placeholder="Escribe tu mensaje..."></textarea>
                     </div>
-                    <button type="submit">Enviar</button>
+                    <input type="hidden" name="foro_id" value="{{ $foro->id }}">
+                    <button type="submit">Enviar Mensaje</button>
                 </form>
             </div>
         @endauth
     </div>
 @endsection
+

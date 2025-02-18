@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('respuestas_foro', function (Blueprint $table) {
+        Schema::create('respuesta_foros', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mensaje_id')->constrained('mensajes_foro')->onDelete('cascade');
+            $table->foreignId('mensaje_id')->constrained('mensaje_foros')->onDelete('cascade');
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->text('contenido');
             $table->string('imagen')->nullable();
@@ -23,6 +23,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('respuestas_foro');
+        Schema::dropIfExists('respuesta_foros');
     }
 };

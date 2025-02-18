@@ -3,10 +3,9 @@
 @include('layouts.menu')
 
 @section('content')
-    <div class="container">
-        <h1>Crear Foro</h1>
+    <h1>Crear Foro</h1>
+    <div class="game-container" style=" display: flex;justify-content: center; margin-bottom: 40px;">
 
-        <!-- Mostrar mensajes de éxito o error -->
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -16,22 +15,22 @@
         <form action="{{ route('forum.store') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="titulo">Título</label>
-                <input type="text" name="titulo" id="titulo" class="form-control" value="{{ old('titulo') }}" required>
+                <p>Título</p>
+                <input style="color: black; margin-bottom: 20px;" type="text" name="titulo" id="titulo"  class="form-control" value="{{ old('titulo') }}" required >
                 @error('titulo')
                 <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
             <div class="form-group">
-                <label for="descripcion">Descripción</label>
-                <textarea name="descripcion" id="descripcion" class="form-control" rows="5" required>{{ old('descripcion') }}</textarea>
+                <p>Descripción</p>
+                <textarea name="descripcion" id="descripcion" class="form-control" rows="5" required style="color: black; margin-bottom: 20px;">{{ old('descripcion') }}</textarea>
                 @error('descripcion')
                 <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-success">Crear Foro</button>
+            <button type="submit" >Crear Foro</button>
         </form>
     </div>
 @endsection

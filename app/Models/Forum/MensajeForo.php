@@ -11,7 +11,6 @@ class MensajeForo extends Model
 {
     use HasFactory;
 
-    protected $table = 'mensajes_foro';
     protected $fillable = ['contenido', 'imagen', 'foro_id', 'usuario_id'];
 
     public function usuario()

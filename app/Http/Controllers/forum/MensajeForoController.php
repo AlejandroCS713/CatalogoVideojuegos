@@ -11,14 +11,17 @@ class MensajeForoController extends Controller
 {
     public function store(MensajeForoRequest $request)
     {
+
+        $validated = $request->validated();
+
         $mensaje = MensajeForo::create([
-            'contenido' => $request->contenido,
+            'contenido' => $validated['contenido'],
             'imagen' => $request->imagen,
             'foro_id' => $request->foro_id,
             'usuario_id' => auth()->id(),
         ]);
 
-        return response()->json(['message' => 'Mensaje enviado', 'mensaje' => $mensaje], 201);
+        return redirect()->route('forum.show', $mensaje->foro_id)->with('success', '¡Mensaje enviado!');
     }
 
 }

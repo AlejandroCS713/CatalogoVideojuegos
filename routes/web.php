@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/mensajes/{mensaje}/respuestas', [RespuestaForoController::class, 'store'])->name('respuestas.store');
     Route::get('/forum/create', [ForoController::class, 'create'])->name('forum.create');
     Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
+
 });
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('videojuegos', VideojuegoController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);

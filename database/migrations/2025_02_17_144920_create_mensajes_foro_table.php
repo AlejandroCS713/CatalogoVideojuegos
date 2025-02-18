@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mensajes_foro', function (Blueprint $table) {
+        Schema::create('mensaje_foros', function (Blueprint $table) {
             $table->id();
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('foro_id')->constrained('foros')->onDelete('cascade');
@@ -23,6 +23,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('mensajes_foro');
+        Schema::dropIfExists('mensaje_foros');
     }
 };

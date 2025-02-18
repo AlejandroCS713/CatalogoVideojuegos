@@ -3,17 +3,19 @@
 @include('layouts.menu')
 
 @section('content')
-    <div class="container">
+    <div class="game-container">
         <h1 class="mb-4">Foros</h1>
         @auth
-        <li><a href="{{ route('forum.create') }}" class="button fit">Create forum</a></li>
-        @endauth
+            <div style=" display: flex;justify-content: center; margin-bottom: 40px;">
+        <a href="{{ route('forum.create') }}" class="button fit" style="width: 200px;">Create forum</a>
+            </div>
+                @endauth
         @foreach($foros as $foro)
-            <div class="card mb-3">
+            <div class="game-container">
                 <div class="card-body">
                     <h5 class="card-title">{{ $foro->titulo }}</h5>
                     <p class="card-text">{{ $foro->descripcion }}</p>
-                    <a href="{{ route('forum.show', $foro->id) }}" class="btn btn-primary">Ver Foro</a>
+                    <a href="{{ route('forum.show', $foro->id) }}" class="button fit" style="width: 150px">Ver Foro</a>
                 </div>
             </div>
         @endforeach
