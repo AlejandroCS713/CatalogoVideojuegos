@@ -21,14 +21,6 @@ class VideojuegoController extends Controller
         ->orderBy('rating_usuario', 'desc')
         ->take(6)
         ->get();
-
-        //dd($videojuegos);
-        //dd($videojuegos->toArray());
-        /**
-        foreach ($videojuegos as $videojuego) {
-            dd($videojuego->multimedia); // Muestra la relación multimedia
-        }
-         */
         return view('welcome', compact('videojuegos'));
     }
 

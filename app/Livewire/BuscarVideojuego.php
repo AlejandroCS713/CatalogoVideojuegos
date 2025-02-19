@@ -7,14 +7,14 @@ use Livewire\Component;
 
 class BuscarVideojuego extends Component
 {
-    public $query = '';  // Input de búsqueda
-    public $videojuegos = []; // Resultados de búsqueda
+    public $searchTerm = '';
+    public $videojuegos = [];
 
-    public function updatedQuery()
+    public function search()
     {
-        if (strlen($this->query) >= 2) { // Buscar solo si hay más de 2 letras
-            $this->videojuegos = Videojuego::where('nombre', 'like', '%' . $this->query . '%')
-                ->limit(5)
+        if (strlen($this->searchTerm) >= 2) {
+            $this->videojuegos = Videojuego::where('nombre', 'LIKE', "%{$this->searchTerm}%")
+                ->orderBy('nombre', 'asc')
                 ->get();
         } else {
             $this->videojuegos = [];
@@ -24,14 +24,17 @@ class BuscarVideojuego extends Component
     public function seleccionarVideojuego($id)
     {
         $videojuego = Videojuego::find($id);
-        $this->query = $videojuego->nombre; // Mostrar el nombre en el input
-        $this->videojuegos = []; // Limpiar resultados
-        $this->emit('videojuegoSeleccionado', $id); // Emitir evento
-
+        $this->searchTerm = $videojuego->nombre;
+        $this->videojuegos = [];
+        $this->dispatch('videojuegoSeleccionado', $id);
     }
 
     public function render()
     {
-        return view('livewire.buscar-videojuego');
+        return view('livewire.buscar-videojuego', [
+            'videojuegos' => $this->videojuegos,
+            'message' => empty($this->videojuegos) ? 'No se encontraron videojuegos' : null,
+        ]);
     }
+
 }

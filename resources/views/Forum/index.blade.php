@@ -19,5 +19,8 @@
                 </div>
             </div>
         @endforeach
+        <ul class="pagination">
+            {{ $foros->links('vendor.pagination.default') }}
+        </ul>
     </div>
 @endsection

@@ -29,10 +29,11 @@
                 <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
+            <div style="margin-bottom: 50px">
             <label for="videojuego_id">Selecciona un Videojuego</label>
             @livewire('buscar-videojuego')
-
-            <input type="hidden" name="videojuego_id" id="videojuego_id">
+                <input type="hidden" name="videojuego_id" id="videojuego_id" wire:model="videojuego_id">
+            </div>
             <button type="submit" >Crear Foro</button>
         </form>
     </div>

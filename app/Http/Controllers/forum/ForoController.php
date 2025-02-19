@@ -12,7 +12,7 @@ class ForoController extends Controller
 {
     public function index()
     {
-        $foros = Foro::all();
+        $foros = Foro::paginate(10);
         return view('forum.index', compact('foros'));
     }
 
@@ -38,13 +38,14 @@ class ForoController extends Controller
             'descripcion' => $request->descripcion,
             'imagen' => $request->imagen,
             'usuario_id' => auth()->id(),
+            'videojuego_id' => $request->videojuego_id,
         ]);
 
-        if ($request->videojuegos) {
-            $foro->videojuegos()->attach($request->videojuegos);
+        if ($request->videojuego_id) {
+            $foro->videojuegos()->attach($request->videojuego_id);
         }
-
         return redirect()->route('forum.index')->with('success', '¡Foro creado exitosamente!');
+        //dd($request->all());
     }
 
     public function update(ForoRequest $request, Foro $foro)
