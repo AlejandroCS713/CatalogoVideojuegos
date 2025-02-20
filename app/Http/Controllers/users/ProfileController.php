@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\users;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\UpdateAvatarRequest;
 use App\Models\users\Friend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,12 +43,8 @@ class ProfileController extends Controller
         return view('profile.avatar', compact('avatars'));
     }
 
-    public function updateAvatar(Request $request)
+    public function updateAvatar(UpdateAvatarRequest $request)
     {
-        $request->validate([
-            'avatar' => 'required|string'
-        ]);
-
         $user = Auth::user();
         $user->avatar = $request->avatar;
         $user->save();
