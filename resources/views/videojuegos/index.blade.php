@@ -14,9 +14,13 @@
         @endcan
     <div class="videojuegos-grid">
         @foreach ($videojuegos as $videojuego)
-            <div >
+            <div>
                 <div>
-                    <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img class="game-image" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/> </a>
+                    @if ($videojuego->multimedia->isNotEmpty())
+                        <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img class="game-image" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/></a>
+                    @else
+                        <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"> {{ $videojuego->nombre }}</a>
+                    @endif
                 </div>
             </div>
         @endforeach
