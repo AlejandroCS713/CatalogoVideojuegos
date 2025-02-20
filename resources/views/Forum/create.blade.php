@@ -38,13 +38,4 @@
         </form>
     </div>
 @endsection
-@push('scripts')
-    <script>
-        window.addEventListener('load', function() {
-            Livewire.on('videojuegoSeleccionado', videojuegoId => {
-                document.getElementById('videojuego_id').value = videojuegoId;
-            });
-        });
-    </script>
-@endpush
 

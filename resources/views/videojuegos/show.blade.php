@@ -49,14 +49,14 @@
                 @endforeach
             </ul>
             @can('Actualizar Videojuegos')
-                <a href="{{ route('admin.edit', $videojuego->id) }}" class="button fit" style="width: 200px; ">Editar</a>
+                <a href="{{ route('admin.edit', $videojuego->id) }}" class="button fit" style="width: 200px; margin-top: 20px; margin-bottom: 20px ">Editar</a>
             @endcan
 
             @can('Eliminar Videojuegos')
                 <form action="{{ route('admin.destroy', $videojuego->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="button fit" style="width: 200px;>Eliminar</button>
+                    <button type="submit" style="width: 200px;">Eliminar</button>
                 </form>
             @endcan
         </div>

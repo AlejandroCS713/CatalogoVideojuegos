@@ -3,6 +3,12 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
+
+window.addEventListener('load', function() {
+    Livewire.on('videojuegoSeleccionado', videojuegoId => {
+        document.getElementById('videojuego_id').value = videojuegoId;
+    });
+});
 <!-- Script para manejar la búsqueda -->
 document.addEventListener('DOMContentLoaded', function () {
     // Obtener las rutas de los metadatos en Blade

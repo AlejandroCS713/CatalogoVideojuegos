@@ -4,41 +4,59 @@
 @include('layouts.menu')
 
 @section('content')
-    <div class="container">
-        <h1>Crear Nuevo Videojuego</h1>
-        <form action="{{ route('admin.store') }}" method="POST">
-            @csrf
 
-            <label>Nombre:</label>
-            <input type="text" name="nombre" class="form-control" required>
+    <h2 class="form-title">Crear Nuevo Videojuego</h2>
+    <div class="form-container">
+        <div class="">
+            <form action="{{ route('admin.store') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label class="form-label">Nombre:</label>
+                    <input type="text" name="nombre" class="form-input" required>
+                </div>
 
-            <label>Descripción:</label>
-            <textarea name="descripcion" class="form-control"></textarea>
+                <div class="form-group">
+                    <label class="form-label">Descripción:</label>
+                    <textarea name="descripcion" class="form-textarea"></textarea>
+                </div>
 
-            <label>Fecha de Lanzamiento:</label>
-            <input type="date" name="fecha_lanzamiento" class="form-control">
+                <div class="form-group">
+                    <label class="form-label">Fecha de Lanzamiento:</label>
+                    <input type="date" name="fecha_lanzamiento" class="form-input">
+                </div>
 
-            <label>Desarrollador:</label>
-            <input type="text" name="desarrollador" class="form-control">
+                <div class="form-group">
+                    <label class="form-label">Desarrollador:</label>
+                    <input type="text" name="desarrollador" class="form-input">
+                </div>
 
-            <label>Publicador:</label>
-            <input type="text" name="publicador" class="form-control">
+                <div class="form-group">
+                    <label class="form-label">Publicador:</label>
+                    <input type="text" name="publicador" class="form-input">
+                </div>
 
-            <label>Plataformas:</label>
-            <select name="plataformas[]" multiple class="form-control">
-                @foreach($plataformas as $plataforma)
-                    <option value="{{ $plataforma->id }}">{{ $plataforma->nombre }}</option>
-                @endforeach
-            </select>
+                <div class="form-group">
+                    <label class="form-label">Plataformas:</label>
+                    <select name="plataformas[]" multiple class="form-select">
+                        @foreach($plataformas as $plataforma)
+                            <option value="{{ $plataforma->id }}">{{ $plataforma->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <label>Géneros:</label>
-            <select name="generos[]" multiple class="form-control">
-                @foreach($generos as $genero)
-                    <option value="{{ $genero->id }}">{{ $genero->nombre }}</option>
-                @endforeach
-            </select>
+                <div class="form-group">
+                    <label class="form-label">Géneros:</label>
+                    <select name="generos[]" multiple class="form-select">
+                        @foreach($generos as $genero)
+                            <option value="{{ $genero->id }}">{{ $genero->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-        </form>
+                <div class="form-group">
+                    <button type="submit">Guardar</button>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection
