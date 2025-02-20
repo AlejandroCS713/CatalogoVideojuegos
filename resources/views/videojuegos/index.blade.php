@@ -12,7 +12,7 @@
     <h1 class="text-center mb-5 title-games">Available Video Games</h1>
         @auth
         @if(auth()->user()->can('crear juegos'))
-            <a href="{{ route('videojuegos.create') }}" class="btn btn-success">Crear Juego</a>
+            <a href="{{ route('admin.create') }}" class="button fit" style="width: 200px;">Crear Juego</a>
         @endif
         @endauth
     <div class="videojuegos-grid">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\users\UserAdminController;
 use Livewire\Livewire;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
@@ -52,8 +53,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
 
 });
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('videojuegos', VideojuegoController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+Route::middleware(['auth', 'permission:crear juegos'])->group(function () {
+    Route::get('/admin/create', [VideojuegoController::class, 'create'])->name('admin.create');
+    Route::post('/admin', [VideojuegoController::class, 'store'])->name('admin.store');
+});
+
+Route::middleware(['auth', 'permission:editar juegos'])->group(function () {
+    Route::get('/admin/{id}/edit', [VideojuegoController::class, 'edit'])->name('admin.edit');
+    Route::put('/admin/{id}', [VideojuegoController::class, 'update'])->name('admin.update');
+});
+
+Route::middleware(['auth', 'permission:eliminar juegos'])->group(function () {
+    Route::delete('/admin/{id}', [VideojuegoController::class, 'destroy'])->name('admin.destroy');
 });
 Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
 Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
