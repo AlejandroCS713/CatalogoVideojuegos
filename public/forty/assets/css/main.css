@@ -1775,3 +1775,22 @@ ul.actions.fit {
     color: black;
 }
 
+.register-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10%;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+}
+
+.register-option a {
+    color: #00d4ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-option a:hover {
+    text-decoration: underline;
+}

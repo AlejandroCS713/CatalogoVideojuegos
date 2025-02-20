@@ -3,7 +3,7 @@
 @section('title', 'Login')
 @include('layouts.menu')
 @section('content')
-    <div class="form-container">
+    <div class="form-container2">
         @if(session('success'))
             <p style="color: green;">{{ session('success') }}</p>
         @endif

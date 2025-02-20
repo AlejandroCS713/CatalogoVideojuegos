@@ -2,7 +2,7 @@
 @section('title', 'User Registration')
 @include('layouts.menu')
 @section('content')
-    <div class="form-container">
+    <div class="form-container2">
         <form class="form" action="{{ route('register') }}" method="POST" autocomplete="off">
             @csrf
             <div class="control">
