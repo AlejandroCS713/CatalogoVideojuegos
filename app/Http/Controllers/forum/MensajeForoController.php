@@ -4,13 +4,19 @@ namespace App\Http\Controllers\forum;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Forum\MensajeForoRequest;
+use App\Models\Forum\Foro;
 use App\Models\Forum\MensajeForo;
+use App\Models\users\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class MensajeForoController extends Controller
 {
     public function store(MensajeForoRequest $request)
     {
+        $response = Gate::inspect('writeMessage', Foro::class);
+
+        if ($response->allowed()) {
 
         $validated = $request->validated();
 
@@ -22,6 +28,9 @@ class MensajeForoController extends Controller
         ]);
 
         return redirect()->route('forum.show', $mensaje->foro_id)->with('success', '¡Mensaje enviado!');
+        } else {
+            return back()->withErrors(['error' => $response->message()]);
+        }
     }
 
 }
