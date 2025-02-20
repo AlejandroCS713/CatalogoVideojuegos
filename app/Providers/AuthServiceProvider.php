@@ -27,7 +27,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Aquí estamos registrando la política directamente.
         Gate::define('writeMessage', [ForumPolicy::class, 'writeMessage']);
     }
 }

@@ -14,10 +14,6 @@ class MensajeForoController extends Controller
 {
     public function store(MensajeForoRequest $request)
     {
-        $response = Gate::inspect('writeMessage', Foro::class);
-
-        if ($response->allowed()) {
-
         $validated = $request->validated();
 
         $mensaje = MensajeForo::create([
@@ -28,9 +24,6 @@ class MensajeForoController extends Controller
         ]);
 
         return redirect()->route('forum.show', $mensaje->foro_id)->with('success', '¡Mensaje enviado!');
-        } else {
-            return back()->withErrors(['error' => $response->message()]);
-        }
     }
 
 }
