@@ -6,10 +6,10 @@
             {{ $message }}
         </div>
     @else
-        <div class="videojuegos-group">
-            <div class="videojuegos-grid">
+        <div class="videojuegos-group2">
+            <div class="videojuegos-grid2">
                 @foreach ($videojuegos as $videojuego)
-                    <div class="videojuego-card" wire:click="seleccionarVideojuego({{ $videojuego->id }})">
+                    <div class="videojuego-card2" wire:click="seleccionarVideojuego({{ $videojuego->id }})">
                         @php
                             $imagen = $videojuego->multimedia->isNotEmpty()
                                 ? asset($videojuego->multimedia->first()->url)

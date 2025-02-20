@@ -1690,13 +1690,13 @@ ul.actions.stacked li:first-child {
 ul.actions.fit {
     width: calc(100% + 1em);
 }
-.videojuegos-group {
+.videojuegos-group2 {
     display: flex;
     justify-content: center;
     margin-top: 10px;
 }
 
-.videojuegos-grid {
+.videojuegos-grid2 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 15px;
@@ -1704,7 +1704,7 @@ ul.actions.fit {
     width: 100%;
 }
 
-.videojuego-card {
+.videojuego-card2 {
     border-radius: 10px;
     padding: 10px;
     text-align: center;
@@ -1713,19 +1713,19 @@ ul.actions.fit {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.videojuego-card:hover {
+.videojuego-card2:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.videojuego-card img {
+.videojuego-card2 img {
     width: 100%;
     max-width: 120px;
     height: auto;
     border-radius: 8px;
 }
 
-.videojuego-card p {
+.videojuego-card2 p {
     margin-top: 8px;
     font-size: 14px;
     font-weight: bold;

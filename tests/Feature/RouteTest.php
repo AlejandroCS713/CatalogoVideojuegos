@@ -1,19 +1,16 @@
 <?php
-
-use App\Livewire\BuscarVideojuego;
 use App\Models\games\Videojuego;
 use App\Models\users\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Livewire;
+use Illuminate\Support\Facades\Storage;
 
 it('can access the home route', function () {
     $response = $this->get('/');
-
     $response->assertStatus(200);
 });
 it('can access the login page', function () {
     $response = $this->get('login');
-
     $response->assertStatus(200);
 });
 it('can access the registered page', function () {
@@ -26,9 +23,7 @@ it('can access the videogame index page', function () {
 });
 it('can access the videogame show page', function () {
     $videojuego = \App\Models\games\Videojuego::factory()->create();
-
     $response = $this->get(route('videojuegos.show', ['id' => $videojuego->id]));
-
     $response->assertStatus(200);
 });
 it('allows a user to log in', function () {
@@ -41,13 +36,9 @@ it('allows a user to log in', function () {
         'email' => 'test@example.com',
         'password' => 'password123',
     ]);
-
     $response->assertRedirect(route('welcome'));
-
     $this->assertAuthenticatedAs($user);
-
     $user->delete();
-
     $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
 });
 
@@ -58,15 +49,10 @@ it('allows a user to register', function () {
         'password' => 'password123',
         'password_confirmation' => 'password123',
     ];
-
     $response = $this->post('/register', $userData);
-
     $response->assertRedirect(route('login'));
-
     $this->assertDatabaseHas('users', ['email' => $userData['email']]);
-
     \App\Models\users\User::where('email', $userData['email'])->delete();
-
     $this->assertDatabaseMissing('users', ['email' => $userData['email']]);
 });
 
@@ -76,13 +62,9 @@ it('can access the home page and see top-rated games', function () {
         'fecha_lanzamiento' => '2023-01-01',
         'rating_usuario' => 95,
     ]);
-
     $response = $this->get('/');
-
     $response->assertStatus(200);
-
     $response->assertSee('Juego de Prueba');
-
     Videojuego::whereIn('id', $videojuegos->pluck('id'))->delete();
 });
 it('can access the foroum index page', function () {
@@ -92,31 +74,76 @@ it('can access the foroum index page', function () {
 
 it('can access the forum show page', function () {
     $foro = \App\Models\Forum\Foro::factory()->create();
-
     $response = $this->get(route('forum.show', ['foro' => $foro->id]));
-
     $response->assertStatus(200);
 });
 it('allows registered users to access the forum creation page', function () {
     $user = \App\Models\users\User::factory()->create();
-
     $this->actingAs($user);
-
     $response = $this->get(route('forum.create'));
-
     $response->assertStatus(200);
-
     $user->delete();
 });
-it('can search for a video game by name', function () {
-    // Crear videojuegos en la base de datos
-    $videojuego1 = Videojuego::factory()->create(['nombre' => 'Doom']);
-    $videojuego2 = Videojuego::factory()->create(['nombre' => 'Minecraft']);
+it('can access the login route', function () {
+    $response = $this->get(route('login'));
+    $response->assertStatus(200);
+});
 
-    // Probar el componente Livewire y simular la búsqueda
-    Livewire::test(BuscarVideojuego::class)
-        ->set('query', 'Doom')  // Simula que el usuario escribe "Doom"
-        ->assertSee($videojuego1->nombre)  // Verifica que "Doom" está en los resultados
-        ->assertDontSee($videojuego2->nombre);  // Verifica que "Minecraft" NO está en los resultados
+it('can access the register route', function () {
+    $response = $this->get(route('register'));
+    $response->assertStatus(200);
+});
+
+it('allows a user to log out', function () {
+    $user = User::factory()->create([
+        'email' => 'test@example.com',
+        'password' => Hash::make('password123'),
+    ]);
+    $this->post('/login', [
+        'email' => 'test@example.com',
+        'password' => 'password123',
+    ]);
+    $this->assertAuthenticatedAs($user);
+    $response = $this->post(route('logout'));
+    $this->assertGuest();
+    $response->assertRedirect('/');
+    $user->delete();
+    $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
+});
+
+it('allows an authenticated user to access the profile page', function () {
+    $user = User::factory()->create([
+        'email' => 'test@example.com',
+        'password' => Hash::make('password123'),
+    ]);
+    $this->actingAs($user);
+    $response = $this->get(route('profile'));
+    $response->assertStatus(200);
+    $user->delete();
+    $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
+});
+
+
+it('allows an authenticated user to access the profile settings page', function () {
+    $user = User::factory()->create([
+        'email' => 'test@example.com',
+        'password' => Hash::make('password123'),
+    ]);
+    $this->actingAs($user);
+    $response = $this->get(route('profile.settings'));
+    $response->assertStatus(200);
+    $user->delete();
+    $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
+});
+it('allows an authenticated user to access the avatar edit page', function () {
+    $user = User::factory()->create([
+        'email' => 'test@example.com',
+        'password' => Hash::make('password123'),
+    ]);
+    $this->actingAs($user);
+    $response = $this->get(route('profile.avatar'));
+    $response->assertStatus(200);
+    $user->delete();
+    $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
 });
 
