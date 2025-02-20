@@ -1,9 +1,12 @@
 @extends('layouts.app')
+@section('title', ' Crear Juego ')
+@section('body_class', 'is-preload videojuegos-bg')
+@include('layouts.menu')
 
 @section('content')
     <div class="container">
         <h1>Crear Nuevo Videojuego</h1>
-        <form action="{{ route('videojuegos.store') }}" method="POST">
+        <form action="{{ route('admin.store') }}" method="POST">
             @csrf
 
             <label>Nombre:</label>

@@ -1,7 +1,5 @@
 @extends('layouts.app')
 @section('title', 'GAME QUEST')
-<!-- Header -->
-<!-- Menu -->
 @section('body_class', 'is-preload videojuegos-bg')
 @include('layouts.menu')
 
@@ -10,11 +8,10 @@
 
     <div class="videojuegos-container">
     <h1 class="text-center mb-5 title-games">Available Video Games</h1>
-        @auth
-        @if(auth()->user()->can('crear juegos'))
+        @can('Crear Videojuegos')
             <a href="{{ route('admin.create') }}" class="button fit" style="width: 200px;">Crear Juego</a>
-        @endif
-        @endauth
+
+        @endcan
     <div class="videojuegos-grid">
         @foreach ($videojuegos as $videojuego)
             <div >

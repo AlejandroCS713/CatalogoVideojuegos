@@ -48,19 +48,17 @@
                     </li>
                 @endforeach
             </ul>
-            @auth
-            @if(auth()->user()->can('editar juegos'))
+            @can('Actualizar Videojuegos')
                 <a href="{{ route('admin.edit', $videojuego->id) }}" class="button fit" style="width: 200px; ">Editar</a>
-            @endif
+            @endcan
 
-            @if(auth()->user()->can('eliminar juegos'))
+            @can('Eliminar Videojuegos')
                 <form action="{{ route('admin.destroy', $videojuego->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="button fit" style="width: 200px;>Eliminar</button>
                 </form>
-            @endif
-            @endauth
+            @endcan
         </div>
     </div>
 @endsection

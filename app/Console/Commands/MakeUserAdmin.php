@@ -38,7 +38,7 @@ class MakeUserAdmin extends Command
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        $adminRole->givePermissionTo($permissions);
+        $adminRole->syncPermissions(Permission::whereIn('name', $permissions)->get());
 
         $user->assignRole('admin');
 

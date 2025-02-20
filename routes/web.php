@@ -13,6 +13,7 @@ use App\Http\Controllers\users\FriendController;
 use App\Http\Controllers\users\MessageController;
 use App\Http\Controllers\users\ProfileController;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Route;
 
 
@@ -51,21 +52,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/mensajes/{mensaje}/respuestas', [RespuestaForoController::class, 'store'])->name('respuestas.store');
     Route::get('/forum/create', [ForoController::class, 'create'])->name('forum.create');
     Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
+    });
 
-});
-Route::middleware(['auth', 'permission:crear juegos'])->group(function () {
-    Route::get('/admin/create', [VideojuegoController::class, 'create'])->name('admin.create');
-    Route::post('/admin', [VideojuegoController::class, 'store'])->name('admin.store');
-});
-
-Route::middleware(['auth', 'permission:editar juegos'])->group(function () {
-    Route::get('/admin/{id}/edit', [VideojuegoController::class, 'edit'])->name('admin.edit');
-    Route::put('/admin/{id}', [VideojuegoController::class, 'update'])->name('admin.update');
+Route::middleware(['auth'])->group(function () {
+    Route::post('/admin', [UserAdminController::class, 'store'])->name('admin.store');
+    Route::get('/admin/create', [UserAdminController::class, 'create'])->name('admin.create');
+    Route::get('/admin/{id}/edit', [UserAdminController::class, 'edit'])->name('admin.edit');
+    Route::put('/admin/{id}', [UserAdminController::class, 'update'])->name('admin.update');
+    Route::delete('/admin/{id}', [UserAdminController::class, 'destroy'])->name('admin.destroy');
 });
 
-Route::middleware(['auth', 'permission:eliminar juegos'])->group(function () {
-    Route::delete('/admin/{id}', [VideojuegoController::class, 'destroy'])->name('admin.destroy');
-});
+
 Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
 Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
 

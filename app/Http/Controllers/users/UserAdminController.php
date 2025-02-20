@@ -16,6 +16,7 @@ class UserAdminController extends Controller
 {
     public function create()
     {
+
         $plataformas = Plataforma::all();
         $generos = Genero::all();
         return view('admin.create', compact('plataformas', 'generos'));

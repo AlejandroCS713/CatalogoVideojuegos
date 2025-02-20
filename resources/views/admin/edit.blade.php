@@ -1,9 +1,11 @@
 @extends('layouts.app')
-
+@section('title', ' Actualizar juego ')
+@section('body_class', 'is-preload videojuegos-bg')
+@include('layouts.menu')
 @section('content')
     <div class="container">
         <h1>Editar Videojuego</h1>
-        <form action="{{ route('videojuegos.update', $videojuego->id) }}" method="POST">
+        <form action="{{ route('admin.update', $videojuego->id) }}" method="POST">
             @csrf
             @method('PUT')
 
