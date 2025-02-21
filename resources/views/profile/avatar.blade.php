@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Change Avatar')
+@section('title', 'Cambio de Avatar')
 @section('body_class', 'is-preload')
 @include('layouts.menu')
 @section('content')
     <div class="profile-container">
-        <h2>Choose your Avatar</h2>
+        <h2>Elige tu avatar</h2>
         <form action="{{ route('profile.avatar.update') }}" method="POST">
             @csrf
             @foreach ($avatars as $avatar)
@@ -13,7 +13,7 @@
                     <img src="{{ asset('forty/images/avatars/' . $avatar) }}" alt="Avatar">
                 </label>
             @endforeach
-            <button type="submit" class="btn-avatar">Save Avatar</button>
+            <button type="submit" class="btn-avatar">Guardar Avatar</button>
         </form>
     </div>
 @endsection

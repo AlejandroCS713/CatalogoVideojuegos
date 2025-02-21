@@ -16,18 +16,16 @@
 </header>
 <nav id="menu">
     <ul class="links">
-        <!-- Página de inicio -->
-        <li><a href="{{ route('welcome') }}">Home</a></li>
-        <!-- Nuevas opciones -->
-        <li><a href="{{ route('videojuegos.index') }}">Video games</a></li>
-        <li><a href="{{ route('forum.index') }}">Forum</a></li>
+        <li><a href="{{ route('welcome') }}">Inicio</a></li>
+        <li><a href="{{ route('videojuegos.index') }}">Video juegos</a></li>
+        <li><a href="{{ route('forum.index') }}">Foro</a></li>
     </ul>
     <ul class="actions stacked">
 
         @guest
             <!-- Si el usuario no ha iniciado sesión-->
-            <li><a href="{{ route('login') }}" class="button primary fit">Login</a></li>
-            <li><a href="{{ route('register') }}" class="button fit">Create user</a></li>
+            <li><a href="{{ route('login') }}" class="button primary fit">Logear</a></li>
+            <li><a href="{{ route('register') }}" class="button fit">Crear Usuario</a></li>
         @else
             <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" onclick="markNotificationsAsRead()">
@@ -36,17 +34,17 @@
             <div class="dropdown-menu" id="notification-list">
                 @foreach(Auth::user()->unreadNotifications as $notification)
                     <a class="dropdown-item2" href="{{ route('message.chat', $notification->data['sender_id']) }}">
-                            New Message --> {{ \App\Models\users\User::find($notification->data['sender_id'])->name }}
+                            Nuevo Mensaje --> {{ \App\Models\users\User::find($notification->data['sender_id'])->name }}
                     </a>
                 @endforeach
             </div>
         </li>
         <!-- Si el usuario ha iniciado sesión -->
-            <li><a href="{{ route('profile') }}" class="button primary fit">My profile</a></li>
+            <li><a href="{{ route('profile') }}" class="button primary fit">Mi perfil</a></li>
             <li>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit">Logout</button>
+                    <button type="submit">Desconectar</button>
                 </form>
             </li>
         @endguest

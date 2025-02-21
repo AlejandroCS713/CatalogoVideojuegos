@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', 'User Registration')
+@section('title', 'Registro De Usuario')
 @include('layouts.menu')
 @section('content')
     <div class="form-container2">
         <form class="form" action="{{ route('register') }}" method="POST" autocomplete="off">
             @csrf
             <div class="control">
-                <h1>Sign In</h1>
+                <h1>Registro De Usuario</h1>
             </div>
 
             <div class="control block-cube block-input">
@@ -17,21 +17,21 @@
             </div>
 
             <div class="control block-cube block-input">
-                <input type="text" name="name" placeholder="Name" required>
+                <input type="text" name="name" placeholder="Nombre" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
             </div>
 
             <div class="control block-cube block-input">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
             </div>
 
             <div class="control block-cube block-input">
-                <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                <input type="password" name="password_confirmation" placeholder="Confirma la contraseña" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
@@ -41,7 +41,7 @@
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
-                <span class="text">Register</span>
+                <span class="text">Registrar</span>
             </button>
             <br>
             @if ($errors->any())
@@ -56,7 +56,7 @@
 
         </form>
         <div class="register-option">
-            <p>Already have an account? <a href="{{ route('login') }}">Log in here</a></p>
+            <p>Ya tienes una cuenta? <a href="{{ route('login') }}">Inicia Sesión aqui</a></p>
         </div>
     </div>
 

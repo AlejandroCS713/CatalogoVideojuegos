@@ -8,22 +8,22 @@
         <div class="inner">
             @guest
                 <header class="major">
-                    <h1>¡Hello, player!</h1>
+                    <h1>¡Hola jugador!</h1>
                 </header>
                 <div class="content">
-                    <p>¡Find your next adventure today!</p>
+                    <p>¡Encuentra tu próxima aventura hoy!</p>
                     <ul class="actions">
-                        <li><a href="{{ route('register') }}" class="button next">Start your adventure</a></li>
+                        <li><a href="{{ route('register') }}" class="button next">Comienza tu aventura</a></li>
                     </ul>
                 </div>
             @else
                 <header class="major">
-                    <h1>¡Hello, {{ Auth::user()->name }}!</h1>
+                    <h1>¡Hola, {{ Auth::user()->name }}!</h1>
                 </header>
                 <div class="content">
-                    <p>¡I'm glad to see you back here, you have to check out the new games!</p>
+                    <p>¡Me alegra verte de nuevo por aquí, tienes que ver los nuevos juegos!</p>
                     <ul class="actions">
-                        <li><a href="{{ route('videojuegos.index') }}" class="button next">See games</a></li>
+                        <li><a href="{{ route('videojuegos.index') }}" class="button next">Ver juegos</a></li>
                     </ul>
                 </div>
             @endguest
@@ -42,7 +42,7 @@
                 <header class="major" style="position: relative; z-index: 2;">
                     <h3>{{ $videojuego->nombre }}</h3>
                     <p>{{ Str::limit($videojuego->descripcion, 70) }}</p>
-                    <p>Rating de users: {{ number_format($videojuego->rating_usuario, 1) }}</p>
+                    <p>Gustos de los usuarios: {{ number_format($videojuego->rating_usuario, 1) }}</p>
                 </header>
             </article>
         @endforeach
@@ -50,12 +50,12 @@
         <section id="two">
             <div class="inner">
                 <header class="major">
-                    <h2>Comment on the forum and talk with other users!</h2>
+                    <h2>Comenta en el foro y habla con otros usuarios.!</h2>
                 </header>
-                <p>Welcome back! You're ready to explore even more - keep saving your favorite games, participate in forum discussions, and connect with other players. You're part of an amazing community, and the adventure just keeps getting better
+                <p>¡Bienvenido de nuevo! Estás listo para explorar aún más: sigue guardando tus juegos favoritos, participa en las discusiones del foro y conéctate con otros jugadores. Eres parte de una comunidad increíble y la aventura sigue mejorando
                 </p>
                 <ul class="actions">
-                    <li><a href="{{ route('forum.index') }}" class="button next">Go to the forum</a></li>
+                    <li><a href="{{ route('forum.index') }}" class="button next">Ir al foro</a></li>
                 </ul>
             </div>
         </section>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Forum')
+@section('title', 'Foro')
 @section('body_class', 'is-preload')
 @include('layouts.menu')
 
@@ -77,7 +77,7 @@
                 </form>
             </div>
             @can('update', $foro)
-                <a href="{{ route('forum.edit', $foro) }}" class="button fit" style="width: 200px; margin-top: 20px; margin-bottom: 20px ">Editar</a>
+                <a href="{{ route('forum.edit', $foro) }}" class="button fit" style="width: 250px; margin-top: 20px; margin-bottom: 20px ">Editar</a>
             @endcan
             @can('delete', $foro)
                 <form action="{{ route('forum.destroy', $foro) }}" method="POST">
@@ -86,7 +86,7 @@
                     <button type="submit" style="width: 200px;">Eliminar</button>
                 </form>
             @endcan
-            <a href="{{ route('forum.pdf', $foro) }}" class="button fit" style="width: 200px; margin-top: 20px; margin-bottom: 20px ">
+            <a href="{{ route('forum.pdf', $foro) }}" class="button fit" style="width: 250px; margin-top: 20px; margin-bottom: 20px ">
                 Descargar PDF
             </a>
         @endauth

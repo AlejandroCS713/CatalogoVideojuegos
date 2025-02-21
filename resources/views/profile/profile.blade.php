@@ -12,11 +12,11 @@
                 </a>
             </div>
             <h1>{{ Auth::user()->name }}</h1>
-            <button onclick="window.location='{{ route('profile.settings') }}'">⚙️ Settings</button>
+            <button onclick="window.location='{{ route('profile.settings') }}'">⚙️ Configuración</button>
         </div>
         <div class="profile-sections">
             <div class="profile-section">
-                <h2>👥 Friends</h2>
+                <h2>👥 Amigos</h2>
                 <ul class="friends-list">
                     @foreach ($friends as $friend)
                         @php
@@ -35,7 +35,7 @@
                                     </form>
                                     <form method="POST" action="{{ route('friends.remove', $friendUser->id) }}">
                                         @csrf
-                                        <button type="submit" class="dropdown-item">Delete Friend</button>
+                                        <button type="submit" class="dropdown-item">Eliminar Amigo</button>
                                     </form>
                                 </div>
                             </div>
@@ -47,13 +47,13 @@
             @livewire('search-users')
 
             <div class="profile-section">
-                <h2>📩 Friend Requests</h2>
+                <h2>📩 Solicitudes de amistad</h2>
                 <ul>
                     @foreach (Auth::user()->friendRequests as $request)
                         <li>{{ $request->user->name }}
                             <form method="POST" action="{{ route('friends.accept', $request->user->id) }}">
                                 @csrf
-                                <button type="submit">Accept</button>
+                                <button type="submit">Aceptar</button>
                             </form>
                         </li>
                     @endforeach

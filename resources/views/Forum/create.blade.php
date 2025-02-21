@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Create Forum')
+@section('title', 'Crear Foro')
 @include('layouts.menu')
 
 @section('content')

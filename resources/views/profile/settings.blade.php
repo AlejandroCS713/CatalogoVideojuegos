@@ -5,6 +5,6 @@
 @include('layouts.menu')
 @section('content')
     <div class="container">
-        <h1>Profile Settings</h1>
+        <h1>Configuración de usuario</h1>
     </div>
 @endsection

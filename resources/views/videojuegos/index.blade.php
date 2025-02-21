@@ -7,7 +7,7 @@
     @section('content')
 
     <div class="videojuegos-container">
-    <h1 class="text-center mb-5 title-games">Available Video Games</h1>
+    <h1 class="text-center mb-5 title-games">Videojuegos Disponibles</h1>
         <form method="GET" action="{{ route('videojuegos.index') }}" class="mb-4">
             <label for="sort">Ordenar por: </label>
             <select name="sort" id="sort" style="color: black;" onchange="this.form.submit()">
