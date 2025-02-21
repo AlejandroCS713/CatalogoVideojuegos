@@ -20,6 +20,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'user40@example.com',
             'password' => bcrypt('password'),
             'email_verified_at' => Carbon::now(),
+            'avatar' => 'avatarAngel.png',
         ]);
 
         User::create([
@@ -27,6 +28,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'User 50',
             'email' => 'user50@example.com',
             'password' => bcrypt('password'),
+            'avatar' => 'avatarAngel.png',
         ]);
     }
 }

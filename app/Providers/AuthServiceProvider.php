@@ -20,11 +20,6 @@ class AuthServiceProvider extends ServiceProvider
         Foro::class => ForoPolicy::class,
     ];
 
-    /**
-     * Registra los servicios de autenticación.
-     *
-     * @return void
-     */
     public function boot()
     {
         $this->registerPolicies();

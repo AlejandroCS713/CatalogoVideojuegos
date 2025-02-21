@@ -51,7 +51,7 @@ class ForoController extends Controller
 
     public function edit(Foro $foro)
     {
-        //Gate::authorize('update', $foro);
+        Gate::authorize('update', $foro);
         return view('forum.edit', compact('foro'));
     }
     public function update(ForoRequest $request, Foro $foro)
