@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\users\UserAdminController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Livewire\Livewire;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\RegisterController;
@@ -20,29 +22,42 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+})->middleware('verified');
+
 Route::post('/videojuegos', [VideojuegoController::class, 'store']);
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::post('/videojuegos/{videojuego}/multimedia', [MultimediaController::class, 'store'])->name('multimedia.store');
 
-// Rutas a vistas
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
 Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
 
 
-// Procesar formularios de autenticación
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profile/settings', [ProfileController::class, 'settings'])->name('profile.settings');
     Route::get('/profile/avatar', [ProfileController::class, 'editAvatar'])->name('profile.avatar');
@@ -59,7 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
     });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
     Route::post('/admin', [UserAdminController::class, 'store'])->name('admin.store');
     Route::get('/admin/create', [UserAdminController::class, 'create'])->name('admin.create');
     Route::get('/admin/{id}/edit', [UserAdminController::class, 'edit'])->name('admin.edit');
@@ -67,7 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/{id}', [UserAdminController::class, 'destroy'])->name('admin.destroy');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
     Route::get('/forum/{foro}/edit', [ForoController::class, 'edit'])->name('forum.edit');
     Route::put('/forum/{foro}', [ForoController::class, 'update'])->name('forum.update');
     Route::delete('/forum/{foro}', [ForoController::class, 'destroy'])->name('forum.destroy');
