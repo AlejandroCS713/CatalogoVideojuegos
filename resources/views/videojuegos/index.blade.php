@@ -8,6 +8,15 @@
 
     <div class="videojuegos-container">
     <h1 class="text-center mb-5 title-games">Available Video Games</h1>
+        <form method="GET" action="{{ route('videojuegos.index') }}" class="mb-4">
+            <label for="sort">Ordenar por: </label>
+            <select name="sort" id="sort" style="color: black;" onchange="this.form.submit()">
+                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Más reciente</option>
+                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Más antigua</option>
+                <option value="alphabetical" {{ request('sort') == 'alphabetical' ? 'selected' : '' }}>De la A a la Z</option>
+                <option value="reverse_alphabetical" {{ request('sort') == 'reverse_alphabetical' ? 'selected' : '' }}>De la Z a la A</option>
+            </select>
+        </form>
         @can('Crear Videojuegos')
             <a href="{{ route('admin.create') }}" class="button fit" style="width: 200px;">Crear Juego</a>
 

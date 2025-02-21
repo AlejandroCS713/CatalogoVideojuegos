@@ -24,9 +24,22 @@ class VideojuegoController extends Controller
         return view('welcome', compact('videojuegos'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $videojuegos = Videojuego::with('multimedia')->paginate(30);
+        $sort = $request->input('sort', 'newest');
+
+        $sortMap = [
+            'oldest' => 'oldest',
+            'alphabetical' => 'alphabetically',
+            'reverse_alphabetical' => 'reverseAlphabetically',
+            'newest' => 'newest',
+        ];
+
+        $scope = $sortMap[$sort] ?? 'newest';
+
+        $videojuegos = Videojuego::with('multimedia')->{$scope}();
+
+        $videojuegos = $videojuegos->paginate(30);
 
         return view('videojuegos.index', compact('videojuegos'));
     }

@@ -18,6 +18,26 @@ class Videojuego extends Model
         'desarrollador',
         'publicador',
     ];
+
+    public function scopeNewest($query)
+    {
+        return $query->orderBy('fecha_lanzamiento', 'desc');
+    }
+
+    public function scopeOldest($query)
+    {
+        return $query->orderBy('fecha_lanzamiento', 'asc');
+    }
+
+    public function scopeAlphabetically($query)
+    {
+        return $query->orderBy('nombre', 'asc');
+    }
+
+    public function scopeReverseAlphabetically($query)
+    {
+        return $query->orderBy('nombre', 'desc');
+    }
     public function multimedia()
     {
         return $this->hasMany(Multimedia::class, 'videojuego_id');
