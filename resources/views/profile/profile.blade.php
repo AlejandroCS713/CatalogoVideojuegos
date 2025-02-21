@@ -12,12 +12,9 @@
                 </a>
             </div>
             <h1>{{ Auth::user()->name }}</h1>
-            <button class="settings-button" onclick="window.location='{{ route('profile.settings') }}'">⚙️ Settings</button>
+            <button onclick="window.location='{{ route('profile.settings') }}'">⚙️ Settings</button>
         </div>
         <div class="profile-sections">
-            <div class="profile-section">
-                <h2>🎮 Favorite Games</h2>
-            </div>
             <div class="profile-section">
                 <h2>👥 Friends</h2>
                 <ul class="friends-list">

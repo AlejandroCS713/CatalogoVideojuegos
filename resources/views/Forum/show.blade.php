@@ -17,6 +17,12 @@
                 @forelse($foro->videojuegos as $videojuego)
                     <li>
                         <strong>{{ $videojuego->nombre }}</strong>
+                        <br>
+                        @if ($videojuego->multimedia->isNotEmpty())
+                            <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img style="width:200px;position: relative; z-index: 2; padding-right: 20px; padding-bottom: 40px" class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/></a>
+                        @else
+                            <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"> {{ $videojuego->nombre }}</a>
+                        @endif
                     </li>
                 @empty
                     <li>No hay videojuegos relacionados con este foro.</li>
