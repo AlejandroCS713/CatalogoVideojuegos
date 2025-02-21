@@ -10,7 +10,6 @@
             <form action="{{ route('admin.update', $videojuego->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-
                 <div class="form-group">
                     <label class="form-label">Nombre:</label>
                     <input type="text" name="nombre" class="form-input" value="{{ $videojuego->nombre }}" required>

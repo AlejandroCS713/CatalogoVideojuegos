@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Forum\Foro;
 use App\Models\users\User;
+use App\Policies\ForoPolicy;
 use App\Policies\ForumPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -16,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        Foro::class => ForoPolicy::class,
     ];
 
     /**
@@ -26,7 +28,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        Gate::define('writeMessage', [ForumPolicy::class, 'writeMessage']);
     }
 }

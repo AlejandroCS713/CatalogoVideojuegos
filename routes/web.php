@@ -17,6 +17,10 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Route;
 
 
+
+
+
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -36,6 +40,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
@@ -62,6 +67,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/{id}', [UserAdminController::class, 'destroy'])->name('admin.destroy');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/forum/{foro}/edit', [ForoController::class, 'edit'])->name('forum.edit');
+    Route::put('/forum/{foro}', [ForoController::class, 'update'])->name('forum.update');
+    Route::delete('/forum/{foro}', [ForoController::class, 'destroy'])->name('forum.destroy');
+});
 
 Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
 Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');

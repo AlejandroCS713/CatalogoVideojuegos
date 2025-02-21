@@ -59,7 +59,6 @@
         </div>
 
         @auth
-            <!-- Formulario para crear un nuevo mensaje en el foro -->
             <div>
                 <h3>Nuevo Mensaje:</h3>
                 <form action="{{ route('mensajes.store', $foro->id) }}" method="POST">
@@ -71,6 +70,16 @@
                     <button type="submit">Enviar Mensaje</button>
                 </form>
             </div>
+            @can('update', $foro)
+                <a href="{{ route('forum.edit', $foro) }}" class="button fit" style="width: 200px; margin-top: 20px; margin-bottom: 20px ">Editar</a>
+            @endcan
+            @can('delete', $foro)
+                <form action="{{ route('forum.destroy', $foro) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" style="width: 200px;">Eliminar</button>
+                </form>
+            @endcan
         @endauth
     </div>
 @endsection

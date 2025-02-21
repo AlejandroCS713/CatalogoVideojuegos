@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Forum\ForoRequest;
 use App\Models\Forum\Foro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class ForoController extends Controller
@@ -48,9 +49,14 @@ class ForoController extends Controller
         //dd($request->all());
     }
 
+    public function edit(Foro $foro)
+    {
+        //Gate::authorize('update', $foro);
+        return view('forum.edit', compact('foro'));
+    }
     public function update(ForoRequest $request, Foro $foro)
     {
-        $this->authorize('update', $foro);
+        Gate::authorize('update', $foro);
 
         $foro->update([
             'titulo' => $request->titulo,
@@ -62,15 +68,14 @@ class ForoController extends Controller
             $foro->videojuegos()->sync($request->videojuegos);
         }
 
-        return response()->json(['message' => 'Foro actualizado', 'foro' => $foro]);
+        return redirect()->route('forum.index')->with('success', 'Foro actualizado');
     }
-
     public function destroy(Foro $foro)
     {
-        $this->authorize('delete', $foro);
+        Gate::authorize('delete', $foro);
 
         $foro->delete();
 
-        return response()->json(['message' => 'Foro eliminado con éxito']);
+        return redirect()->route('forum.index')->with('success', '¡Foro eliminado exitosamente!');
     }
 }
