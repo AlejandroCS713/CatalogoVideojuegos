@@ -5,9 +5,11 @@ namespace App\Http\Controllers\forum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Forum\ForoRequest;
 use App\Models\Forum\Foro;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ForoController extends Controller
 {
@@ -77,5 +79,16 @@ class ForoController extends Controller
         $foro->delete();
 
         return redirect()->route('forum.index')->with('success', '¡Foro eliminado exitosamente!');
+    }
+
+
+    public function generarPDF(Foro $foro)
+    {
+        $nombreUsuario = Str::slug($foro->usuario->name);
+        $nombreArchivo = "Foro-{$nombreUsuario}.pdf";
+
+        $pdf = Pdf::loadView('forum.pdf', compact('foro'));
+
+        return $pdf->download($nombreArchivo);
     }
 }

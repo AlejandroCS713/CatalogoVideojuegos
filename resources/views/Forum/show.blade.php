@@ -86,6 +86,9 @@
                     <button type="submit" style="width: 200px;">Eliminar</button>
                 </form>
             @endcan
+            <a href="{{ route('forum.pdf', $foro) }}" class="button fit" style="width: 200px; margin-top: 20px; margin-bottom: 20px ">
+                Descargar PDF
+            </a>
         @endauth
     </div>
 @endsection

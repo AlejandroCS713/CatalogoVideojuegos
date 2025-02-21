@@ -83,6 +83,7 @@ Route::middleware(['auth','verified'])->group(function () {
 });
 
 Route::middleware(['auth','verified'])->group(function () {
+    Route::get('/forum/{foro}/pdf', [ForoController::class, 'generarPDF'])->name('forum.pdf');
     Route::get('/forum/{foro}/edit', [ForoController::class, 'edit'])->name('forum.edit');
     Route::put('/forum/{foro}', [ForoController::class, 'update'])->name('forum.update');
     Route::delete('/forum/{foro}', [ForoController::class, 'destroy'])->name('forum.destroy');
