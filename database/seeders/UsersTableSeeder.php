@@ -1,0 +1,32 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\users\User;
+use Carbon\Carbon;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        User::create([
+            'id' => 40,
+            'name' => 'User 40',
+            'email' => 'user40@example.com',
+            'password' => bcrypt('password'),
+            'email_verified_at' => Carbon::now(),
+        ]);
+
+        User::create([
+            'id' => 50,
+            'name' => 'User 50',
+            'email' => 'user50@example.com',
+            'password' => bcrypt('password'),
+        ]);
+    }
+}
