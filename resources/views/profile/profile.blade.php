@@ -46,10 +46,9 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="search-users">
-                <input type="text" id="search" placeholder="Search for users..." class="search-user-cs">
-                <ul id="search-results"></ul>
-            </div>
+            <h1 class="text-center mb-5">Buscar Usuarios</h1>
+            @livewire('search-users')
+
             <div class="profile-section">
                 <h2>📩 Friend Requests</h2>
                 <ul>

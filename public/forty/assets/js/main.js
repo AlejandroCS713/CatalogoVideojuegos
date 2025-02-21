@@ -9,63 +9,12 @@ window.addEventListener('load', function() {
         document.getElementById('videojuego_id').value = videojuegoId;
     });
 });
-<!-- Script para manejar la búsqueda -->
-document.addEventListener('DOMContentLoaded', function () {
-    // Obtener las rutas de los metadatos en Blade
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const searchUrl = document.querySelector('meta[name="friends-search-url"]').getAttribute('content');
-    const sendFriendUrl = document.querySelector('meta[name="friends-send-url"]').getAttribute('content');
 
-    // Buscar amigos
-    const searchInput = document.getElementById('search');
-    if (searchInput) {
-        searchInput.addEventListener('input', function () {
-            let query = this.value;
-            if (query.length < 3) return;
 
-            fetch(`${searchUrl}?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    let resultsList = document.getElementById('search-results');
-                    resultsList.innerHTML = '';
-                    data.forEach(user => {
-                        let li = document.createElement('li');
-                        li.innerHTML = `${user.name} <button onclick="sendFriendRequest(${user.id})">Agregar</button>`;
-                        resultsList.appendChild(li);
-                    });
-                });
-        });
-    }
-
-    // Enviar solicitud de amistad
-    window.sendFriendRequest = function (userId) {
-        fetch(`${sendFriendUrl}/${userId}`, {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": csrfToken,
-                "Content-Type": "application/json"
-            },
-        }).then(() => alert("Solicitud enviada"));
-    };
-
-    // Menú desplegable para opciones de amigos
-    document.querySelectorAll('.friend-menu-btn').forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.stopPropagation();
-            let menu = this.nextElementSibling;
-            document.querySelectorAll('.friend-options').forEach(m => {
-                if (m !== menu) m.classList.remove('show');
-            });
-            menu.classList.toggle('show');
-        });
+window.addEventListener('load', function () {
+    Livewire.on('userAdded', userId => {
+        document.getElementById('someElement').innerHTML = 'Nuevo usuario agregado';
     });
-
-    // Cerrar menú al hacer clic fuera
-    document.addEventListener('click', function () {
-        document.querySelectorAll('.friend-options').forEach(menu => menu.classList.remove('show'));
-    });
-
-    console.log("Main JS cargado correctamente");
 });
 (function($) {
 
