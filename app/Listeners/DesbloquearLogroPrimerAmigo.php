@@ -7,6 +7,7 @@ use App\Jobs\NotificarLogroDesbloqueado;
 use App\Models\users\Logro;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
 class DesbloquearLogroPrimerAmigo implements ShouldQueue
 {
@@ -14,12 +15,23 @@ class DesbloquearLogroPrimerAmigo implements ShouldQueue
     {
         $user = $event->user;
 
-        // Verifica si ya tiene el logro
         if (!$user->logros()->where('nombre', 'Primer Amigo')->exists()) {
-            // Asigna el logro
-            $logro = Logro::firstOrCreate(['nombre' => 'Primer Amigo', 'descripcion' => 'Has agregado tu primer amigo']);
+            $logro = Logro::firstOrCreate([
+                'nombre' => 'Primer Amigo',
+                'descripcion' => 'Has agregado tu primer amigo'
+            ]);
             $user->logros()->attach($logro->id);
             NotificarLogroDesbloqueado::dispatch($user, $logro);
+        }
+
+        $friend = $event->friend;
+        if (!$friend->logros()->where('nombre', 'Primer Amigo')->exists()) {
+            $logro = Logro::firstOrCreate([
+                'nombre' => 'Primer Amigo',
+                'descripcion' => 'Has agregado tu primer amigo'
+            ]);
+            $friend->logros()->attach($logro->id);
+            NotificarLogroDesbloqueado::dispatch($friend, $logro);
         }
     }
 }

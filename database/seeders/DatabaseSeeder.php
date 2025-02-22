@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             GamesTableSeeder::class,
             UsersTableSeeder::class,
             ForumTableSeeder::class,
+            LogrosSeeder::class,
         ]);
     }
 }

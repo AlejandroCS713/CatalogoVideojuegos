@@ -31,13 +31,25 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" onclick="markNotificationsAsRead()">
                 🔔 Notificaciones <span id="notif-count" class="badge badge-danger">{{ Auth::user()->unreadNotifications->count() }}</span>
             </a>
-            <div class="dropdown-menu" id="notification-list">
-                @foreach(Auth::user()->unreadNotifications as $notification)
-                    <a class="dropdown-item2" href="{{ route('message.chat', $notification->data['sender_id']) }}">
-                            Nuevo Mensaje --> {{ \App\Models\users\User::find($notification->data['sender_id'])->name }}
-                    </a>
-                @endforeach
-            </div>
+                <div class="dropdown-menu" id="notification-list">
+                    @foreach(Auth::user()->unreadNotifications as $notification)
+                        @if(isset($notification->data['sender_id']))
+                            <a class="dropdown-item2" href="{{ route('message.chat', $notification->data['sender_id']) }}">
+                                Nuevo Mensaje --> {{ \App\Models\users\User::find($notification->data['sender_id'])->name }}
+                            </a>
+                        @elseif(isset($notification->data['logro_nombre']))
+                            <!-- Esto es para mostrar una notificación de logro -->
+                            <a class="dropdown-item2" href="{{ route('logros.perfil') }}">
+                                ¡Has desbloqueado el logro: {{ $notification->data['logro_nombre'] }}!
+                            </a>
+                        @else
+                            <!-- Aquí podrías manejar otros tipos de notificaciones -->
+                            <a class="dropdown-item2" href="#">
+                                Notificación desconocida
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
         </li>
         <!-- Si el usuario ha iniciado sesión -->
             <li><a href="{{ route('profile') }}" class="button primary fit">Mi perfil</a></li>

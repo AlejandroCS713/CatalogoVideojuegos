@@ -10,6 +10,7 @@ use App\Models\users\User;
 use App\Models\users\Friend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class FriendController extends Controller {
     public function sendRequest($id)
@@ -43,9 +44,7 @@ class FriendController extends Controller {
 
         if ($friendship) {
             $friendship->update(['status' => 'accepted']);
-            if (Auth::user()->friends()->where('status', 'accepted')->count() == 1) {
-                event(new AmigoAgregado(Auth::user()));
-            }
+            event(new AmigoAgregado(Auth::user(), $friendship->user));
         }
 
         return redirect()->back();

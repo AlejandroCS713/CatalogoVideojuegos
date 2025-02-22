@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\users\LogroController;
 use App\Http\Controllers\users\UserAdminController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -59,6 +60,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profile/logros', [LogroController::class, 'index'])->name('logros.perfil');
     Route::get('/profile/settings', [ProfileController::class, 'settings'])->name('profile.settings');
     Route::get('/profile/avatar', [ProfileController::class, 'editAvatar'])->name('profile.avatar');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');

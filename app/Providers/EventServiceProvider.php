@@ -11,11 +11,11 @@ use Illuminate\Support\ServiceProvider;
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        LogroDesbloqueado::class => [
-            AsignarLogro::class,
-        ],
         AmigoAgregado::class => [
             DesbloquearLogroPrimerAmigo::class,
+        ],
+        LogroDesbloqueado::class => [
+            AsignarLogro::class,
         ],
     ];
 
