@@ -1,37 +1,37 @@
 @extends('layouts.app')
-@section('title', 'Registro De Usuario')
+@section('title', __('Register'))
 @include('layouts.menu')
 @section('content')
     <div class="form-container2">
         <form class="form" action="{{ route('register') }}" method="POST" autocomplete="off">
             @csrf
             <div class="control">
-                <h1>Registro De Usuario</h1>
+                <h1>{{ __('Register') }}</h1>
             </div>
 
             <div class="control block-cube block-input">
-                <input type="text" name="email" placeholder="Email" required>
+                <input type="text" name="email" placeholder="{{ __('Email') }}" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
             </div>
 
             <div class="control block-cube block-input">
-                <input type="text" name="name" placeholder="Nombre" required>
+                <input type="text" name="name" placeholder="{{ __('Name') }}" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
             </div>
 
             <div class="control block-cube block-input">
-                <input type="password" name="password" placeholder="Contraseña" required>
+                <input type="password" name="password" placeholder="{{ __('Password') }}" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
             </div>
 
             <div class="control block-cube block-input">
-                <input type="password" name="password_confirmation" placeholder="Confirma la contraseña" required>
+                <input type="password" name="password_confirmation" placeholder="{{ __('Confirm Password') }}" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
@@ -56,7 +56,7 @@
 
         </form>
         <div class="register-option">
-            <p>Ya tienes una cuenta? <a href="{{ route('login') }}">Inicia Sesión aqui</a></p>
+            <p>{{ __('Have Account') }} <a href="{{ route('login') }}">{{ __('Login Here') }}</a></p>
         </div>
     </div>
 

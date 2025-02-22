@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Logear')
+@section('title', __('Login'))
 @include('layouts.menu')
 @section('content')
     <div class="form-container2">
@@ -10,18 +10,18 @@
         <form class="form" action="{{ route('login') }}" method="POST" autocomplete="off">
             @csrf
             <div class="control">
-                <h1>Iniciar Sesión</h1>
+                <h1>{{ __('Login') }}</h1>
             </div>
 
             <div class="control block-cube block-input">
-                <input type="text" name="email" placeholder="Email" required>
+                <input type="text" name="email" placeholder="{{ __('Email') }}" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
             </div>
 
             <div class="control block-cube block-input">
-                <input type="password" name="password" placeholder="Contraseña" required>
+                <input type="password" name="password" placeholder="{{ __('Password') }}" required>
                 <div class="bg-top"><div class="bg-inner"></div></div>
                 <div class="bg-right"><div class="bg-inner"></div></div>
                 <div class="bg"><div class="bg-inner"></div></div>
@@ -46,7 +46,7 @@
         </form>
 
         <div class="register-option">
-            <p>¿No tienes cuenta aun? <a href="{{ route('register') }}">Registrate Aqui</a></p>
+            <p>{{ __('No Account') }}<a href="{{ route('register') }}">{{ __('Register Here') }}</a></p>
         </div>
     </div>
 

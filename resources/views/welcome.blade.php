@@ -8,22 +8,22 @@
         <div class="inner">
             @guest
                 <header class="major">
-                    <h1>¡Hola jugador!</h1>
+                    <h1>{{ __('Hello, player!') }}</h1>
                 </header>
                 <div class="content">
-                    <p>¡Encuentra tu próxima aventura hoy!</p>
+                    <p>{{ __('Find your next adventure today!') }}</p>
                     <ul class="actions">
-                        <li><a href="{{ route('register') }}" class="button next">Comienza tu aventura</a></li>
+                        <li><a href="{{ route('register') }}" class="button next">{{ __('Start your adventure') }}</a></li>
                     </ul>
                 </div>
             @else
                 <header class="major">
-                    <h1>¡Hola, {{ Auth::user()->name }}!</h1>
+                    <h1>{{ __('Hello, ') }}{{ Auth::user()->name }}!</h1>
                 </header>
                 <div class="content">
-                    <p>¡Me alegra verte de nuevo por aquí, tienes que ver los nuevos juegos!</p>
+                    <p>{{ __('Glad to see you again, you have to check out the new games!') }}</p>
                     <ul class="actions">
-                        <li><a href="{{ route('videojuegos.index') }}" class="button next">Ver juegos</a></li>
+                        <li><a href="{{ route('videojuegos.index') }}" class="button next">{{ __('View games') }}</a></li>
                     </ul>
                 </div>
             @endguest
@@ -34,7 +34,7 @@
             <article>
                 <span>
                 @if ($videojuego->multimedia->isNotEmpty())
-                        <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img style="width:200px;position: relative; z-index: 2; padding-right: 20px; padding-bottom: 40px" class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/></a>
+                        <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img style="width:200px;position: relative; z-index: 2; padding-right: 20px; padding-bottom: 40px" class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="{{ __('Image of ') }}{{ $videojuego->nombre }}"/></a>
                     @else
                         <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"> {{ $videojuego->nombre }}</a>
                     @endif
@@ -42,7 +42,7 @@
                 <header class="major" style="position: relative; z-index: 2;">
                     <h3>{{ $videojuego->nombre }}</h3>
                     <p>{{ Str::limit($videojuego->descripcion, 70) }}</p>
-                    <p>Gustos de los usuarios: {{ number_format($videojuego->rating_usuario, 1) }}</p>
+                    <p>{{ __('User Likes: ') }}{{ number_format($videojuego->rating_usuario, 1) }}</p>
                 </header>
             </article>
         @endforeach
@@ -50,12 +50,12 @@
         <section id="two">
             <div class="inner">
                 <header class="major">
-                    <h2>Comenta en el foro y habla con otros usuarios.!</h2>
+                    <h2>{{ __('Comment on the forum and chat with other users!') }}</h2>
                 </header>
-                <p>¡Bienvenido de nuevo! Estás listo para explorar aún más: sigue guardando tus juegos favoritos, participa en las discusiones del foro y conéctate con otros jugadores. Eres parte de una comunidad increíble y la aventura sigue mejorando
+                <p>{{ __('Welcome back! Are you ready to explore even more: keep saving your favorite games, participate in forum discussions, and connect with other players. You are part of an amazing community and the adventure keeps getting better!') }}
                 </p>
                 <ul class="actions">
-                    <li><a href="{{ route('forum.index') }}" class="button next">Ir al foro</a></li>
+                    <li><a href="{{ route('forum.index') }}" class="button next">{{ __('Go to forum') }}</a></li>
                 </ul>
             </div>
         </section>

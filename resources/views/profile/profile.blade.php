@@ -1,6 +1,6 @@
 @php use Illuminate\Support\Facades\Auth; @endphp
 @extends('layouts.app')
-@section('title', 'User Profile')
+@section('title', __('User Profile'))
 @section('body_class', 'is-preload')
 @include('layouts.menu')
 
@@ -8,35 +8,35 @@
     <div class="profile-container">
         <div class="profile-header">
             <div class="avatar">
-                <a style="background: none; border: none;cursor: pointer;" href="{{ route('profile.avatar') }}" ><img src="{{ asset('forty/images/avatars/' . Auth::user()->avatar) }}" alt="Avatar de {{ Auth::user()->name }}">
+                <a style="background: none; border: none;cursor: pointer;" href="{{ route('profile.avatar') }}" ><img src="{{ asset('forty/images/avatars/' . Auth::user()->avatar) }}" alt="{{ __('Avatar of') }} {{ Auth::user()->name }}">
                 </a>
             </div>
             <h1>{{ Auth::user()->name }}</h1>
-            <button onclick="window.location='{{ route('profile.settings') }}'">⚙️ Configuración</button>
-            <a href="{{ route('logros.perfil') }}" class="button fit" style="width: 300px">🎯 Ver Mis Logros</a>
+            <button onclick="window.location='{{ route('profile.settings') }}'">⚙️ {{ __('Settings') }}</button>
+            <a href="{{ route('logros.perfil') }}" class="button fit" style="width: 300px">🎯 {{ __('View My Achievements') }}</a>
         </div>
         <div class="profile-sections">
             <div class="profile-section">
-                <h2>👥 Amigos</h2>
+                <h2>👥 {{ __('Friends') }}</h2>
                 <ul class="friends-list">
                     @foreach ($friends as $friend)
                         @php
                             $friendUser = ($friend->user_id == Auth::id()) ? $friend->friend : $friend->user;
                         @endphp
                         <li class="friend-item">
-                            <img src="{{ asset('forty/images/avatars/' . $friendUser->avatar) }}" alt="Avatar de {{ $friendUser->name }}" class="friend-avatar">
+                            <img src="{{ asset('forty/images/avatars/' . $friendUser->avatar) }}" alt="{{ __('Avatar of') }}{{ $friendUser->name }}" class="friend-avatar">
                             <span class="friend-name">{{ $friendUser->name }}</span>
                             <div class="dropdown">
                                 <button class="dropdown-toggle">⋮</button>
                                 <div class="dropdown-menu">
                                     <form action="{{ route('message.chat', $friendUser->id)  }}" method="GET">
                                         <button type="submit" class="dropdown-item chat-btn">
-                                            💬 Chat
+                                            💬 {{ __('Chat') }}
                                         </button>
                                     </form>
                                     <form method="POST" action="{{ route('friends.remove', $friendUser->id) }}">
                                         @csrf
-                                        <button type="submit" class="dropdown-item">Eliminar Amigo</button>
+                                        <button type="submit" class="dropdown-item">{{ __('Remove Friend') }}</button>
                                     </form>
                                 </div>
                             </div>
@@ -44,17 +44,17 @@
                     @endforeach
                 </ul>
             </div>
-            <h1 class="text-center mb-5">Buscar Usuarios</h1>
+            <h1 class="text-center mb-5">{{ __('Search Users') }}</h1>
             @livewire('search-users')
 
             <div class="profile-section">
-                <h2>📩 Solicitudes de amistad</h2>
+                <h2>📩 {{ __('Friend Requests') }}</h2>
                 <ul>
                     @foreach (Auth::user()->friendRequests as $request)
                         <li>{{ $request->user->name }}
                             <form method="POST" action="{{ route('friends.accept', $request->user->id) }}">
                                 @csrf
-                                <button type="submit">Aceptar</button>
+                                <button type="submit">{{ __('Accept') }}</button>
                             </form>
                         </li>
                     @endforeach

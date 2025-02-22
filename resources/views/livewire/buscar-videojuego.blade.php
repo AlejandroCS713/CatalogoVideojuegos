@@ -1,5 +1,5 @@
 <div>
-    <input type="text"  wire:model="searchTerm" wire:keydown.debounce.100ms="search" placeholder="Buscar videojuego..." class="form-control" style="color: black; margin-bottom: 10px;">
+    <input type="text"  wire:model="searchTerm" wire:keydown.debounce.100ms="search" placeholder="{{ __('Search video game...') }}" class="form-control" style="color: black; margin-bottom: 10px;">
 
 @if($message)
         <div class="error-message" style="color: red; margin-top: 10px;">
@@ -19,12 +19,12 @@
                         <img style="width: 200px; position: relative; z-index: 2; padding-right: 20px; padding-bottom: 40px"
                              class="imagenes"
                              src="{{ $imagen }}"
-                             alt="Imagen de {{ $videojuego->nombre }}"
+                             alt="{{ __('Image of') }} {{ $videojuego->nombre }}"
                              onerror="this.onerror=null; this.src='{{ asset('images/default-game.png') }}';"
                         />
 
                         @if ($videojuego->multimedia->isEmpty())
-                            <p style="color: gray; font-size: 14px;">Imagen no disponible</p>
+                            <p style="color: gray; font-size: 14px;">{{ __('Image not available') }}</p>
                         @endif
                         <p>{{ $videojuego->nombre }}</p>
                     </div>

@@ -1,42 +1,42 @@
 @extends('layouts.app')
-@section('title', ' Actualizar juego ')
+@section('title', __('Update Game'))
 @section('body_class', 'is-preload videojuegos-bg')
 @include('layouts.menu')
 @section('content')
     <div class="form-container">
         <div class="form-card">
-            <h2 class="form-title">Editar Videojuego</h2>
+            <h2 class="form-title">{{ __('Edit Game') }}</h2>
 
             <form action="{{ route('admin.update', $videojuego->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
-                    <label class="form-label">Nombre:</label>
+                    <label class="form-label">{{ __('Name') }}</label>
                     <input type="text" name="nombre" class="form-input" value="{{ $videojuego->nombre }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Descripción:</label>
+                    <label class="form-label">{{ __('Description') }}:</label>
                     <textarea name="descripcion" class="form-textarea">{{ $videojuego->descripcion }}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Fecha de Lanzamiento:</label>
+                    <label class="form-label">{{ __('Release Date') }}:</label>
                     <input type="date" name="fecha_lanzamiento" class="form-input" value="{{ $videojuego->fecha_lanzamiento }}">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Desarrollador:</label>
+                    <label class="form-label">{{ __('Developer') }}:</label>
                     <input type="text" name="desarrollador" class="form-input" value="{{ $videojuego->desarrollador }}">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Publicador:</label>
+                    <label class="form-label">{{ __('Publisher') }}:</label>
                     <input type="text" name="publicador" class="form-input" value="{{ $videojuego->publicador }}">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Plataformas:</label>
+                    <label class="form-label">{{ __('Platforms') }}:</label>
                     <select name="plataformas[]" multiple class="form-select">
                         @foreach($plataformas as $plataforma)
                             <option value="{{ $plataforma->id }}"
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Géneros:</label>
+                    <label class="form-label">{{ __('Genres') }}:</label>
                     <select name="generos[]" multiple class="form-select">
                         @foreach($generos as $genero)
                             <option value="{{ $genero->id }}"
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="form-button">Actualizar</button>
+                    <button type="submit" class="form-button">{{ __('Update') }}</button>
                 </div>
             </form>
         </div>

@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Actualizar Foro')
+@section('title', __('Update Forum'))
 @include('layouts.menu')
 
 @section('content')
-    <h1>Actualizar Foro</h1>
+    <h1>{{ __('Update Forum') }}</h1>
 
     <div class="game-container" style="display: flex; justify-content: center; margin-bottom: 40px;">
 
@@ -18,7 +18,7 @@
             @method('PUT')
 
             <div class="form-group">
-                <p>Título</p>
+                <p>{{ __('Title') }}</p>
                 <input
                     style="color: black; margin-bottom: 20px;"
                     type="text"
@@ -34,7 +34,7 @@
             </div>
 
             <div class="form-group">
-                <p>Descripción</p>
+                <p>{{ __('Description') }}</p>
                 <textarea
                     name="descripcion"
                     id="descripcion"
@@ -49,7 +49,7 @@
             </div>
 
             <div style="margin-bottom: 50px">
-                <label for="videojuego_id">Selecciona un Videojuego</label>
+                <label for="videojuego_id">{{ __('Select a Game') }}</label>
                 @livewire('buscar-videojuego')
                 <input
                     type="hidden"
@@ -59,7 +59,7 @@
                     value="{{ old('videojuego_id', $foro->videojuego_id) }}"
                 >
             </div>
-            <button type="submit">Actualizar Foro</button>
+            <button type="submit">{{ __('Update') }}</button>
         </form>
     </div>
 @endsection

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Foro')
+@section('title',  __('View Forum'))
 @section('body_class', 'is-preload')
 @include('layouts.menu')
 
@@ -12,35 +12,35 @@
         </div>
 
         <div class="game-genres">
-            <h2>Videojuegos Relacionados</h2>
+            <h2>{{ __('Related Games') }}</h2>
             <ul>
                 @forelse($foro->videojuegos as $videojuego)
                     <li>
                         <strong>{{ $videojuego->nombre }}</strong>
                         <br>
                         @if ($videojuego->multimedia->isNotEmpty())
-                            <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img style="width:200px;position: relative; z-index: 2; padding-right: 20px; padding-bottom: 40px" class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="Imagen de {{ $videojuego->nombre }}"/></a>
+                            <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img style="width:200px;position: relative; z-index: 2; padding-right: 20px; padding-bottom: 40px" class="imagenes" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="{{ __('Image of') }} {{ $videojuego->nombre }}"/></a>
                         @else
                             <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"> {{ $videojuego->nombre }}</a>
                         @endif
                     </li>
                 @empty
-                    <li>No hay videojuegos relacionados con este foro.</li>
+                    <li>{{ __('No related games for this forum.') }}</li>
                 @endforelse
             </ul>
         </div>
 
         <div class="game-genres">
-            <h2>Mensajes en este foro:</h2>
+            <h2>{{ __('Messages') }}</h2>
 
             @foreach($foro->mensajes as $mensaje)
                 <div>
                     <div>
                         <p>{{ $mensaje->contenido }}</p>
-                        <small>Publicado por {{ $mensaje->usuario->name }} el {{ $mensaje->created_at->format('d/m/Y H:i') }}</small>
+                        <small>{{ __('Posted by') }} {{ $mensaje->usuario->name }} el {{ $mensaje->created_at->format('d/m/Y H:i') }}</small>
 
                         <div>
-                            <h5>Respuestas:</h5>
+                            <h5>{{ __('Replies') }}</h5>
                             @foreach($mensaje->respuestas as $respuesta)
                                 <div>
                                     <p>{{ $respuesta->contenido }}</p>
@@ -53,10 +53,10 @@
                             <form action="{{ route('respuestas.store', $mensaje->id) }}" method="POST">
                                 @csrf
                                 <div>
-                                    <textarea name="contenido" required style="color: black; margin-bottom: 20px" placeholder="Responde a este mensaje..."></textarea>
+                                    <textarea name="contenido" required style="color: black; margin-bottom: 20px" placeholder="{{ __('Reply to this message...') }}"></textarea>
                                     <input type="hidden" name="mensaje_id" value="{{ $mensaje->id }}">
                                 </div>
-                                <button type="submit">Enviar Respuesta</button>
+                                <button type="submit">{{ __('Send Message') }}</button>
                             </form>
                         @endauth
                     </div>
@@ -66,28 +66,28 @@
 
         @auth
             <div>
-                <h3>Nuevo Mensaje:</h3>
+                <h3>{{ __('New Message') }}</h3>
                 <form action="{{ route('mensajes.store', $foro->id) }}" method="POST">
                     @csrf
                     <div>
-                        <textarea name="contenido" required style="color: black; margin-bottom: 20px" placeholder="Escribe tu mensaje..."></textarea>
+                        <textarea name="contenido" required style="color: black; margin-bottom: 20px" placeholder="{{ __('Write your message...') }}"></textarea>
                     </div>
                     <input type="hidden" name="foro_id" value="{{ $foro->id }}">
-                    <button type="submit">Enviar Mensaje</button>
+                    <button type="submit">{{ __('Send Message') }}</button>
                 </form>
             </div>
             @can('update', $foro)
-                <a href="{{ route('forum.edit', $foro) }}" class="button fit" style="width: 250px; margin-top: 20px; margin-bottom: 20px ">Editar</a>
+                <a href="{{ route('forum.edit', $foro) }}" class="button fit" style="width: 250px; margin-top: 20px; margin-bottom: 20px ">{{ __('Edit') }}</a>
             @endcan
             @can('delete', $foro)
                 <form action="{{ route('forum.destroy', $foro) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" style="width: 200px;">Eliminar</button>
+                    <button type="submit" style="width: 200px;">{{ __('Delete') }}</button>
                 </form>
             @endcan
             <a href="{{ route('forum.pdf', $foro) }}" class="button fit" style="width: 250px; margin-top: 20px; margin-bottom: 20px ">
-                Descargar PDF
+                {{ __('Download PDF') }}
             </a>
         @endauth
     </div>
