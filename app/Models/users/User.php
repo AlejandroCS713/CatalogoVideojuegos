@@ -81,6 +81,4 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(RespuestaForo::class, 'usuario_id');
     }
 
-
-
 }

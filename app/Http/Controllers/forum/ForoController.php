@@ -53,13 +53,10 @@ class ForoController extends Controller
 
     public function edit(Foro $foro)
     {
-        Gate::authorize('update', $foro);
         return view('forum.edit', compact('foro'));
     }
     public function update(ForoRequest $request, Foro $foro)
     {
-        Gate::authorize('update', $foro);
-
         $foro->update([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
@@ -74,8 +71,6 @@ class ForoController extends Controller
     }
     public function destroy(Foro $foro)
     {
-        Gate::authorize('delete', $foro);
-
         $foro->delete();
 
         return redirect()->route('forum.index')->with('success', '¡Foro eliminado exitosamente!');

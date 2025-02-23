@@ -14,9 +14,6 @@ class EventServiceProvider extends ServiceProvider
         AmigoAgregado::class => [
             DesbloquearLogroPrimerAmigo::class,
         ],
-        LogroDesbloqueado::class => [
-            AsignarLogro::class,
-        ],
     ];
 
     public function register(): void

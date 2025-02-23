@@ -50,22 +50,4 @@ class VideojuegoController extends Controller
 
         return view('videojuegos.show', compact('videojuego'));
     }
-
-    public function comentar(Request $request, $id) {
-        $request->validate(['contenido' => 'required|string']);
-
-        $videojuego = Videojuego::findOrFail($id);
-        $comentario = $videojuego->comentarios()->create([
-            'user_id' => auth()->id(),
-            'contenido' => $request->contenido,
-        ]);
-
-        $logro = Logro::where('nombre', 'Primer Comentario')->first();
-        if ($logro && !auth()->user()->logros->contains($logro)) {
-            event(new LogroDesbloqueado(auth()->user(), $logro));
-            dispatch(new NotificarLogroDesbloqueado(auth()->user(), $logro));
-        }
-
-        return back()->with('success', 'Comentario añadido.');
-    }
 }
