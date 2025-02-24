@@ -51,7 +51,6 @@ Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('wel
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
 Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
 
-
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');

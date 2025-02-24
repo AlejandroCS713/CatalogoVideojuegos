@@ -292,3 +292,137 @@ it('verifica que se puede eliminar el precio de un videojuego en una plataforma'
 
     expect(Precio::find($precio->id))->toBeNull();
 });
+it('verifica que un precio no se puede crear sin precio', function () {
+    $videojuego = Videojuego::create([
+        'nombre' => 'Juego sin precio',
+        'descripcion' => 'Descripción del juego',
+        'fecha_lanzamiento' => now(),
+        'rating_usuario' => 4.5,
+        'rating_criticas' => 90,
+        'desarrollador' => 'Desarrollador Test',
+        'publicador' => 'Publicador Test'
+    ]);
+
+    $plataforma = Plataforma::create(['nombre' => 'PC']);
+
+    // Intentamos crear un precio sin especificar el valor de 'precio'
+    $this->expectException(\Illuminate\Database\QueryException::class);
+
+    Precio::create([
+        'videojuego_id' => $videojuego->id,
+        'plataforma_id' => $plataforma->id,
+    ]);
+
+    DB::table('videojuegos')->where('id', $videojuego->id)->delete();
+    DB::table('plataformas')->where('id', $plataforma->id)->delete();
+});
+
+it('verifica que multimedia no se puede crear sin tipo y url', function () {
+    $videojuego = Videojuego::create([
+        'nombre' => 'Juego sin multimedia',
+        'descripcion' => 'Descripción del juego',
+        'fecha_lanzamiento' => now(),
+        'rating_usuario' => 4.5,
+        'rating_criticas' => 90,
+        'desarrollador' => 'Desarrollador Test',
+        'publicador' => 'Publicador Test'
+    ]);
+
+    $this->expectException(\Illuminate\Database\QueryException::class);
+
+    Multimedia::create([
+        'videojuego_id' => $videojuego->id,
+    ]);
+
+    DB::table('videojuegos')->where('id', $videojuego->id)->delete();
+});
+
+it('verifica que no se puede crear un precio sin plataforma', function () {
+    $videojuego = Videojuego::create([
+        'nombre' => 'Juego sin plataforma',
+        'descripcion' => 'Descripción del juego',
+        'fecha_lanzamiento' => now(),
+        'rating_usuario' => 4.5,
+        'rating_criticas' => 85,
+        'desarrollador' => 'Desarrollador Test',
+        'publicador' => 'Publicador Test'
+    ]);
+
+    // Intentamos crear un precio sin asociar una plataforma
+    $this->expectException(\Illuminate\Database\QueryException::class);
+
+    Precio::create([
+        'videojuego_id' => $videojuego->id,
+        'precio' => 59.99,
+    ]);
+});
+
+it('verifica que un videojuego puede tener múltiples géneros', function () {
+    $videojuego = Videojuego::create([
+        'nombre' => 'Juego con múltiples géneros',
+        'descripcion' => 'Descripción del juego',
+        'fecha_lanzamiento' => now(),
+        'rating_usuario' => 4.5,
+        'rating_criticas' => 85,
+        'desarrollador' => 'Desarrollador Test',
+        'publicador' => 'Publicador Test'
+    ]);
+
+    $genero1 = Genero::create(['nombre' => 'Acción']);
+    $genero2 = Genero::create(['nombre' => 'Aventura']);
+
+    $videojuego->generos()->attach([$genero1->id, $genero2->id]);
+
+    $videojuego->load('generos');
+    expect($videojuego->generos->count())->toBe(2);
+    expect($videojuego->generos->pluck('nombre'))->toContain('Acción');
+    expect($videojuego->generos->pluck('nombre'))->toContain('Aventura');
+});
+
+it('verifica que se puede eliminar una plataforma', function () {
+    $plataforma = Plataforma::create(['nombre' => 'PC']);
+
+    $plataforma->delete();
+
+    expect(Plataforma::find($plataforma->id))->toBeNull();
+});
+
+it('verifica que se puede asociar múltiples géneros y eliminar uno', function () {
+    $videojuego = Videojuego::create([
+        'nombre' => 'Juego con múltiples géneros',
+        'descripcion' => 'Descripción del juego',
+        'fecha_lanzamiento' => now(),
+        'rating_usuario' => 4.5,
+        'rating_criticas' => 85,
+        'desarrollador' => 'Desarrollador Test',
+        'publicador' => 'Publicador Test'
+    ]);
+
+    $genero1 = Genero::create(['nombre' => 'Acción']);
+    $genero2 = Genero::create(['nombre' => 'Aventura']);
+
+    $videojuego->generos()->attach([$genero1->id, $genero2->id]);
+
+    $videojuego->generos()->detach($genero1->id);
+
+    $videojuego->load('generos');
+    expect($videojuego->generos->count())->toBe(1);
+    expect($videojuego->generos->first()->nombre)->toBe('Aventura');
+});
+
+
+it('verifica que un género no se puede asociar sin nombre', function () {
+    $videojuego = Videojuego::create([
+        'nombre' => 'Juego sin género',
+        'descripcion' => 'Descripción del juego',
+        'fecha_lanzamiento' => now(),
+        'rating_usuario' => 4.5,
+        'rating_criticas' => 80,
+        'desarrollador' => 'Desarrollador Test',
+        'publicador' => 'Publicador Test'
+    ]);
+
+    $this->expectException(\Illuminate\Database\QueryException::class);
+
+    $genero = Genero::create([]);
+});

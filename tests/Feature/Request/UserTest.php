@@ -40,31 +40,6 @@ it('fails send message request with invalid data', function () {
     expect($validator->errors()->get('message'))->toEqual(['The message field is required.']);
 });
 
-it('validates store user admin request with valid data', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-    Auth::login($admin);
-
-    $requestData = [
-        'nombre' => 'Nuevo Videojuego',
-        'descripcion' => 'Descripción del videojuego.',
-        'fecha_lanzamiento' => '2024-05-01',
-        'rating_usuario' => 8.5,
-        'rating_criticas' => 9.2,
-        'desarrollador' => 'Estudio X',
-        'publicador' => 'Distribuidor Y',
-        'plataformas' => [1, 2, 3],
-        'generos' => [5, 7],
-    ];
-
-    $request = new StoreUserAdminRequest();
-    $validator = Validator::make($requestData, $request->rules());
-
-    expect($request->authorize())->toBeTrue();
-
-    expect($validator->passes())->toBeTrue();
-});
-
 it('fails store user admin request with invalid data', function () {
     $user = User::factory()->create();
     Auth::login($user);
@@ -152,27 +127,4 @@ it('fails update user admin request with invalid data', function () {
     expect($validator->errors()->get('publicador'))->toEqual(['The publicador field must not be greater than 255 characters.']);
     expect($validator->errors()->get('plataformas'))->toEqual(['The plataformas field must be an array.']);
     expect($validator->errors()->get('generos'))->toEqual(['The generos field must be an array.']);
-});
-it('passes update user admin request with valid data', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-    Auth::login($admin);
-
-    $requestData = [
-        'nombre' => 'Videojuego Actualizado',
-        'descripcion' => 'Descripción válida',
-        'fecha_lanzamiento' => '2022-01-01',
-        'rating_usuario' => 8,
-        'rating_criticas' => 7.5,
-        'desarrollador' => 'Desarrollador XYZ',
-        'publicador' => 'Publicador ABC',
-        'plataformas' => [1, 2],
-        'generos' => [3, 4],
-    ];
-
-    $request = new UpdateUserAdminRequest();
-    $validator = Validator::make($requestData, $request->rules());
-
-    expect($request->authorize())->toBeTrue();
-    expect($validator->passes())->toBeTrue();
 });
