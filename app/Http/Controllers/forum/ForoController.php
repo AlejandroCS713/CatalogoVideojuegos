@@ -5,6 +5,7 @@ namespace App\Http\Controllers\forum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Forum\ForoRequest;
 use App\Models\Forum\Foro;
+
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
