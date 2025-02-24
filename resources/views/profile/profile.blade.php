@@ -12,7 +12,6 @@
                 </a>
             </div>
             <h1>{{ Auth::user()->name }}</h1>
-            <button onclick="window.location='{{ route('profile.settings') }}'">⚙️ {{ __('Settings') }}</button>
             <a href="{{ route('logros.perfil') }}" class="button fit" style="width: 300px">🎯 {{ __('View My Achievements') }}</a>
         </div>
         <div class="profile-sections">

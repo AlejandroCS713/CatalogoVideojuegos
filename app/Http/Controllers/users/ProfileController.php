@@ -25,10 +25,6 @@ class ProfileController extends Controller
     }
 
 
-    public function settings()
-    {
-        return view('profile.settings');
-    }
 
     public function editAvatar()
     {

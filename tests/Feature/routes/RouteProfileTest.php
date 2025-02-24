@@ -15,17 +15,6 @@ it('allows an authenticated user to access the profile page', function () {
     $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
 });
 
-it('allows an authenticated user to access the profile settings page', function () {
-    $user = User::factory()->create([
-        'email' => 'test@example.com',
-        'password' => Hash::make('password123'),
-    ]);
-    $this->actingAs($user);
-    $response = $this->get(route('profile.settings'));
-    $response->assertStatus(200);
-    $user->delete();
-    $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
-});
 
 it('allows an authenticated user to access the avatar edit page', function () {
     $user = User::factory()->create([

@@ -1,0 +1,152 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Foros",
+        "description": "API para gestionar foros y mensajes",
+        "contact": {
+            "email": "soporte@webgames.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/foros": {
+            "get": {
+                "tags": [
+                    "Foros"
+                ],
+                "summary": "Obtiene todos los foros",
+                "operationId": "1f02040d705da811963018c581c78071",
+                "responses": {
+                    "200": {
+                        "description": "Lista de foros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Foro"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontraron foros"
+                    }
+                }
+            }
+        },
+        "/api/foros/{foro}": {
+            "get": {
+                "tags": [
+                    "Foros"
+                ],
+                "summary": "Obtiene los detalles de un foro específico",
+                "operationId": "2f260b2ff3dce908e4b376c6f30e082d",
+                "parameters": [
+                    {
+                        "name": "foro",
+                        "in": "path",
+                        "description": "ID del foro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del foro",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Foro"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontró el foro"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Foro": {
+                "properties": {
+                    "id": {
+                        "description": "ID del foro",
+                        "type": "integer"
+                    },
+                    "titulo": {
+                        "description": "Título del foro",
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "description": "Descripción del foro",
+                        "type": "string"
+                    },
+                    "usuario": {
+                        "description": "Nombre del usuario creador del foro",
+                        "type": "string"
+                    },
+                    "mensajes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MensajeForo"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "MensajeForo": {
+                "properties": {
+                    "id": {
+                        "description": "ID del mensaje",
+                        "type": "integer"
+                    },
+                    "contenido": {
+                        "description": "Contenido del mensaje",
+                        "type": "string"
+                    },
+                    "usuario": {
+                        "description": "Nombre del usuario creador del mensaje",
+                        "type": "string"
+                    },
+                    "respuestas": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RespuestaForo"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "RespuestaForo": {
+                "properties": {
+                    "id": {
+                        "description": "ID de la respuesta",
+                        "type": "integer"
+                    },
+                    "contenido": {
+                        "description": "Contenido de la respuesta",
+                        "type": "string"
+                    },
+                    "usuario": {
+                        "description": "Nombre del usuario que creó la respuesta",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Foros",
+            "description": "Endpoints para la gestión de foros y mensajes"
+        }
+    ]
+}
