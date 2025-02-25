@@ -19,6 +19,7 @@
         <li><a href="{{ route('welcome') }}">{{ __('Home') }}</a></li>
         <li><a href="{{ route('videojuegos.index') }}">{{ __('Video Games') }}</a></li>
         <li><a href="{{ route('forum.index') }}">{{ __('Forum') }}</a></li>
+        <li><a href="{{ route('info') }}">Info</a></li>
     </ul>
     <ul class="actions stacked">
 

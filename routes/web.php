@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\users\LogroController;
 use App\Http\Controllers\users\UserAdminController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -50,6 +51,7 @@ Route::post('/videojuegos/{videojuego}/multimedia', [MultimediaController::class
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
 Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
+Route::get('/info', [InfoController::class, 'index'])->name('info');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
