@@ -22,6 +22,14 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
             'avatar' => 'avatarAngel.png',
         ]);
+        User::create([
+            'id' => 1000,
+            'name' => 'alex',
+            'email' => 'alex@alex.com',
+            'password' => bcrypt('123456'),
+            'email_verified_at' => Carbon::now(),
+            'avatar' => 'avatarAngel.png',
+        ]);
 
         User::create([
             'id' => 41,

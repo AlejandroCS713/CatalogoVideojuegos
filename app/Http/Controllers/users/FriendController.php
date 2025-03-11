@@ -13,28 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class FriendController extends Controller {
-    public function sendRequest($id)
-    {
-        $existingRequest = Friend::where(function ($query) use ($id) {
-            $query->where('user_id', Auth::id())->where('friend_id', $id);
-        })
-            ->orWhere(function ($query) use ($id) {
-                $query->where('user_id', $id)->where('friend_id', Auth::id());
-            })
-            ->first();
-
-        if ($existingRequest) {
-            return back();
-        }
-
-        Friend::create([
-            'user_id' => Auth::id(),
-            'friend_id' => $id,
-            'status' => 'pending'
-        ]);
-
-        return redirect()->back();
-    }
     public function acceptRequest($id)
     {
         $friendship = Friend::where('user_id', $id)
@@ -58,17 +36,6 @@ class FriendController extends Controller {
         })->delete();
 
         return back()->with('success', 'Amigo eliminado.');
-    }
-
-    public function searchUsers(Request $request)
-    {
-        $query = $request->input('query');
-
-        $users = User::where('name', 'LIKE', "%{$query}%")
-            ->where('id', '!=', auth()->id())
-            ->get();
-
-        return response()->json($users);
     }
 }
 

@@ -17,7 +17,7 @@ class SearchUsers extends Component
     {
         if (strlen($this->searchTerm) >= 2) {
             $this->users = User::where('name', 'LIKE', "%{$this->searchTerm}%")
-                ->where('id', '!=', Auth::id()) // Excluir al usuario actual
+                ->where('id', '!=', Auth::id())
                 ->get();
 
             $this->message = $this->users->isEmpty() ? 'No se encontraron usuarios' : null;

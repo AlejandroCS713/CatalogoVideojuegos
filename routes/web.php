@@ -21,9 +21,6 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Route;
 
 
-
-
-
 Route::get('/', function () {
     return view('welcome');
 })->middleware('verified');
@@ -45,8 +42,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-Route::post('/videojuegos/{videojuego}/multimedia', [MultimediaController::class, 'store'])->name('multimedia.store');
 
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
