@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\InfoController;
 use App\Http\Controllers\users\LogroController;
 use App\Http\Controllers\users\UserAdminController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -11,7 +10,6 @@ use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\forum\ForoController;
 use App\Http\Controllers\forum\MensajeForoController;
 use App\Http\Controllers\forum\RespuestaForoController;
-use App\Http\Controllers\games\MultimediaController;
 use App\Http\Controllers\games\VideojuegoController;
 use App\Http\Controllers\users\FriendController;
 use App\Http\Controllers\users\MessageController;
@@ -46,7 +44,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
 Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
-Route::get('/info', [InfoController::class, 'index'])->name('info');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
