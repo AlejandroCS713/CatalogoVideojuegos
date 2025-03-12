@@ -43,6 +43,7 @@ class SearchUsers extends Component
                 'friend_id' => $id,
                 'status' => 'pending'
             ]);
+            $this->dispatch('friend-request-sent');
             session()->flash('message', 'Solicitud de amistad enviada');
         } else {
             session()->flash('message', 'Ya has enviado una solicitud a este usuario.');

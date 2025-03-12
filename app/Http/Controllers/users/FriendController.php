@@ -13,20 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class FriendController extends Controller {
-    public function acceptRequest($id)
-    {
-        $friendship = Friend::where('user_id', $id)
-            ->where('friend_id', Auth::id())
-            ->where('status', 'pending')
-            ->first();
-
-        if ($friendship) {
-            $friendship->update(['status' => 'accepted']);
-            event(new AmigoAgregado(Auth::user(), $friendship->user));
-        }
-
-        return redirect()->back();
-    }
 
     public function removeFriend($id) {
         Friend::where(function($query) use ($id) {

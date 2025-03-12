@@ -46,19 +46,7 @@
             <h1 class="text-center mb-5">{{ __('Search Users') }}</h1>
             @livewire('search-users')
 
-            <div class="profile-section">
-                <h2>📩 {{ __('Friend Requests') }}</h2>
-                <ul>
-                    @foreach (Auth::user()->friendRequests as $request)
-                        <li>{{ $request->user->name }}
-                            <form method="POST" action="{{ route('friends.accept', $request->user->id) }}">
-                                @csrf
-                                <button type="submit">{{ __('Accept') }}</button>
-                            </form>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+            @livewire('accept-friend-requests')
         </div>
     </div>
 @endsection

@@ -10,6 +10,19 @@ window.addEventListener('load', function() {
     });
 });
 
+window.addEventListener('load', function () {
+    if (typeof Livewire !== 'undefined') {
+        Livewire.on('friend-request-sent', () => {
+            console.log('Evento friend-request-sent recibido');
+        });
+
+        Livewire.on('friend-request-accepted', () => {
+            console.log('Evento friend-request-accepted recibido');
+        });
+    } else {
+        console.error('Livewire no está definido');
+    }
+});
 
 window.addEventListener('load', function () {
     Livewire.on('userAdded', userId => {
