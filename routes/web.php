@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\users\LogroController;
 use App\Http\Controllers\users\UserAdminController;
+use App\Livewire\AcceptFriendRequests;
+use App\Livewire\FriendList;
+use App\Livewire\SearchUsers;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Livewire\Livewire;
@@ -56,10 +59,14 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile/logros', [LogroController::class, 'index'])->name('logros.perfil');
     Route::get('/profile/avatar', [ProfileController::class, 'editAvatar'])->name('profile.avatar');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
-    Route::post('/send-friend-request/{id}', [FriendController::class, 'sendRequest'])->name('friends.send');
-    Route::post('/accept-friend-request/{id}', [FriendController::class, 'acceptRequest'])->name('friends.accept');
-    Route::post('/remove-friend/{id}', [FriendController::class, 'removeFriend'])->name('friends.remove');
-    Route::get('/search-users', [FriendController::class, 'searchUsers'])->name('friends.search');
+
+    Route::get('/friends', FriendList::class)->name('friends.list');
+    Route::get('/search-users', SearchUsers::class)->name('friends.search');
+    Route::get('/accept-friend-requests', AcceptFriendRequests::class)->name('friends.accept.requests');
+    Route::post('/send-friend-request/{id}', [SearchUsers::class, 'sendFriendRequest'])->name('friends.send');
+    Route::post('/accept-friend-request/{id}', [AcceptFriendRequests::class, 'acceptRequest'])->name('friends.accept');
+    Route::post('/remove-friend/{id}', [FriendList::class, 'removeFriend'])->name('friends.remove');
+
     Route::get('/chat/{friend_id}', [MessageController::class, 'chat'])->name('message.chat');
     Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
     Route::post('/forum/{foro}/mensajes', [MensajeForoController::class, 'store'])->name('mensajes.store');

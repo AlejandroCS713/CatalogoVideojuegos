@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\AmigoAgregado;
 use App\Models\users\Friend;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -32,9 +33,27 @@ class AcceptFriendRequests extends Component
 
         if ($friendship) {
             $friendship->update(['status' => 'accepted']);
-            session()->flash('message', 'Solicitud aceptada');
 
+            $reverseFriendship = Friend::where('user_id', Auth::id())
+                ->where('friend_id', $id)
+                ->where('status', 'pending')
+                ->first();
+
+            if ($reverseFriendship) {
+                $reverseFriendship->update(['status' => 'accepted']);
+            } else {
+                Friend::create([
+                    'user_id' => Auth::id(),
+                    'friend_id' => $id,
+                    'status' => 'accepted'
+                ]);
+            }
+
+            event(new AmigoAgregado(Auth::user(), $friendship->user));
             $this->dispatch('friend-request-accepted');
+            $this->dispatch('friend-added');
+
+            session()->flash('message', 'Solicitud aceptada');
         }
     }
 

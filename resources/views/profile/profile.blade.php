@@ -15,34 +15,7 @@
             <a href="{{ route('logros.perfil') }}" class="button fit" style="width: 300px">🎯 {{ __('View My Achievements') }}</a>
         </div>
         <div class="profile-sections">
-            <div class="profile-section">
-                <h2>👥 {{ __('Friends') }}</h2>
-                <ul class="friends-list">
-                    @foreach ($friends as $friend)
-                        @php
-                            $friendUser = ($friend->user_id == Auth::id()) ? $friend->friend : $friend->user;
-                        @endphp
-                        <li class="friend-item">
-                            <img src="{{ asset('forty/images/avatars/' . $friendUser->avatar) }}" alt="{{ __('Avatar of') }}{{ $friendUser->name }}" class="friend-avatar">
-                            <span class="friend-name">{{ $friendUser->name }}</span>
-                            <div class="dropdown">
-                                <button class="dropdown-toggle">⋮</button>
-                                <div class="dropdown-menu">
-                                    <form action="{{ route('message.chat', $friendUser->id)  }}" method="GET">
-                                        <button type="submit" class="dropdown-item chat-btn">
-                                            💬 {{ __('Chat') }}
-                                        </button>
-                                    </form>
-                                    <form method="POST" action="{{ route('friends.remove', $friendUser->id) }}">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item">{{ __('Remove Friend') }}</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+            @livewire('friend-list')
             <h1 class="text-center mb-5">{{ __('Search Users') }}</h1>
             @livewire('search-users')
 
