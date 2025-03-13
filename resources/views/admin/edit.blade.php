@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', __('Update Game'))
 @section('body_class', 'is-preload videojuegos-bg')
-@include('layouts.menu')
 @section('content')
     <div class="form-container">
         <div class="form-card">

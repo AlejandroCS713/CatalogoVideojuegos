@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', __('Create Forum'))
-@include('layouts.menu')
 
 @section('content')
     <h1>{{ __('Create Forum') }}</h1>

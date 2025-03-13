@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('title', __('All Video Games'))
 @section('body_class', 'is-preload videojuegos-bg')
-@include('layouts.menu')
-
     @section('content')
 
     <div class="videojuegos-container">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\users\LogroController;
 use App\Http\Controllers\users\UserAdminController;
 use App\Livewire\AcceptFriendRequests;
+use App\Livewire\ChatComponent;
 use App\Livewire\FriendList;
 use App\Livewire\SearchUsers;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -67,8 +68,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/accept-friend-request/{id}', [AcceptFriendRequests::class, 'acceptRequest'])->name('friends.accept');
     Route::post('/remove-friend/{id}', [FriendList::class, 'removeFriend'])->name('friends.remove');
 
-    Route::get('/chat/{friend_id}', [MessageController::class, 'chat'])->name('message.chat');
-    Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('message.send');
+    Route::get('/chat/{friendId}', ChatComponent::class)->name('message.chat');
     Route::post('/forum/{foro}/mensajes', [MensajeForoController::class, 'store'])->name('mensajes.store');
     Route::post('/mensajes/{mensaje}/respuestas', [RespuestaForoController::class, 'store'])->name('respuestas.store');
     Route::get('/forum/create', [ForoController::class, 'create'])->name('forum.create');

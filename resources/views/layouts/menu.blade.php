@@ -6,7 +6,7 @@
             <div class="user-info">
 
                 <span class="user-name">{{ Auth::user()->name }}</span>
-                <div class="avatar-menu">
+                <div class="avatar-menu" style="margin-top: 16px">
                <a href="{{ route('profile') }}" class="settings-link"><img src="{{ asset('forty/images/avatars/' . Auth::user()->avatar) }}" alt="{{ __('Avatar of') }} {{ Auth::user()->name }}"></a>
                 </div>
             </div>

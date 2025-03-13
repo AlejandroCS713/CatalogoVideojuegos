@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', __('Login'))
-@include('layouts.menu')
 @section('content')
     <div class="form-container2">
         @if(session('success'))

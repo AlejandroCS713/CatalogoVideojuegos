@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', __('Create Game'))
 @section('body_class', 'is-preload videojuegos-bg')
-@include('layouts.menu')
 
 @section('content')
 

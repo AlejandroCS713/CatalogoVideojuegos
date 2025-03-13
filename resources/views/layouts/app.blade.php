@@ -19,6 +19,7 @@
     @stack('styles')
 </head>
 <body class="@yield('body_class', 'is-preload')">
+@include('layouts.menu')
 <div id="wrapper">
     @yield('content')
 </div>

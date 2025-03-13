@@ -3,7 +3,19 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
+window.addEventListener('load', function () {
+    if (typeof Livewire !== 'undefined') {
+        Livewire.on('message-sent', () => {
+            console.log('Evento message-sent recibido');
+        });
 
+        Livewire.on('message-received', () => {
+            console.log('Evento message-received recibido');
+        });
+    } else {
+        console.error('Livewire no está definido');
+    }
+});
 window.addEventListener('load', function() {
     Livewire.on('videojuegoSeleccionado', videojuegoId => {
         document.getElementById('videojuego_id').value = videojuegoId;

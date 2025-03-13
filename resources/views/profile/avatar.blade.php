@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', __('Avatar Change'))
 @section('body_class', 'is-preload')
-@include('layouts.menu')
 @section('content')
     <div class="profile-container">
         <h2>{{ __('Choose your avatar') }}</h2>

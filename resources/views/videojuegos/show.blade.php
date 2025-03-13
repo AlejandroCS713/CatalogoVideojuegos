@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('body_class', 'is-preload')
-@include('layouts.menu')
 
 @section('title', $videojuego->nombre)
 

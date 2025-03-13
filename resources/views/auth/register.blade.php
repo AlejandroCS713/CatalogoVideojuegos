@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', __('Register'))
-@include('layouts.menu')
 @section('content')
     <div class="form-container2">
         <form class="form" action="{{ route('register') }}" method="POST" autocomplete="off">

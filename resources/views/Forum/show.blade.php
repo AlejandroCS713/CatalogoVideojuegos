@@ -1,8 +1,6 @@
 @extends('layouts.app')
-
 @section('title',  __('View Forum'))
 @section('body_class', 'is-preload')
-@include('layouts.menu')
 
 @section('content')
     <div class="game-container">

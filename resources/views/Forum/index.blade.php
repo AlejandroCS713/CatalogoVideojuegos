@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', __('Forums'))
-@include('layouts.menu')
 
 @section('content')
     <div class="game-container">

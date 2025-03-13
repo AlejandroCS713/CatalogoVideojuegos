@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', __('Update Forum'))
-@include('layouts.menu')
 
 @section('content')
     <h1>{{ __('Update Forum') }}</h1>

@@ -2,8 +2,6 @@
 @extends('layouts.app')
 @section('title', __('User Profile'))
 @section('body_class', 'is-preload')
-@include('layouts.menu')
-
 @section('content')
     <div class="profile-container">
         <div class="profile-header">
