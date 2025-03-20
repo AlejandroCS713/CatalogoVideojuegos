@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class NewMessageNotification extends Notification
@@ -18,9 +19,23 @@ class NewMessageNotification extends Notification
 
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail', 'database'];
     }
 
+    public function toMail($notifiable)
+    {
+        $senderId = $this->message->sender_id;
+
+        $chatUrl = url("/chat/{$senderId}");
+
+        return (new MailMessage)
+            ->subject('Tienes un nuevo mensaje')
+            ->greeting('¡Hola!')
+            ->line('Has recibido un nuevo mensaje en tu cuenta.')
+            ->line('Mensaje: ' . $this->message->message)
+            ->action('Ver mensaje', $chatUrl)
+            ->line('¡No dudes en responder a tu amigo!');
+    }
     public function toArray($notifiable)
     {
         return [
