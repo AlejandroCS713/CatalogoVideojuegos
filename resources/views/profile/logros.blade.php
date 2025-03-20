@@ -21,4 +21,7 @@
             @endforelse
         </div>
     </div>
+    <a href="{{ route('logros.pdf') }}" class="button fit" style="width: 200px; margin-top: 20px;">
+        📄 {{ __('Download PDF') }}
+    </a>
 @endsection

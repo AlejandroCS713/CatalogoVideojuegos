@@ -57,6 +57,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/mis-logros/pdf', [LogroController::class, 'generarPDF'])->name('logros.pdf');
     Route::get('/profile/logros', [LogroController::class, 'index'])->name('logros.perfil');
     Route::get('/profile/avatar', [ProfileController::class, 'editAvatar'])->name('profile.avatar');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
