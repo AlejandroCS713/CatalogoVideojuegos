@@ -15,8 +15,6 @@ use App\Http\Controllers\forum\ForoController;
 use App\Http\Controllers\forum\MensajeForoController;
 use App\Http\Controllers\forum\RespuestaForoController;
 use App\Http\Controllers\games\VideojuegoController;
-use App\Http\Controllers\users\FriendController;
-use App\Http\Controllers\users\MessageController;
 use App\Http\Controllers\users\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
@@ -25,7 +23,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->middleware('verified');
+})->name('welcome');
+
+Route::get('/admin/dashboard', [UserAdminController::class, 'dashboard'])
+    ->name('admin.dashboard')
+    ->middleware('auth', 'verified', 'role:admin');
 
 Route::post('/videojuegos', [VideojuegoController::class, 'store']);
 
@@ -55,7 +57,8 @@ Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth','verified'])->group(function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
+
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/mis-logros/pdf', [LogroController::class, 'generarPDF'])->name('logros.pdf');
     Route::get('/profile/logros', [LogroController::class, 'index'])->name('logros.perfil');
@@ -74,9 +77,15 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::post('/mensajes/{mensaje}/respuestas', [RespuestaForoController::class, 'store'])->name('respuestas.store');
     Route::get('/forum/create', [ForoController::class, 'create'])->name('forum.create');
     Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
-    });
 
-Route::middleware(['auth','verified'])->group(function () {
+    Route::get('/forum/{foro}/pdf', [ForoController::class, 'generarPDF'])->name('forum.pdf');
+    Route::get('/forum/{foro}/edit', [ForoController::class, 'edit'])->name('forum.edit');
+    Route::put('/forum/{foro}', [ForoController::class, 'update'])->name('forum.update');
+    Route::delete('/forum/{foro}', [ForoController::class, 'destroy'])->name('forum.destroy');
+
+});
+
+Route::group(['middleware' => ['auth', 'verified', 'role:admin', 'permission:Crear Videojuegos', 'permission:Actualizar Videojuegos', 'permission:Eliminar Videojuegos']], function () {
     Route::post('/admin', [UserAdminController::class, 'store'])->name('admin.store');
     Route::get('/admin/create', [UserAdminController::class, 'create'])->name('admin.create');
     Route::get('/admin/{id}/edit', [UserAdminController::class, 'edit'])->name('admin.edit');
@@ -84,12 +93,6 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::delete('/admin/{id}', [UserAdminController::class, 'destroy'])->name('admin.destroy');
 });
 
-Route::middleware(['auth','verified'])->group(function () {
-    Route::get('/forum/{foro}/pdf', [ForoController::class, 'generarPDF'])->name('forum.pdf');
-    Route::get('/forum/{foro}/edit', [ForoController::class, 'edit'])->name('forum.edit');
-    Route::put('/forum/{foro}', [ForoController::class, 'update'])->name('forum.update');
-    Route::delete('/forum/{foro}', [ForoController::class, 'destroy'])->name('forum.destroy');
-});
 
 Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
 Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');

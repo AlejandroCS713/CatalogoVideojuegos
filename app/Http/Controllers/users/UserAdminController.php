@@ -11,9 +11,24 @@ use App\Models\games\Plataforma;
 use App\Models\games\Precio;
 use App\Models\games\Reseña;
 use App\Models\games\Videojuego;
+use App\Models\users\User;
+use App\Models\Forum\Foro;
+
 
 class UserAdminController extends Controller
 {
+    public function dashboard()
+    {
+        $userCount = User::count();
+        $forumCount = Foro::count();
+        $gameCount = Videojuego::count();
+
+        $users = User::all();
+        $foros = Foro::all();
+        $videojuegos = Videojuego::all();
+
+        return view('admin.dashboard', compact('userCount', 'forumCount', 'gameCount', 'users', 'foros', 'videojuegos'));
+    }
     public function create()
     {
         $plataformas = Plataforma::all();

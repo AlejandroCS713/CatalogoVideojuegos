@@ -14,38 +14,42 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'id' => 40,
-            'name' => 'User 40',
-            'email' => 'user40@example.com',
-            'password' => bcrypt('password'),
-            'email_verified_at' => Carbon::now(),
-            'avatar' => 'avatarAngel.png',
-        ]);
-        User::create([
-            'id' => 1000,
-            'name' => 'alex',
-            'email' => 'alex@alex.com',
-            'password' => bcrypt('123456'),
-            'email_verified_at' => Carbon::now(),
-            'avatar' => 'avatarAngel.png',
-        ]);
-
-        User::create([
-            'id' => 41,
-            'name' => 'usuarioAmigo',
-            'email' => 'userAmigo@example.com',
-            'password' => bcrypt('password'),
-            'email_verified_at' => Carbon::now(),
-            'avatar' => 'avatarAngel.png',
-        ]);
-
-        User::create([
-            'id' => 50,
-            'name' => 'User 50',
-            'email' => 'user50@example.com',
-            'password' => bcrypt('password'),
-            'avatar' => 'avatarAngel.png',
-        ]);
+        $users = [
+            [
+                'id' => 40,
+                'name' => 'User 40',
+                'email' => 'user40@example.com',
+                'password' => bcrypt('password'),
+                'email_verified_at' => Carbon::now(),
+                'avatar' => 'avatarAngel.png',
+            ],
+            [
+                'id' => 1000,
+                'name' => 'alex',
+                'email' => 'alex@alex.com',
+                'password' => bcrypt('123456'),
+                'email_verified_at' => Carbon::now(),
+                'avatar' => 'avatarAngel.png',
+            ],
+            [
+                'id' => 41,
+                'name' => 'usuarioAmigo',
+                'email' => 'userAmigo@example.com',
+                'password' => bcrypt('password'),
+                'email_verified_at' => Carbon::now(),
+                'avatar' => 'avatarAngel.png',
+            ],
+            [
+                'id' => 50,
+                'name' => 'User 50',
+                'email' => 'user50@example.com',
+                'password' => bcrypt('password'),
+                'avatar' => 'avatarAngel.png',
+            ],
+        ];
+        foreach ($users as $userData) {
+            $user = User::create($userData);
+            $user->assignRole('user');
+        }
     }
 }

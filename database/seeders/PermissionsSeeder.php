@@ -17,14 +17,19 @@ use Spatie\Permission\Models\Role;
             Permission::create(['name' => 'Actualizar Videojuegos']);
             Permission::create(['name' => 'Eliminar Videojuegos']);
 
+            $roleAdmin = Role::create(['name' => 'admin']);
+            $roleUser = Role::firstOrCreate(['name' => 'user']);
+
             $adminUser = User::query()->create([
                'name' => 'admin',
                 'email' => 'admin@admin.com',
                 'password' => '123456',
                 'email_verified_at' => now(),
+                'avatar' => 'avatarAngel.png',
             ]);
-            $roleAdmin = Role::create(['name' => 'admin']);
-            $adminUser->assignRole($roleAdmin);
+
+            $adminUser->assignRole(['admin', 'user']);
+
             $permissionsAdmin = Permission::query()->pluck('name');
             $roleAdmin->syncPermissions($permissionsAdmin);
         }

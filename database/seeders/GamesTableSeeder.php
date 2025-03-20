@@ -19,7 +19,7 @@ class GamesTableSeeder extends Seeder
         // Realizar la consulta a la API de IGDB
         $response = Http::withHeaders([
             'Client-ID' => 'c5ew8x39828zbf5ccvewq5qsifet9p',
-            'Authorization' => 'Bearer lslp9plhz9orvhsj916zbik9eyuyau',
+            'Authorization' => 'Bearer ahyr96watr0hezc0vzhrn0owothq99',
             'Accept' => 'application/json',
         ])
             ->withBody("fields id,name,summary,first_release_date,rating,aggregated_rating,involved_companies.company.name,genres.id,genres.name,platforms.id,platforms.name,cover.url; limit 500; offset $offset;", 'application/x-www-form-urlencoded')
@@ -27,6 +27,8 @@ class GamesTableSeeder extends Seeder
 
         if ($response->failed()) {
             $this->command->error('Error al realizar la solicitud a la API.');
+            $this->command->error('Código de respuesta: ' . $response->status()); // Para ver el código HTTP
+            $this->command->error('Detalles del error: ' . $response->body());
             return;
         }
 
