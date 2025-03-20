@@ -33,6 +33,8 @@ class VideojuegoController extends Controller
             'alphabetical' => 'alphabetically',
             'reverse_alphabetical' => 'reverseAlphabetically',
             'newest' => 'newest',
+            'top_rated_aaa' => 'TopRatedAAA',
+            'exclusive_games'=> 'ExclusiveGames'
         ];
 
         $scope = $sortMap[$sort] ?? 'newest';

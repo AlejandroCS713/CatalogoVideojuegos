@@ -19,6 +19,23 @@ class Videojuego extends Model
         'publicador',
     ];
 
+    public function scopeTopRatedAAA($query)
+    {
+        return $query->where('publicador', ['Nintendo', 'Sony', 'Microsoft', 'EA', 'Ubisoft'])
+            ->orderBy('rating_usuario', 'desc')
+            ->limit(10);
+    }
+    public function scopeExclusiveGames($query)
+    {
+        return $query->whereHas('plataformas', function ($q) {
+            $q->select('videojuego_plataforma.videojuego_id')
+                ->groupBy('videojuego_plataforma.videojuego_id')
+                ->havingRaw('COUNT(videojuego_plataforma.plataforma_id) = 1');
+        })
+            ->orderByDesc('rating_usuario')
+            ->limit(10);
+    }
+
     public function scopeNewest($query)
     {
         return $query->orderBy('fecha_lanzamiento', 'desc');

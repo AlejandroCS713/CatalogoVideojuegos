@@ -12,6 +12,8 @@
                 <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>{{ __('Oldest') }}</option>
                 <option value="alphabetical" {{ request('sort') == 'alphabetical' ? 'selected' : '' }}>{{ __('A to Z') }}</option>
                 <option value="reverse_alphabetical" {{ request('sort') == 'reverse_alphabetical' ? 'selected' : '' }}>{{ __('Z to A') }}</option>
+                <option value="top_rated_aaa" {{ request('sort') == 'top_rated_aaa' ? 'selected' : '' }}>{{ __('Top Rated AAA Games') }}</option>
+                <option value="exclusive_games" {{ request('sort') == 'exclusive_games' ? 'selected' : '' }}>{{ __('Exclusive Games') }}</option>
             </select>
         </form>
         @can('Crear Videojuegos')
