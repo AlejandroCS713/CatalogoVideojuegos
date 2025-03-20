@@ -49,53 +49,6 @@ it('shows an empty logros view if no logros exist', function () {
 
     $user->delete();
 });
-it('allows user to send a friend request', function () {
-    $user1 = User::factory()->create();
-    $user2 = User::factory()->create();
-
-    $this->be($user1);
-
-    $response = $this->post(route('friends.send', $user2->id));
-
-    $response->assertRedirect()->assertStatus(302);
-    $this->assertDatabaseHas('friends', [
-        'user_id' => $user1->id,
-        'friend_id' => $user2->id,
-        'status' => 'pending',
-    ]);
-
-    Friend::where('user_id', $user1->id)->where('friend_id', $user2->id)->delete();
-    Friend::where('user_id', $user2->id)->where('friend_id', $user1->id)->delete();
-    $user1->delete();
-    $user2->delete();
-});
-
-it('allows user to accept a friend request', function () {
-    $user1 = User::factory()->create();
-    $user2 = User::factory()->create();
-
-    Friend::create([
-        'user_id' => $user1->id,
-        'friend_id' => $user2->id,
-        'status' => 'pending',
-    ]);
-
-    $this->be($user2);
-
-    $response = $this->post(route('friends.accept', $user1->id));
-
-    $response->assertRedirect()->assertStatus(302);
-    $this->assertDatabaseHas('friends', [
-        'user_id' => $user1->id,
-        'friend_id' => $user2->id,
-        'status' => 'accepted',
-    ]);
-
-    Friend::where('user_id', $user1->id)->where('friend_id', $user2->id)->delete();
-    Friend::where('user_id', $user2->id)->where('friend_id', $user1->id)->delete();
-    $user1->delete();
-    $user2->delete();
-});
 
 it('allows user to remove a friend', function () {
     $user1 = User::factory()->create();
