@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\PrimerMensajeEnviado;
 use App\Models\users\Friend;
 use App\Models\users\Message;
 use App\Models\users\User;
@@ -68,6 +69,8 @@ class ChatComponent extends Component
         if ($receiver) {
             $receiver->notify(new NewMessageNotification($message));
         }
+
+        event(new PrimerMensajeEnviado(Auth::user(), $receiver));
 
         $this->newMessage = '';
         $this->dispatch('message-sent');
