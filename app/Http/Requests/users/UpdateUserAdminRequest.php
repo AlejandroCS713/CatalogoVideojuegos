@@ -22,6 +22,7 @@ class UpdateUserAdminRequest extends FormRequest
             'publicador' => 'nullable|string|max:255',
             'plataformas' => 'required|array',
             'generos' => 'required|array',
+            'imagen' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 }

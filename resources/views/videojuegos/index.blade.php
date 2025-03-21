@@ -20,19 +20,32 @@
             <a href="{{ route('admin.create') }}" class="button fit" style="width: 200px;">{{ __('Create Game') }}</a>
 
         @endcan
-    <div class="videojuegos-grid">
-        @foreach ($videojuegos as $videojuego)
-            <div>
+        <div class="videojuegos-grid">
+            @foreach ($videojuegos as $videojuego)
                 <div>
-                    @if ($videojuego->multimedia->isNotEmpty())
-                        <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"><img class="game-image" src="{{ asset($videojuego->multimedia->first()->url) }}" alt="{{ __('Image of ') }} {{ $videojuego->nombre }}"/></a>
-                    @else
-                        <a style="background: none; border: none;cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}"> {{ $videojuego->nombre }}</a>
-                    @endif
+                    <div>
+                        @php
+                            $imageUrl = null;
+
+                            if (isset($videojuego->multimedia->first()->url) && strpos($videojuego->multimedia->first()->url, 'http') === 0) {
+                                $imageUrl = $videojuego->multimedia->first()->url;
+                            }
+
+                            elseif (isset($videojuego->multimedia->first()->url)) {
+                                 $imageUrl = asset('storage/' . $videojuego->multimedia->first()->url);
+                            }
+                            else {
+                                $imageUrl = asset('storage/default-image.jpg');
+                            }
+                        @endphp
+
+                        <a style="background: none; border: none; cursor: pointer;" href="{{ route('videojuegos.show', $videojuego->id) }}">
+                            <img class="game-image" src="{{ $imageUrl }}" alt="{{ __('Image of ') }} {{ $videojuego->nombre }}"/>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
         <ul class="pagination">
             {{ $videojuegos->links('vendor.pagination.default') }}
         </ul>

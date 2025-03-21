@@ -1,6 +1,6 @@
 @props(['action', 'method' => 'POST', 'videojuego' => null, 'plataformas', 'generos'])
 
-<form action="{{ $action }}" method="POST">
+<form action="{{ $action }}" method="POST" enctype="multipart/form-data">
     @csrf
     @if($method === 'PUT')
         @method('PUT')
@@ -29,6 +29,17 @@
     <div class="form-group">
         <label class="form-label">{{ __('Publisher') }}</label>
         <input type="text" name="publicador" class="form-input" value="{{ old('publicador', $videojuego->publicador ?? '') }}">
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">{{ __('Cover Image') }}</label>
+        <input type="file" name="imagen" class="form-input">
+
+        @if(isset($videojuego) && $videojuego->multimedia->where('tipo', 'imagen')->first())
+            <div class="preview">
+                <img src="{{ asset($videojuego->multimedia->where('tipo', 'imagen')->first()->url) }}" alt="Game Image" width="150">
+            </div>
+        @endif
     </div>
 
     <div class="form-group">

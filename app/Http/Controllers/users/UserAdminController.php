@@ -13,6 +13,7 @@ use App\Models\games\Reseña;
 use App\Models\games\Videojuego;
 use App\Models\users\User;
 use App\Models\Forum\Foro;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserAdminController extends Controller
@@ -43,6 +44,16 @@ class UserAdminController extends Controller
         $videojuego->plataformas()->attach($request->plataformas);
         $videojuego->generos()->attach($request->generos);
 
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('videojuegos', 'public');
+
+            Multimedia::create([
+                'videojuego_id' => $videojuego->id,
+                'tipo' => 'imagen',
+                'url' => str_replace('public/', 'storage/', $path)
+            ]);
+        }
+
         return redirect()->route('videojuegos.index')->with('success', 'Videojuego creado exitosamente.');
     }
 
@@ -51,6 +62,7 @@ class UserAdminController extends Controller
         $videojuego = Videojuego::findOrFail($id);
         $plataformas = Plataforma::all();
         $generos = Genero::all();
+
         return view('admin.edit', compact('videojuego', 'plataformas', 'generos'));
     }
 
@@ -62,6 +74,24 @@ class UserAdminController extends Controller
         $videojuego->plataformas()->sync($request->plataformas);
         $videojuego->generos()->sync($request->generos);
 
+        if ($request->hasFile('imagen')) {
+            $imagenActual = Multimedia::where('videojuego_id', $id)
+                ->where('tipo', 'imagen')
+                ->first();
+
+            if ($imagenActual) {
+                Storage::delete(str_replace('storage/', 'public/', $imagenActual->url));
+                $imagenActual->delete();
+            }
+
+            $path = $request->file('imagen')->store('videojuegos', 'public');
+
+            Multimedia::create([
+                'videojuego_id' => $videojuego->id,
+                'tipo' => 'imagen',
+                'url' => str_replace('public/', 'storage/', $path)
+            ]);
+        }
         return redirect()->route('videojuegos.index')->with('success', 'Videojuego actualizado.');
     }
 
