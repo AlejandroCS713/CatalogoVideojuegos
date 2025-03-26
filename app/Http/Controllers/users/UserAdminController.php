@@ -5,6 +5,7 @@ namespace App\Http\Controllers\users;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\users\StoreUserAdminRequest;
 use App\Http\Requests\users\UpdateUserAdminRequest;
+use App\Models\Foro\Foro;
 use App\Models\games\Genero;
 use App\Models\games\Multimedia;
 use App\Models\games\Plataforma;
@@ -12,7 +13,6 @@ use App\Models\games\Precio;
 use App\Models\games\Reseña;
 use App\Models\games\Videojuego;
 use App\Models\users\User;
-use App\Models\Forum\Foro;
 use Illuminate\Support\Facades\Storage;
 
 

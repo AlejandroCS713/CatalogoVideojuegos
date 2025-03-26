@@ -2,9 +2,9 @@
 
 namespace App\Models\users;
 
-use App\Models\Forum\Foro;
-use App\Models\Forum\MensajeForo;
-use App\Models\Forum\RespuestaForo;
+use App\Models\Foro\Foro;
+use App\Models\Foro\MensajeForo;
+use App\Models\Foro\RespuestaForo;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

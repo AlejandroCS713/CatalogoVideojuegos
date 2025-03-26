@@ -1,14 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\forum;
+namespace App\Http\Controllers\Foro;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Forum\RespuestaForoRequest;
-use App\Models\Forum\Foro;
-use App\Models\Forum\RespuestaForo;
-use App\Models\users\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Foro\RespuestaForo;
 
 class RespuestaForoController extends Controller
 {

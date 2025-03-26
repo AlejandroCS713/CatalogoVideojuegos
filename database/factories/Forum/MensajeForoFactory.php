@@ -2,13 +2,13 @@
 
 namespace Database\Factories\Forum;
 
-use App\Models\Forum\Foro;
-use App\Models\Forum\MensajeForo;
+use App\Models\Foro\Foro;
+use App\Models\Foro\MensajeForo;
 use App\Models\users\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Forum\MensajeForo>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Foro\MensajeForo>
  */
 class MensajeForoFactory extends Factory
 {

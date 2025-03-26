@@ -9,7 +9,7 @@ it('can access the foroum index page', function () {
 });
 
 it('can access the forum show page', function () {
-    $foro = \App\Models\Forum\Foro::factory()->create();
+    $foro = \App\Models\Foro\Foro::factory()->create();
     $response = $this->get(route('forum.show', ['foro' => $foro->id]));
     $response->assertStatus(200);
 });

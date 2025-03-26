@@ -2,7 +2,7 @@
 
 namespace App\Models\games;
 
-use App\Models\Forum\Foro;
+use App\Models\Foro\Foro;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

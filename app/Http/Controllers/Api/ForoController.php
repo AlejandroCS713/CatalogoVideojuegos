@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ForoResource;
-use App\Models\Forum\Foro;
+use App\Models\Foro\Foro;
 
-use Illuminate\Http\Request;
 /**
  * @OA\Info(
  *     version="1.0.0",

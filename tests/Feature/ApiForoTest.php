@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Forum\Foro;
+use App\Models\Foro\Foro;
 
 it('can fetch a single forum', function () {
     $foro = Foro::factory()->create();

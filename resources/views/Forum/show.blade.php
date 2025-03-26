@@ -74,12 +74,19 @@
                     <button type="submit">{{ __('Send Message') }}</button>
                 </form>
             </div>
-                <a href="{{ route('forum.edit', $foro) }}" class="button fit" style="width: 250px; margin-top: 20px; margin-bottom: 20px ">{{ __('Edit') }}</a>
+            @can('update-foro', $foro)
+                <a href="{{ route('forum.edit', $foro) }}" class="button fit" style="width: 250px; margin-top: 20px; margin-bottom: 20px ">
+                    {{ __('Edit') }}
+                </a>
+            @endcan
+
+            @can('delete-foro', $foro)
                 <form action="{{ route('forum.destroy', $foro) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" style="width: 200px;">{{ __('Delete') }}</button>
                 </form>
+            @endcan
 
             <a href="{{ route('forum.pdf', $foro) }}" class="button fit" style="width: 250px; margin-top: 20px; margin-bottom: 20px ">
                 {{ __('Download PDF') }}

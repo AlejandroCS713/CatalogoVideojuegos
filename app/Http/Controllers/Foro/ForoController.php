@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\forum;
+namespace App\Http\Controllers\Foro;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Forum\ForoRequest;
-use App\Models\Forum\Foro;
-
+use App\Models\Foro\Foro;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Support\Str;
 
 class ForoController extends Controller
@@ -54,6 +51,9 @@ class ForoController extends Controller
 
     public function edit(Foro $foro)
     {
+        if (Gate::denies('update-foro', $foro)) {
+            abort(403);
+        }
         return view('forum.edit', compact('foro'));
     }
     public function update(ForoRequest $request, Foro $foro)
@@ -72,6 +72,9 @@ class ForoController extends Controller
     }
     public function destroy(Foro $foro)
     {
+        if (Gate::denies('delete-foro', $foro)) {
+            abort(403);
+        }
         $foro->delete();
 
         return redirect()->route('forum.index')->with('success', '¡Foro eliminado exitosamente!');

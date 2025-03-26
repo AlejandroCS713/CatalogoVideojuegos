@@ -2,14 +2,14 @@
 
 namespace Database\Factories\Forum;
 
-use App\Models\Forum\Foro;
-use App\Models\Forum\MensajeForo;
+use App\Models\Foro\Foro;
+use App\Models\Foro\MensajeForo;
 use App\Models\games\Videojuego;
 use App\Models\users\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Foro>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Foro\Foro>
  */class ForoFactory extends Factory
 {
     protected $model = Foro::class;

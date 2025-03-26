@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Forum;
+namespace App\Models\Foro;
 
 use App\Models\games\Videojuego;
 use App\Models\users\User;
