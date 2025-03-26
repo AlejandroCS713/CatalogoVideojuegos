@@ -19,6 +19,7 @@ class ForoRequest extends FormRequest
             'imagen' => 'nullable|image|max:2048',
             'videojuegos' => 'nullable|array',
             'videojuegos.*' => 'exists:videojuegos,id',
+            'rol_videojuego' => 'nullable|in:principal,secundario,opcional',
         ];
     }
 }

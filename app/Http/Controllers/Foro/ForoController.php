@@ -43,17 +43,15 @@ class ForoController extends Controller
         ]);
 
         if ($request->videojuego_id) {
-            $foro->videojuegos()->attach($request->videojuego_id);
+            $foro->videojuegos()->attach($request->videojuego_id, ['rol_videojuego' => $request->rol_videojuego]);
         }
+
         return redirect()->route('forum.index')->with('success', '¡Foro creado exitosamente!');
         //dd($request->all());
     }
 
     public function edit(Foro $foro)
     {
-        if (Gate::denies('update-foro', $foro)) {
-            abort(403);
-        }
         return view('forum.edit', compact('foro'));
     }
     public function update(ForoRequest $request, Foro $foro)
@@ -65,16 +63,13 @@ class ForoController extends Controller
         ]);
 
         if ($request->videojuegos) {
-            $foro->videojuegos()->sync($request->videojuegos);
+            $foro->videojuegos()->sync($request->videojuegos, ['rol_videojuego' => $request->rol_videojuego]);
         }
 
         return redirect()->route('forum.index')->with('success', 'Foro actualizado');
     }
     public function destroy(Foro $foro)
     {
-        if (Gate::denies('delete-foro', $foro)) {
-            abort(403);
-        }
         $foro->delete();
 
         return redirect()->route('forum.index')->with('success', '¡Foro eliminado exitosamente!');

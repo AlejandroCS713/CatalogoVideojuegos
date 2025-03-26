@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('foro_id')->constrained('foros')->onDelete('cascade');
             $table->foreignId('videojuego_id')->constrained('videojuegos')->onDelete('cascade');
-            $table->enum('estado_hilo', ['activo', 'cerrado'])->default('activo');;
+            $table->enum('rol_videojuego', ['principal', 'secundario', 'opcional'])->default('principal');
             $table->timestamps();
         });
     }

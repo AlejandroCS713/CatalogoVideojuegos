@@ -58,6 +58,19 @@
                     value="{{ old('videojuego_id', $foro->videojuego_id) }}"
                 >
             </div>
+
+                <div class="form-group">
+                    <label for="rol_videojuego">{{ __('Role of the Video Game in Forum') }}</label>
+                    <select name="rol_videojuego" id="rol_videojuego" class="form-control" style="color: black">
+                        <option value="principal" {{ old('rol_videojuego', $foro->rol_videojuego) === 'principal' ? 'selected' : '' }}>{{ __('Main') }}</option>
+                        <option value="secundario" {{ old('rol_videojuego', $foro->rol_videojuego) === 'secundario' ? 'selected' : '' }}>{{ __('Secondary') }}</option>
+                        <option value="opcional" {{ old('rol_videojuego', $foro->rol_videojuego) === 'opcional' ? 'selected' : '' }}>{{ __('Optional') }}</option>
+                    </select>
+                    @error('rol_videojuego')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
             <button type="submit">{{ __('Update') }}</button>
         </form>
     </div>
