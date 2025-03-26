@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Foro;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Forum\ForoRequest;
+use App\Http\Requests\Foro\ForoRequest;
 use App\Models\Foro\Foro;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Auth\Access\Gate;
@@ -42,9 +42,14 @@ class ForoController extends Controller
             'videojuego_id' => $request->videojuego_id,
         ]);
 
-        if ($request->videojuego_id) {
-            $foro->videojuegos()->attach($request->videojuego_id, ['rol_videojuego' => $request->rol_videojuego]);
+        if ($request->has('videojuegos') && is_array($request->videojuegos)) {
+            $videojuegoData = [];
+            foreach ($request->videojuegos as $videojuego_id) {
+                $videojuegoData[$videojuego_id] = ['rol_videojuego' => $request->rol_videojuego ?? 'secundario'];
+            }
+            $foro->videojuegos()->attach($videojuegoData);
         }
+
 
         return redirect()->route('forum.index')->with('success', '¡Foro creado exitosamente!');
         //dd($request->all());
@@ -62,8 +67,12 @@ class ForoController extends Controller
             'imagen' => $request->imagen,
         ]);
 
-        if ($request->videojuegos) {
-            $foro->videojuegos()->sync($request->videojuegos, ['rol_videojuego' => $request->rol_videojuego]);
+        if ($request->has('videojuegos') && is_array($request->videojuegos)) {
+            $videojuegoData = [];
+            foreach ($request->videojuegos as $videojuego_id) {
+                $videojuegoData[$videojuego_id] = ['rol_videojuego' => $request->rol_videojuego ?? 'secundario'];
+            }
+            $foro->videojuegos()->sync($videojuegoData);
         }
 
         return redirect()->route('forum.index')->with('success', 'Foro actualizado');

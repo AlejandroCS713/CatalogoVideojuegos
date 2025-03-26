@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Foro;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Forum\RespuestaForoRequest;
+use App\Http\Requests\Foro\RespuestaForoRequest;
 use App\Models\Foro\RespuestaForo;
 
 class RespuestaForoController extends Controller

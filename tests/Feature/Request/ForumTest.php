@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Requests\Forum\ForoRequest;
-use App\Http\Requests\Forum\MensajeForoRequest;
-use App\Http\Requests\Forum\RespuestaForoRequest;
+use App\Http\Requests\Foro\ForoRequest;
+use App\Http\Requests\Foro\MensajeForoRequest;
+use App\Http\Requests\Foro\RespuestaForoRequest;
 use App\Models\games\Videojuego;
 use Illuminate\Support\Facades\Validator;
 

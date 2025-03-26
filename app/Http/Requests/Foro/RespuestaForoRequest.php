@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Forum;
+namespace App\Http\Requests\Foro;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MensajeForoRequest extends FormRequest
+class RespuestaForoRequest extends FormRequest
 {
     public function authorize()
     {
@@ -16,7 +16,7 @@ class MensajeForoRequest extends FormRequest
         return [
             'contenido' => 'required|string',
             'imagen' => 'nullable|image|max:2048',
-            'foro_id' => 'required|exists:foros,id',
+            'mensaje_id' => 'required|exists:mensaje_foros,id',
         ];
     }
 }

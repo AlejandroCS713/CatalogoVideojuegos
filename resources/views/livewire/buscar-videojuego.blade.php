@@ -1,11 +1,12 @@
 <div>
-    <input type="text"  wire:model="searchTerm" wire:keydown.debounce.100ms="search" placeholder="{{ __('Search video game...') }}" class="form-control" style="color: black; margin-bottom: 10px;">
+    <!-- Input de búsqueda -->
+    <input type="text" wire:model="searchTerm" wire:keydown.debounce.100ms="search"
+           placeholder="{{ __('Search video game...') }}" class="form-control"
+           style="color: black; margin-bottom: 10px;">
 
-@if($message)
-        <div class="error-message" style="color: red; margin-top: 10px;">
-            {{ $message }}
-        </div>
-    @else
+    <!-- Mensaje de error -->
+
+        <!-- Lista de videojuegos encontrados -->
         <div class="videojuegos-group2">
             <div class="videojuegos-grid2">
                 @foreach ($videojuegos as $videojuego)
@@ -30,6 +31,26 @@
                     </div>
                 @endforeach
             </div>
+        </div>
+
+    <!-- Videojuegos seleccionados -->
+    @if (!empty($videojuegosSeleccionados))
+        <h3 style="margin-top: 15px;">{{ __('Selected Games') }}</h3>
+        <div class="videojuegos-seleccionados">
+            @foreach ($videojuegosSeleccionados as $videojuegoId)
+                @php
+                    $videojuego = App\Models\games\Videojuego::find($videojuegoId);
+                @endphp
+                @if ($videojuego)
+                    <div class="seleccionado-item" style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                        <span>{{ $videojuego->nombre }}</span>
+                        <button type="button" wire:click="eliminarVideojuego({{ $videojuegoId }})"
+                                style="color: red; border: none; background: none; cursor: pointer;">
+                            ❌
+                        </button>
+                    </div>
+                @endif
+            @endforeach
         </div>
     @endif
 </div>
