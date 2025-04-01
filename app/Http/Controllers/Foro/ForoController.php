@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Foro;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Foro\ForoRequest;
 use App\Models\Foro\Foro;
+use App\Models\games\Videojuego;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Support\Str;
@@ -37,22 +38,26 @@ class ForoController extends Controller
         $foro = Foro::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
-            'imagen' => $request->imagen,
             'usuario_id' => auth()->id(),
-            'videojuego_id' => $request->videojuego_id,
         ]);
 
         if ($request->has('videojuegos') && is_array($request->videojuegos)) {
             $videojuegoData = [];
             foreach ($request->videojuegos as $videojuego_id) {
-                $videojuegoData[$videojuego_id] = ['rol_videojuego' => $request->rol_videojuego ?? 'secundario'];
+                if (Videojuego::find($videojuego_id)) {
+                    $videojuegoData[$videojuego_id] = [
+                        'rol_videojuego' => $request->rol_videojuego ?? 'secundario'
+                    ];
+                }
             }
-            $foro->videojuegos()->attach($videojuegoData);
+
+            if (!empty($videojuegoData)) {
+                $foro->videojuegos()->attach($videojuegoData);
+            }
         }
 
-
-        return redirect()->route('forum.index')->with('success', '¡Foro creado exitosamente!');
-        //dd($request->all());
+        return redirect()->route('forum.index')
+        ->with('success', __('Forum created successfully!'));
     }
 
     public function edit(Foro $foro)

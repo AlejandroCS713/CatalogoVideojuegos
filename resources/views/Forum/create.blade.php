@@ -29,9 +29,8 @@
                 @enderror
             </div>
             <div style="margin-bottom: 50px">
-            <label for="videojuego_id">{{ __('Select a Game') }}</label>
-            @livewire('buscar-videojuego')
-                <input type="hidden" name="videojuego_id" id="videojuego_id" wire:model="videojuego_id">
+                <label for="videojuegos">{{ __('Select Games') }}</label>
+                @livewire('buscar-videojuego')
             </div>
 
             <div class="form-group">
