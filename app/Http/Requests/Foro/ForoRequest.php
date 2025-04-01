@@ -16,7 +16,6 @@ class ForoRequest extends FormRequest
         return [
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'imagen' => 'nullable|image|max:2048',
             'videojuegos' => 'nullable|array',
             'videojuegos.*' => 'exists:videojuegos,id',
             'rol_videojuego' => 'nullable|in:principal,secundario,opcional',

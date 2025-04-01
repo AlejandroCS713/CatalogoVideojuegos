@@ -66,22 +66,27 @@ class ForoController extends Controller
     }
     public function update(ForoRequest $request, Foro $foro)
     {
-        $foro->update([
-            'titulo' => $request->titulo,
-            'descripcion' => $request->descripcion,
-            'imagen' => $request->imagen,
-        ]);
+        $foro->update($request->only(['titulo', 'descripcion']));
 
-        if ($request->has('videojuegos') && is_array($request->videojuegos)) {
-            $videojuegoData = [];
-            foreach ($request->videojuegos as $videojuego_id) {
-                $videojuegoData[$videojuego_id] = ['rol_videojuego' => $request->rol_videojuego ?? 'secundario'];
+        $videojuegoData = [];
+        $submittedVideojuegos = $request->input('videojuegos', []);
+
+        if (is_array($submittedVideojuegos)) {
+            foreach ($submittedVideojuegos as $videojuego_id) {
+                if ($videojuego_id && Videojuego::find($videojuego_id)) {
+                    $videojuegoData[$videojuego_id] = [
+                        'rol_videojuego' => $request->rol_videojuego ?? 'secundario'
+                    ];
+                }
             }
-            $foro->videojuegos()->sync($videojuegoData);
         }
 
-        return redirect()->route('forum.index')->with('success', 'Foro actualizado');
+        $foro->videojuegos()->sync($videojuegoData);
+
+        return redirect()->route('forum.index')
+        ->with('success', __('Forum updated successfully!'));
     }
+
     public function destroy(Foro $foro)
     {
         $foro->delete();
