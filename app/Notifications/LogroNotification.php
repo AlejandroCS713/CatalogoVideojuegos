@@ -27,7 +27,7 @@ class LogroNotification extends Notification {
             ->line("Has desbloqueado el logro: {$this->logro->nombre}")
             ->line($this->logro->descripcion)
             ->line('¡Sigue jugando y desbloquea más logros!')
-            ->action('Ver logros', url('/perfil/logros'))
+            ->line('Ves a tu perfil y mira tu nuevo logro!.')
             ->line('Gracias por ser parte de la comunidad.');
     }
     public function toDatabase($notifiable) {

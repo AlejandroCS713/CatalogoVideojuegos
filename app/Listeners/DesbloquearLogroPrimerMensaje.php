@@ -9,29 +9,23 @@ class DesbloquearLogroPrimerMensaje
 {
     public function handle(PrimerMensajeEnviado $event)
     {
+        $logro = Logro::where('nombre', 'Primer Mensaje')->first();
+
+        if (!$logro) {
+            return;
+        }
+
         $user = $event->sender;
 
-        if (!$user->logros()->where('nombre', 'Primer Mensaje')->exists()) {
-            $logro = Logro::firstOrCreate([
-                'nombre' => 'Primer Mensaje',
-                'descripcion' => 'Has enviado tu primer mensaje a un amigo'
-            ]);
-
+        if (!$user->logros()->where('logro_id', $logro->id)->exists()) {
             $user->logros()->attach($logro->id);
-
             NotificarLogroDesbloqueado::dispatch($user, $logro);
         }
 
         $friend = $event->receiver;
 
-        if (!$friend->logros()->where('nombre', 'Primer Mensaje')->exists()) {
-            $logro = Logro::firstOrCreate([
-                'nombre' => 'Primer Mensaje',
-                'descripcion' => 'Has recibido tu primer mensaje de un amigo'
-            ]);
-
+        if (!$friend->logros()->where('logro_id', $logro->id)->exists()) {
             $friend->logros()->attach($logro->id);
-
             NotificarLogroDesbloqueado::dispatch($friend, $logro);
         }
     }

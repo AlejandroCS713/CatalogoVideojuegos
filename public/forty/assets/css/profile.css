@@ -197,17 +197,22 @@
     background: none;
     cursor: pointer;
 }
-.dropdown-item2{
-    margin-right: 20px;
-    padding: 10px;
-    text-align: center;
+.dropdown-item2 {
+    padding: 8px 12px;
+    text-align: left;
     width: 100%;
     border: none;
     background: none;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: white;
+    display: block;
 }
-.dropdown-item:hover {
-    background: darkslategrey;
+.dropdown-item2:hover {
+    background-color: #2f4f4f;
 }
 
 .search-user-cs{

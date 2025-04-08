@@ -22,5 +22,13 @@ class LogrosSeeder extends Seeder
                 'puntos' => 10,
             ]
         );
+
+        Logro::firstOrCreate(
+            ['nombre' => 'Primer Mensaje'],
+            [
+                'descripcion' => 'Has enviado o recibido tu primer mensaje con un amigo',
+                'puntos' => 20,
+            ]
+        );
     }
 }
