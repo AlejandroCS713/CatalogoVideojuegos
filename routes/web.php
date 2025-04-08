@@ -25,9 +25,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/admin/dashboard', [UserAdminController::class, 'dashboard'])
-    ->name('admin.dashboard')
-    ->middleware('auth', 'verified', 'role:admin');
+
+Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
+    Route::get('/admin/dashboard', [UserAdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::post('/send-bulk-email', [UserAdminController::class, 'sendBulkEmail'])->name('send.bulk.email');
+});
+
 
 Route::post('/videojuegos', [VideojuegoController::class, 'store']);
 

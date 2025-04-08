@@ -39,4 +39,21 @@
             </div>
         </div>
     </div>
+    <div class="col_admin">
+        <h2 style="margin-bottom: 20px;">Enviar Correo Masivo a Usuarios</h2>
+        <form action="{{ route('send.bulk.email') }}" method="POST">
+            @csrf
+            <div style="margin-bottom: 15px;">
+                <label for="message" style="display: block; margin-bottom: 5px; font-weight: bold;">Mensaje:</label>
+                <textarea name="message" id="message" rows="8" required style="width: 700px;color:black; padding: 10px; border: 1px solid #ccc; border-radius: 4px; min-height: 150px;">{{ old('message') }}</textarea>
+                @error('message')
+                <p style="color: red; font-size: 0.9em; margin-top: 5px;">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <button type="submit" style="padding: 10px 20px; cursor: pointer;">
+                Enviar Correo a Todos los Usuarios
+            </button>
+        </form>
+    </div>
 @endsection
