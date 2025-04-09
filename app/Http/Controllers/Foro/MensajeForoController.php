@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Foro;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Foro\MensajeForoRequest;
 use App\Models\Foro\MensajeForo;
+use Illuminate\Support\Facades\DB;
 
 class MensajeForoController extends Controller
 {
@@ -20,6 +21,17 @@ class MensajeForoController extends Controller
         ]);
 
         return redirect()->route('forum.show', $mensaje->foro_id)->with('success', '¡Mensaje enviado!');
+    }
+
+    public function destroy(MensajeForo $mensaje)
+    {
+        DB::transaction(function () use ($mensaje) {
+            $mensaje->respuestas()->delete();
+
+            $mensaje->delete();
+        });
+
+        return redirect()->back()->with('success', 'Mensaje eliminado correctamente.');
     }
 
 }

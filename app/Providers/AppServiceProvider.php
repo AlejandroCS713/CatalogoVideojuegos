@@ -31,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('delete-foro', function (User $user, Foro $foro) {
             return $user->id === $foro->user_id;
         });
+        Gate::define('verLogros', function (User $user) {
+            return $user->logros()->exists();
+        });
 
         Gate::policy(Foro::class, ForoPolicy::class);
 

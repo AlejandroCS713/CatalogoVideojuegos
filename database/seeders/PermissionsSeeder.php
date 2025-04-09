@@ -19,6 +19,7 @@ use Spatie\Permission\Models\Role;
 
             $roleAdmin = Role::create(['name' => 'admin']);
             $roleUser = Role::firstOrCreate(['name' => 'user']);
+            $rolemoderador = Role::firstOrCreate(['name' => 'moderador']);
 
             $adminUser = User::query()->create([
                'name' => 'admin',

@@ -10,7 +10,11 @@
                 </a>
             </div>
             <h1>{{ Auth::user()->name }}</h1>
-            <a href="{{ route('logros.perfil') }}" class="button fit" style="width: 300px">🎯 {{ __('View My Achievements') }}</a>
+            @can('verLogros')
+                <a href="{{ route('logros.perfil') }}" class="button fit" style="width: 300px">
+                    🎯 {{ __('View My Achievements') }}
+                </a>
+            @endcan
         </div>
         <div class="profile-sections">
             @livewire('friend-list')

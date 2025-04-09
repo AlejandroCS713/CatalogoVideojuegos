@@ -35,7 +35,19 @@
                 <div>
                     <div>
                         <p>{{ $mensaje->contenido }}</p>
-                        <small>{{ __('Posted by') }} {{ $mensaje->usuario->name }} el {{ $mensaje->created_at->format('d/m/Y H:i') }}</small>
+                        <small>
+                            {{ __('Posted by') }} {{ $mensaje->usuario->name }} el {{ $mensaje->created_at->format('d/m/Y H:i') }}
+                        </small>
+
+                        @can('delete', $mensaje)
+                            <form action="{{ route('mensaje-foro.destroy', $mensaje->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" style="background: none; border: none; color: red; cursor: pointer;" onclick="return confirm('¿Estás seguro de eliminar este mensaje?')">
+                                    🗑 {{ __('Delete') }}
+                                </button>
+                            </form>
+                        @endcan
 
                         <div>
                             <h5>{{ __('Replies') }}</h5>

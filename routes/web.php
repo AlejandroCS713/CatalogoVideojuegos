@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     Route::get('/forum/{foro}/edit', [ForoController::class, 'edit'])->name('forum.edit');
     Route::put('/forum/{foro}', [ForoController::class, 'update'])->name('forum.update');
     Route::delete('/forum/{foro}', [ForoController::class, 'destroy'])->name('forum.destroy');
+    Route::delete('/mensaje-foro/{mensaje}', [MensajeForoController::class, 'destroy'])->name('mensaje-foro.destroy');
 
 });
 
