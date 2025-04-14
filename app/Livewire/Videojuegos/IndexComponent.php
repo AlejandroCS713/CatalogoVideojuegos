@@ -6,6 +6,9 @@ use AllowDynamicProperties;
 use App\Models\games\Genero;
 use App\Models\games\Plataforma;
 use App\Models\games\Videojuego;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithPagination;
@@ -112,9 +115,20 @@ class IndexComponent extends Component
         $videojuegos = null;
         if (is_null($this->videojuegoId)) {
             $query = Videojuego::with('multimedia');
-            switch ($this->sort) {
-                default: $query->orderBy('created_at', 'desc'); break;
-            }
+
+            $sortActions = [
+                'newest' => fn($q) => $q->newest(),
+                'oldest' => fn($q) => $q->oldest(),
+                'alphabetical' => fn($q) => $q->alphabetically(),
+                'reverse_alphabetical' => fn($q) => $q->reverseAlphabetically(),
+                'top_rated_aaa' => fn($q) => $q->topRatedAAA(),
+                'exclusive_games' => fn($q) => $q->exclusiveGames(),
+            ];
+
+            $action = $sortActions[$this->sort] ?? $sortActions['newest'];
+
+            $action($query);
+
             $videojuegos = $query->paginate(30);
         }
 
@@ -147,7 +161,7 @@ class IndexComponent extends Component
             $this->selectedId = $id;
             $this->nombre = $videojuego->nombre;
             $this->descripcion = $videojuego->descripcion;
-            $this->fecha_lanzamiento = $videojuego->fecha_lanzamiento ? \Carbon\Carbon::parse($videojuego->fecha_lanzamiento)->format('Y-m-d') : null;
+            $this->fecha_lanzamiento = $videojuego->fecha_lanzamiento ? Carbon::parse($videojuego->fecha_lanzamiento)->format('Y-m-d') : null;
             $this->desarrollador = $videojuego->desarrollador;
             $this->publicador = $videojuego->publicador;
             $this->plataformas = $videojuego->plataformas->pluck('id')->toArray();
@@ -173,9 +187,9 @@ class IndexComponent extends Component
             $this->modalOpen = true;
             $this->confirmingDeletion = false;
 
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Videojuego no encontrado.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error', 'Ocurrió un error al intentar editar el videojuego.');
         }
     }
@@ -196,7 +210,7 @@ class IndexComponent extends Component
                 $videojuego->update($validated);
                 session()->flash('message', 'Videojuego actualizado correctamente.');
             } else {
-                $videojuego = Videojuego::create($validated); // Crea nuevo videojuego
+                $videojuego = Videojuego::create($validated);
                 session()->flash('message', 'Videojuego creado correctamente.');
             }
             $videojuego->plataformas()->sync($this->plataformas ?? []);
@@ -230,10 +244,10 @@ class IndexComponent extends Component
                 $this->loadCurrentGame();
             }
 
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Error: Videojuego no encontrado durante la operación.');
             $this->closeModal();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error', 'Ocurrió un error al guardar el videojuego: ' . $e->getMessage());
         }
     }
@@ -297,10 +311,10 @@ class IndexComponent extends Component
 
             $this->cancelDelete();
 
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Error: Videojuego no encontrado al intentar eliminar.');
             $this->cancelDelete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             session()->flash('error', 'Ocurrió un error al eliminar el videojuego: ' . $e->getMessage());
             $this->cancelDelete();
         }
