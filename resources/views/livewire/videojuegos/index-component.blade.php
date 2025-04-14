@@ -131,7 +131,7 @@
                                 <button wire:click="openEditModal({{ $videojuego->id }})"  style="padding: 2px 6px; font-size: 0.8em;">{{ __('Edit') }}</button>
                             @endcan
                             @can('Eliminar Videojuegos')
-                                <button wire:click="confirmDeleteAttempt({{ $videojuego->id }})" style="padding: 2px 6px; font-size: 0.8em; background-color: rgba(231, 76, 60, 0.8); border-color: rgba(192, 57, 43, 0.8);">{{ __('Delete') }}</button>
+                                <button wire:click.prevent="confirmDeleteAttempt({{ $videojuego->id }})" style="padding: 2px 6px; font-size: 0.8em; background-color: rgba(231, 76, 60, 0.8); border-color: rgba(192, 57, 43, 0.8);">{{ __('Delete') }}</button>
                             @endcan
                         </div>
                     </div>
@@ -143,16 +143,17 @@
             <div class="pagination-container">
                 @if($videojuegos && $videojuegos->hasPages())
                     <ul class="pagination">
-                        {{ $videojuegos->links('vendor.pagination.default') }}
+                        {{ $videojuegos->links() }}
                     </ul>
                 @endif
             </div>
 
+
             @if ($modalOpen)
                 <div class="modal" style="display: block;">
-                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" wire:click="closeModal"></div>
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;" wire:click.prevent="closeModal"></div>
                     <div class="modal-content" style="z-index: 1000; position: relative; background: #333; color: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 600px; margin: 50px auto;">
-                        <span wire:click="closeModal" class="close" style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: white;">&times;</span>
+                        <span wire:click.prevent="closeModal" class="close" style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: white;">&times;</span>
                         <h2>{{ $editMode ? __('Edit Video Game') : __('Create Video Game') }}</h2>
                         @if ($errors->any())
                             <div style="background-color: #e74c3c; color: white; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
@@ -236,7 +237,7 @@
                                 <span wire:loading wire:target="save">{{ $editMode ? __('Updating...') : __('Saving...') }}</span>
                                 <span wire:loading.remove wire:target="save">{{ $editMode ? __('Update') : __('Save') }}</span>
                             </button>
-                            <button type="button" wire:click="closeModal" style="padding: 0 10px 20px;">{{ __('Cancel') }}</button>
+                            <button type="button" wire:click.prevent="closeModal" style="padding: 0 10px 20px;">{{ __('Cancel') }}</button>
                         </form>
                     </div>
                 </div>
@@ -244,17 +245,17 @@
 
             @if ($confirmingDeletion)
                 <div class="modal" style="display: block;">
-                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 1001;" wire:click="cancelDelete"></div> {{-- z-index más alto --}}
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 1001;" wire:click.prevent="cancelDelete"></div>
                     <div class="modal-content" style="z-index: 1002; position: relative; background: #e74c3c; color: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 450px; margin: 15% auto; text-align: center;">
                        <h2 style="color: white; margin-bottom: 15px;">{{ __('Confirm Deletion') }}</h2>
                         <p>{{ __('Are you sure you want to delete this video game? This action cannot be undone.') }}</p>
 
                         <div style="margin-top: 25px;">
-                            <button wire:click="deleteConfirmed" class="button" style="background-color: #c0392b; border-color: #a93226; color: white; margin-right: 15px;margin-bottom: 15px; padding: 10px 25px;">
+                            <button wire:click.prevent="deleteConfirmed" class="button" style="background-color: #c0392b; border-color: #a93226; color: white; margin-right: 15px;margin-bottom: 15px; padding: 10px 25px;">
                                 <span wire:loading wire:target="deleteConfirmed">{{ __('Deleting...') }}</span>
                                 <span wire:loading.remove wire:target="deleteConfirmed">{{ __('Yes, Delete') }}</span>
                             </button>
-                            <button wire:click="cancelDelete" class="button" style="background-color: #bdc3c7; border-color: #a1a6a9; color: #333; padding: 10px 25px;">
+                            <button wire:click.prevent="cancelDelete" class="button" style="background-color: #bdc3c7; border-color: #a1a6a9; color: #333; padding: 10px 25px;">
                                 {{ __('No, Cancel') }}
                             </button>
                         </div>

@@ -26,6 +26,8 @@ class IndexComponent extends Component
     public $currentGame = null;
 
     public $sort = 'newest';
+
+    public $page = 1;
     public $modalOpen = false;
     public $editMode = false;
     public $selectedId = null;
@@ -39,6 +41,10 @@ class IndexComponent extends Component
     public $confirmingDeletion = false;
     public $gameIdToDelete = null;
 
+    public function updatingSort()
+    {
+        $this->resetPage();
+    }
     protected function rules()
     {
         return [
