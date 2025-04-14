@@ -4,6 +4,7 @@ namespace App\Livewire\Videojuegos;
 use AllowDynamicProperties;
 use App\Models\games\Videojuego;
 
+use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
@@ -72,6 +73,17 @@ class VideoGamesViewComponent extends Component
         }
     }
 
+    public function index()
+    {
+        return view('videojuegos.index');
+    }
+
+    public function show($id)
+    {
+        $videojuego = Videojuego::with('multimedia')->findOrFail($id);
+
+        return view('videojuegos.show', compact('videojuego'));
+    }
     public function render()
     {
         $videojuegos = null;

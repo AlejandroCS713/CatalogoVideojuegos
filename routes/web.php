@@ -6,6 +6,7 @@ use App\Livewire\AcceptFriendRequests;
 use App\Livewire\ChatComponent;
 use App\Livewire\FriendList;
 use App\Livewire\SearchUsers;
+use App\Livewire\Videojuegos\VideoGamesViewComponent;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Livewire\Livewire;
@@ -31,9 +32,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     Route::post('/send-bulk-email', [UserAdminController::class, 'sendBulkEmail'])->name('send.bulk.email');
 });
 
-
-Route::post('/videojuegos', [VideojuegoController::class, 'store']);
-
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
@@ -51,7 +49,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
-Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
+Route::get('/videojuegos', [VideoGamesViewComponent::class, 'index'])->name('videojuegos.index');
 Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -61,7 +59,6 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
-
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/mis-logros/pdf', [LogroController::class, 'generarPDF'])->name('logros.pdf');
     Route::get('/profile/logros', [LogroController::class, 'index'])->name('logros.perfil');
@@ -86,18 +83,8 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     Route::put('/forum/{foro}', [ForoController::class, 'update'])->name('forum.update');
     Route::delete('/forum/{foro}', [ForoController::class, 'destroy'])->name('forum.destroy');
     Route::delete('/mensaje-foro/{mensaje}', [MensajeForoController::class, 'destroy'])->name('mensaje-foro.destroy');
-
 });
-
-Route::group(['middleware' => ['auth', 'verified', 'role:admin', 'permission:Crear Videojuegos', 'permission:Actualizar Videojuegos', 'permission:Eliminar Videojuegos']], function () {
-    Route::post('/admin', [UserAdminController::class, 'store'])->name('admin.store');
-    Route::get('/admin/create', [UserAdminController::class, 'create'])->name('admin.create');
-    Route::get('/admin/{id}/edit', [UserAdminController::class, 'edit'])->name('admin.edit');
-    Route::put('/admin/{id}', [UserAdminController::class, 'update'])->name('admin.update');
-    Route::delete('/admin/{id}', [UserAdminController::class, 'destroy'])->name('admin.destroy');
-});
-
 
 Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
-Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
+Route::get('/videojuegos/{id}', [VideoGamesViewComponent::class, 'show'])->name('videojuegos.show');
 

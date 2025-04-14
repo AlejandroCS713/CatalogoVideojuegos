@@ -13,9 +13,65 @@
     @livewire('videojuegos.manage-game-admin-component')
 
     @if ($currentGame)
-        <div class="game-container">
-            <h1 class="game-title">{{ $currentGame->nombre }}</h1>
-        </div>
+            <div class="game-container">
+                <h1 class="game-title">{{ $currentGame->nombre }}</h1>
+                <div class="game-images">
+                    @foreach ($currentGame->multimedia as $media)
+                        @if ($media->tipo === 'imagen')
+                            @php
+                                $mediaUrl = asset('images/default-game.png');
+                                if (isset($media->url) && !empty($media->url)) {
+                                    if (str_starts_with($media->url, 'http')) {
+                                        $mediaUrl = $media->url;
+                                    } else {
+                                        $relativePath = ltrim(str_replace('storage/', '', $media->url), '/');
+                                        $mediaUrl = asset('storage/' . $relativePath);
+                                    }
+                                }
+                            @endphp
+                            <img class="game-image" src="{{ $mediaUrl }}" alt="{{ __('Image of ') }} {{ $currentGame->nombre }}">
+                        @endif
+                    @endforeach
+                </div>
+                <div class="game-info">
+                    <p class="game-description">{{ $currentGame->descripcion }}</p>
+                    <p><strong>{{ __('Release Date:') }}</strong> {{ $currentGame->fecha_lanzamiento ? \Carbon\Carbon::parse($currentGame->fecha_lanzamiento)->format('d/m/Y') : __('Unknown') }}</p>
+                    <p><strong>{{ __('User Rating:') }}</strong> ⭐ {{ $currentGame->rating_usuario ? number_format($currentGame->rating_usuario, 1) : 'N/A' }}</p>
+                    <p><strong>{{ __('Reviews Rating:') }}</strong> ⭐ {{ $currentGame->rating_criticas ? number_format($currentGame->rating_criticas, 1) : 'N/A' }}</p>
+                    <p><strong>{{ __('Developer:') }}</strong> {{ $currentGame->desarrollador }}</p>
+                    <p><strong>{{ __('Publisher:') }}</strong> {{ $currentGame->publicador }}</p>
+                </div>
+                <div class="game-genres">
+                    <h2>{{ __('Genres') }}</h2>
+                    <ul>
+                        @forelse ($currentGame->generos as $genero)
+                            <li class="genre-item">{{ $genero->nombre }}</li>
+                        @empty
+                            <li>{{ __('No genres listed.') }}</li>
+                        @endforelse
+                    </ul>
+                </div>
+                <div class="game-platforms">
+                    <h2>{{ __('Available in:') }}</h2>
+                    <ul>
+                        @forelse ($currentGame->plataformas as $plataforma)
+                            <li>
+                                <strong>{{ $plataforma->nombre }}</strong>
+                                @php
+                                    $precio = $currentGame->precios->where('plataforma_id', $plataforma->id)->first();
+                                @endphp
+                                @if ($precio)
+                                    - <span class="game-price">💰 {{ number_format($precio->precio, 2) }} €</span>
+                                @else
+                                    - <span class="game-price">{{ __('Price not available') }}</span>
+                                @endif
+                            </li>
+                        @empty
+                            <li>{{ __('No platforms listed.') }}</li>
+                        @endforelse
+                    </ul>
+                </div>
+            </div>
     @else
         <div class="videojuegos-container">
             <h1 class="text-center mb-5 title-games">{{ __('Available Video Games') }}</h1>
