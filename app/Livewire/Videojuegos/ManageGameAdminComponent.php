@@ -2,49 +2,38 @@
 
 namespace App\Livewire\Videojuegos;
 
+use Livewire\Component;
+
 use AllowDynamicProperties;
 use App\Models\games\Genero;
 use App\Models\games\Plataforma;
 use App\Models\games\Videojuego;
+use App\Models\games\Multimedia;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
-use Livewire\WithPagination;
-
 use Livewire\WithFileUploads;
-use App\Models\games\Multimedia;
+use Livewire\Attributes\On;
 
 #[AllowDynamicProperties]
-class IndexComponent extends Component
+class ManageGameAdminComponent extends Component
 {
-    use WithPagination;
     use WithFileUploads;
 
-    public $videojuegoId = null;
-    public $currentGame = null;
-
-    public $sort = 'newest';
-
-    public $page = 1;
     public $modalOpen = false;
     public $editMode = false;
     public $selectedId = null;
     public $nombre, $descripcion, $fecha_lanzamiento, $desarrollador, $publicador, $plataformas = [], $generos = [];
-    public $allPlataformas = [];
-    public $allGeneros = [];
-
     public $imagen;
     public $existingImageUrl = null;
+
+    public $allPlataformas = [];
+    public $allGeneros = [];
 
     public $confirmingDeletion = false;
     public $gameIdToDelete = null;
 
-    public function updatingSort()
-    {
-        $this->resetPage();
-    }
     protected function rules()
     {
         return [
@@ -55,7 +44,7 @@ class IndexComponent extends Component
             'publicador' => 'nullable|string|max:255',
             'plataformas' => 'nullable|array',
             'generos' => 'nullable|array',
-            'imagen' => 'nullable|image|max:2048|mimes:jpg,jpeg,png,webp',
+            'imagen' => ($this->editMode && !$this->imagen) ? 'nullable' : 'nullable|image|max:2048|mimes:jpg,jpeg,png,webp',
         ];
     }
 
@@ -70,96 +59,30 @@ class IndexComponent extends Component
         $this->validateOnly('imagen');
     }
 
-
-    protected function queryString()
+    public function loadModalData()
     {
-        if (is_null($this->videojuegoId)) {
-            return ['sort', 'page'];
+        if (empty($this->allPlataformas)) {
+            $this->allPlataformas = Plataforma::orderBy('nombre')->get();
         }
-        return [];
-    }
-
-    public function mount($videojuegoId = null)
-    {
-        $this->videojuegoId = $videojuegoId;
-        if ($this->videojuegoId) {
-            $this->loadCurrentGame();
-            $this->selectedId = $this->videojuegoId;
-        } else {
-            $this->loadModalData();
+        if (empty($this->allGeneros)) {
+            $this->allGeneros = Genero::orderBy('nombre')->get();
         }
     }
 
-    public function loadModalData() {
-        $this->allPlataformas = Plataforma::orderBy('nombre')->get();
-        $this->allGeneros = Genero::orderBy('nombre')->get();
-    }
-
-    public function loadCurrentGame()
-    {
-        if ($this->videojuegoId) {
-            $this->currentGame = Videojuego::with([
-                'multimedia',
-                'generos',
-                'plataformas',
-                'precios'
-            ])->find($this->videojuegoId);
-
-            if (!$this->currentGame) {
-                abort(404);
-            }
-
-            $this->existingImageUrl = $this->currentGame->multimedia->where('tipo', 'imagen')->first()?->url;
-            if ($this->existingImageUrl && !str_starts_with($this->existingImageUrl, 'http')) {
-                $this->existingImageUrl = asset($this->existingImageUrl);
-            }
-        }
-    }
-
-    public function render()
-    {
-        $videojuegos = null;
-        if (is_null($this->videojuegoId)) {
-            $query = Videojuego::with('multimedia');
-
-            $sortActions = [
-                'newest' => fn($q) => $q->newest(),
-                'oldest' => fn($q) => $q->oldest(),
-                'alphabetical' => fn($q) => $q->alphabetically(),
-                'reverse_alphabetical' => fn($q) => $q->reverseAlphabetically(),
-                'top_rated_aaa' => fn($q) => $q->topRatedAAA(),
-                'exclusive_games' => fn($q) => $q->exclusiveGames(),
-            ];
-
-            $action = $sortActions[$this->sort] ?? $sortActions['newest'];
-
-            $action($query);
-
-            $videojuegos = $query->paginate(30);
-        }
-
-        return view('livewire.videojuegos.index-component', [
-            'videojuegos' => $videojuegos,
-            'currentGame' => $this->currentGame
-        ]);
-    }
-
-
+    #[On('openCreateModalEvent')]
     public function openCreateModal()
     {
-        if (!$this->allPlataformas->count() || !$this->allGeneros->count()) {
-            $this->loadModalData();
-        }
+        $this->loadModalData();
         $this->resetFields();
         $this->editMode = false;
         $this->modalOpen = true;
+        $this->confirmingDeletion = false;
     }
 
-    public function openEditModal($id)
+    #[On('openEditModalEvent')]
+    public function openEditModal(int $id)
     {
-        if (!$this->allPlataformas->count() || !$this->allGeneros->count()) {
-            $this->loadModalData();
-        }
+        $this->loadModalData();
 
         try {
             $videojuego = Videojuego::with(['plataformas', 'generos', 'multimedia'])->findOrFail($id);
@@ -167,27 +90,14 @@ class IndexComponent extends Component
             $this->selectedId = $id;
             $this->nombre = $videojuego->nombre;
             $this->descripcion = $videojuego->descripcion;
-            $this->fecha_lanzamiento = $videojuego->fecha_lanzamiento ? Carbon::parse($videojuego->fecha_lanzamiento)->format('Y-m-d') : null;
+            $this->fecha_lanzamiento = $videojuego->fecha_lanzamiento;
             $this->desarrollador = $videojuego->desarrollador;
             $this->publicador = $videojuego->publicador;
             $this->plataformas = $videojuego->plataformas->pluck('id')->toArray();
             $this->generos = $videojuego->generos->pluck('id')->toArray();
 
-            $imagenActual = $videojuego->multimedia->where('tipo', 'imagen')->first();
-            if ($imagenActual && $imagenActual->url) {
-                if (str_starts_with($imagenActual->url, 'http')) {
-                    $this->existingImageUrl = $imagenActual->url;
-                } elseif (Storage::disk('public')->exists(str_replace('storage/', '', $imagenActual->url))) {
-
-                    $this->existingImageUrl = asset($imagenActual->url);
-                } else {
-                    $this->existingImageUrl = null;
-                }
-            } else {
-                $this->existingImageUrl = null;
-            }
-            $this->imagen = null;
-            $this->resetValidation('imagen');
+            $imagen = $videojuego->multimedia->where('tipo', 'imagen')->first();
+            $this->existingImageUrl = $imagen ? $imagen->url : null;
 
             $this->editMode = true;
             $this->modalOpen = true;
@@ -195,8 +105,10 @@ class IndexComponent extends Component
 
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Videojuego no encontrado.');
+            $this->closeModal();
         } catch (Exception $e) {
-            session()->flash('error', 'Ocurrió un error al intentar editar el videojuego.');
+            session()->flash('error', 'Ocurrió un error al intentar editar el videojuego: ' . $e->getMessage());
+            $this->closeModal();
         }
     }
 
@@ -207,8 +119,8 @@ class IndexComponent extends Component
         $imageData = null;
         if ($this->imagen) {
             $imageData = $validated['imagen'];
+            unset($validated['imagen']);
         }
-        unset($validated['imagen']);
 
         try {
             if ($this->editMode) {
@@ -219,36 +131,33 @@ class IndexComponent extends Component
                 $videojuego = Videojuego::create($validated);
                 session()->flash('message', 'Videojuego creado correctamente.');
             }
+
             $videojuego->plataformas()->sync($this->plataformas ?? []);
             $videojuego->generos()->sync($this->generos ?? []);
 
             if ($imageData) {
                 if ($this->editMode) {
-                    $imagenActual = Multimedia::where('videojuego_id', $videojuego->id)
-                        ->where('tipo', 'imagen')
-                        ->first();
+                    $imagenActual = Multimedia::where('videojuego_id', $videojuego->id)->where('tipo', 'imagen')->first();
 
                     if ($imagenActual) {
                         $relativePath = str_replace('storage/', '', $imagenActual->url);
-                        if (Storage::disk('public')->exists($relativePath)) {
+                        if (!str_starts_with($imagenActual->url, 'http') && Storage::disk('public')->exists($relativePath)) {
                             Storage::disk('public')->delete($relativePath);
                         }
                         $imagenActual->delete();
                     }
                 }
-                $path = $imageData->store('videojuegos', 'public');
 
+                $path = $imageData->store('videojuegos', 'public');
                 Multimedia::create([
                     'videojuego_id' => $videojuego->id,
                     'tipo' => 'imagen',
                     'url' => 'storage/' . $path
                 ]);
             }
-            $this->closeModal();
 
-            if ($this->videojuegoId && $this->editMode && $this->videojuegoId == $videojuego->id) {
-                $this->loadCurrentGame();
-            }
+            $this->closeModal();
+            $this->dispatch('gameSaved');
 
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Error: Videojuego no encontrado durante la operación.');
@@ -258,7 +167,6 @@ class IndexComponent extends Component
         }
     }
 
-
     public function closeModal()
     {
         $this->modalOpen = false;
@@ -267,13 +175,16 @@ class IndexComponent extends Component
 
     public function resetFields()
     {
-        $this->reset(['nombre', 'descripcion', 'fecha_lanzamiento', 'desarrollador', 'publicador', 'plataformas', 'generos', 'imagen', 'selectedId', 'editMode', 'existingImageUrl']);
+        $this->reset([
+            'nombre', 'descripcion', 'fecha_lanzamiento', 'desarrollador', 'publicador',
+            'plataformas', 'generos', 'imagen', 'selectedId', 'editMode',
+            'existingImageUrl', 'confirmingDeletion', 'gameIdToDelete'
+        ]);
         $this->resetValidation();
-        if ($this->videojuegoId) { $this->selectedId = $this->videojuegoId; }
     }
 
-
-    public function confirmDeleteAttempt($id)
+    #[On('confirmDeleteEvent')]
+    public function confirmDeleteAttempt(int $id)
     {
         $this->gameIdToDelete = $id;
         $this->confirmingDeletion = true;
@@ -299,22 +210,18 @@ class IndexComponent extends Component
             $imagen = $videojuego->multimedia->where('tipo', 'imagen')->first();
             if ($imagen) {
                 $relativePath = str_replace('storage/', '', $imagen->url);
-                if (Storage::disk('public')->exists($relativePath)) {
+                if (!str_starts_with($imagen->url, 'http') && Storage::disk('public')->exists($relativePath)) {
                     Storage::disk('public')->delete($relativePath);
                 }
                 $imagen->delete();
             }
+
             $videojuego->plataformas()->detach();
             $videojuego->generos()->detach();
-
             $videojuego->delete();
 
             session()->flash('message', 'Videojuego eliminado correctamente.');
-
-            if ($this->videojuegoId && $this->videojuegoId == $this->gameIdToDelete) {
-                $this->redirect(route('videojuegos.index'));
-            }
-
+            $this->dispatch('gameDeleted');
             $this->cancelDelete();
 
         } catch (ModelNotFoundException $e) {
@@ -324,5 +231,10 @@ class IndexComponent extends Component
             session()->flash('error', 'Ocurrió un error al eliminar el videojuego: ' . $e->getMessage());
             $this->cancelDelete();
         }
+    }
+
+    public function render()
+    {
+        return view('livewire.videojuegos.manage-game-admin-component');
     }
 }

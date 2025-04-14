@@ -4,5 +4,5 @@
 @section('title', $videojuego->nombre)
 
 @section('content')
-    @livewire('videojuegos.index-component', ['videojuegoId' => $videojuego->id])
+    @livewire('videojuegos.video-games-view-component', ['videojuegoId' => $videojuego->id])
 @endsection

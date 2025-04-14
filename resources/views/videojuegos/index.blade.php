@@ -3,5 +3,5 @@
 @section('body_class', 'is-preload videojuegos-bg')
 
 @section('content')
-    @livewire('videojuegos.index-component')
+    @livewire('videojuegos.video-games-view-component')
 @endsection
