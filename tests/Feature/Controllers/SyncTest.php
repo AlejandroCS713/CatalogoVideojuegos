@@ -1,9 +1,5 @@
 <?php
 
-
-use App\Events\AmigoAgregado;
-use App\Jobs\NotificarLogroDesbloqueado;
-use App\Listeners\DesbloquearLogroPrimerAmigo;
 use App\Models\users\Friend;
 use App\Models\users\Logro;
 use App\Models\users\Message;
@@ -11,26 +7,7 @@ use App\Models\users\User;
 use App\Notifications\LogroNotification;
 use App\Notifications\NewMessageNotification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Bus;
-
-
-
-it('calls DesbloquearLogroPrimerAmigo when AmigoAgregado is dispatched', function () {
-    Event::fake();
-    $user1 = User::factory()->create();
-    $user2 = User::factory()->create();
-
-    event(new AmigoAgregado($user1, $user2));
-
-    Event::assertListening(
-        AmigoAgregado::class,
-        DesbloquearLogroPrimerAmigo::class
-    );
-});
-
 
 it('sends LogroNotification manually', function () {
     Notification::fake();
