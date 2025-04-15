@@ -49,7 +49,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
-Route::get('/videojuegos', [VideoGamesViewComponent::class, 'index'])->name('videojuegos.index');
+Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
 Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -86,5 +86,5 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
 });
 
 Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
-Route::get('/videojuegos/{id}', [VideoGamesViewComponent::class, 'show'])->name('videojuegos.show');
+Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
 

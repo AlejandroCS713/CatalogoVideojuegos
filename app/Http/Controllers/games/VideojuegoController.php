@@ -21,4 +21,16 @@ class VideojuegoController extends Controller
         ->get();
         return view('welcome', compact('videojuegos'));
     }
+
+    public function index()
+    {
+        return view('videojuegos.index');
+    }
+
+    public function show($id)
+    {
+        $videojuego = Videojuego::with('multimedia')->findOrFail($id);
+
+        return view('videojuegos.show', compact('videojuego'));
+    }
 }
