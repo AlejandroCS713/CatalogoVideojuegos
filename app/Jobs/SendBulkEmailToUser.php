@@ -22,8 +22,8 @@ class SendBulkEmailToUser implements ShouldQueue
     public $timeout = 120;
 
 
-    protected User $user;
-    protected string $messageContent;
+    public User $user;
+    public string $messageContent;
 
     public function __construct(User $user, string $messageContent)
     {
