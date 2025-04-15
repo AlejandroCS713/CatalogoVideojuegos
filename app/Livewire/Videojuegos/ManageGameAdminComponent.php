@@ -44,7 +44,9 @@ class ManageGameAdminComponent extends Component
             'publicador' => 'nullable|string|max:255',
             'plataformas' => 'nullable|array',
             'generos' => 'nullable|array',
-            'imagen' => ($this->editMode && !$this->imagen) ? 'nullable' : 'nullable|image|max:2048|mimes:jpg,jpeg,png,webp',
+            'imagen' => ($this->editMode && $this->imagen)
+                ? 'nullable'
+                : 'nullable|image|max:2048|mimes:jpg,jpeg,png,webp',
         ];
     }
 

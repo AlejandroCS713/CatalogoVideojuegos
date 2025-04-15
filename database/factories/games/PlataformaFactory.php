@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\games;
 
 use App\Models\games\Plataforma;
 use App\Models\games\Videojuego;
