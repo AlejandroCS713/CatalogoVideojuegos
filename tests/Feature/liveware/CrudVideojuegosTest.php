@@ -52,11 +52,17 @@ function cleanupTestData(array $data): void
         Genero::whereIn('id', $data['generoIds'])->delete();
     }
     if (!empty($data['adminData'])) {
-        $data['adminData']['user']->removeRole($data['adminData']['role']);
-        $data['adminData']['role']->permissions()->detach();
-        $data['adminData']['user']->delete();
-        $data['adminData']['role']->delete();
-        Permission::whereIn('id', $data['adminData']['permissionIds'])->delete();
+        $adminData = $data['adminData'];
+        if (isset($adminData['user'])) {
+            $adminData['user']->removeRole($adminData['role']->name);
+            $adminData['user']->delete();
+        }
+        if (isset($adminData['role'])) {
+            $adminData['role']->permissions()->detach();
+        }
+        if (isset($adminData['permissionIds'])) {
+            Permission::whereIn('id', $adminData['permissionIds'])->delete();
+        }
     }
 }
 

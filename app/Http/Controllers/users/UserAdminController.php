@@ -21,9 +21,6 @@ use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Illuminate\Console\Command;
 
-
-
-
 class UserAdminController extends Controller
 {
     public function dashboard()
