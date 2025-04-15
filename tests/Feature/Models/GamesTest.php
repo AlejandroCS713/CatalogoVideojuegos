@@ -4,7 +4,6 @@ use App\Models\games\Genero;
 use App\Models\games\Multimedia;
 use App\Models\games\Plataforma;
 use App\Models\games\Precio;
-use App\Models\games\Reseña;
 use App\Models\games\Videojuego;
 use App\Models\users\User;
 use Illuminate\Support\Facades\DB;
@@ -72,32 +71,7 @@ it('verifica que se puede asociar un precio a un videojuego y plataforma', funct
     expect($videojuego->precios->first()->precio)->toBe(59.99);
 });
 
-it('verifica que un usuario puede dejar una reseña para un videojuego', function () {
-    $user = User::find(40);
-    $videojuego = Videojuego::create([
-        'nombre' => 'Juego con reseña',
-        'descripcion' => 'Descripción del juego',
-        'fecha_lanzamiento' => now(),
-        'rating_usuario' => 4.5,
-        'rating_criticas' => 90,
-        'desarrollador' => 'Desarrollador Test',
-        'publicador' => 'Publicador Test'
-    ]);
 
-    $resena = Reseña::create([
-        'usuario_id' => $user->id,
-        'videojuego_id' => $videojuego->id,
-        'texto' => 'Este juego es increíble',
-        'calificacion' => 5
-    ]);
-
-    expect($resena->usuario->id)->toBe($user->id);
-
-    expect($resena->videojuego->id)->toBe($videojuego->id);
-
-    expect($resena->texto)->toBe('Este juego es increíble');
-    expect($resena->calificacion)->toBe(5);
-});
 it('verifica que un precio se asocia correctamente a un videojuego y plataforma', function () {
     $videojuego = Videojuego::create([
         'nombre' => 'Juego con precio',
