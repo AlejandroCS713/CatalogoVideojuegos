@@ -1,9 +1,14 @@
 @php use Illuminate\Support\Facades\Auth; @endphp
+
 <div wire:init="loadFriends" wire:poll="loadFriends">
     <div class="profile-section">
         <h2>👥 {{ __('Friends') }}</h2>
-
-            <ul class="friends-list">
+        @if (session('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
+        <ul class="friends-list">
                 @foreach ($friends as $friend)
 
                     <li class="friend-item">
