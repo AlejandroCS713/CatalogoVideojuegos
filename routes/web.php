@@ -75,13 +75,8 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     Route::get('/chat/{friendId}', ChatComponent::class)->name('message.chat');
     Route::post('/forum/{foro}/mensajes', [MensajeForoController::class, 'store'])->name('mensajes.store');
     Route::post('/mensajes/{mensaje}/respuestas', [RespuestaForoController::class, 'store'])->name('respuestas.store');
-    Route::get('/forum/create', [ForoController::class, 'create'])->name('forum.create');
-    Route::post('/forum', [ForoController::class, 'store'])->name('forum.store');
 
     Route::get('/forum/{foro}/pdf', [ForoController::class, 'generarPDF'])->name('forum.pdf');
-    Route::get('/forum/{foro}/edit', [ForoController::class, 'edit'])->name('forum.edit');
-    Route::put('/forum/{foro}', [ForoController::class, 'update'])->name('forum.update');
-    Route::delete('/forum/{foro}', [ForoController::class, 'destroy'])->name('forum.destroy');
     Route::delete('/mensaje-foro/{mensaje}', [MensajeForoController::class, 'destroy'])->name('mensaje-foro.destroy');
 });
 
