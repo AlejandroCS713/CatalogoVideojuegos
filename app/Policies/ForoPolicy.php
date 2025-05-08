@@ -9,6 +9,12 @@ use Illuminate\Auth\Access\Response;
 class ForoPolicy
 {
 
+    public function create(User $user): Response
+    {
+        return $user->hasVerifiedEmail()
+            ? Response::allow()
+            : Response::deny('Debes verificar tu correo electrónico.');
+    }
     public function update(User $user, Foro $forum): Response
     {
         return $user->id === $forum->usuario_id
