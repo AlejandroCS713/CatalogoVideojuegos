@@ -11,7 +11,7 @@ class ForoPolicy
 
     public function update(User $user, Foro $forum): Response
     {
-        return $user->id === $forum->user_id
+        return $user->id === $forum->usuario_id
             ? Response::allow()
             : Response::denyWithStatus(404);
     }
@@ -19,7 +19,7 @@ class ForoPolicy
 
     public function delete(User $user, Foro  $forum): Response
     {
-        return $user->id === $forum->user_id
+        return $user->id === $forum->usuario_id
             ? Response::allow()
             : Response::denyWithStatus(404);
     }

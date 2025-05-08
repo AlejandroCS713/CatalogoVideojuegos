@@ -24,25 +24,12 @@ class AppServiceProvider extends ServiceProvider
             Config::set('queue.default', 'database');
         }
 
-        Gate::define('update-foro', function (User $user, Foro $foro) {
-            return $user->id === $foro->user_id;
-        });
-
-        Gate::define('delete-foro', function (User $user, Foro $foro) {
-            return $user->id === $foro->user_id;
-        });
         Gate::define('verLogros', function (User $user) {
             return $user->logros()->exists();
         });
 
-        Gate::policy(Foro::class, ForoPolicy::class);
-
         Gate::before(function ($user, $ability) {
             return $user->hasRole('admin') ? true : null;
-        });
-
-        Gate::guessPolicyNamesUsing(function ($modelClass) {
-            return str_replace('App\Models\Foro\\', 'App\Policies\\', $modelClass) . 'Policy';
         });
     }
 }

@@ -10,6 +10,9 @@ class MensajeForoPolicy
 {
     public function delete(User $user, MensajeForo $mensaje)
     {
+        if ($user->id === $mensaje->usuario_id) {
+            return true;
+        }
         return $user->hasRole('moderador') && !$mensaje->usuario->hasRole('admin');
     }
 }
