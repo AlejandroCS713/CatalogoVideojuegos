@@ -27,16 +27,17 @@ class ForumIndex extends Component
 
     public string $titulo = '';
     public string $descripcion = '';
-    public array $videojuegos = [];
-    public string $rol_videojuego = 'secundario';
+    public array $videojuegosConRoles = [];
 
     public int $page = 1;
 
-    #[On('videojuegosSeleccionados')]
-    public function updateSelectedVideojuegos(array $selectedIds): void
+    #[On('videojuegosConRolSeleccionados')]
+    public function updateSelectedVideojuegosConRol(array $selectedData): void
     {
-        $existingIds = Videojuego::whereIn('id', $selectedIds)->pluck('id')->toArray();
-        $this->videojuegos = $existingIds;
+        $validGameIds = Videojuego::whereIn('id', array_keys($selectedData))->pluck('id')->toArray();
+        $this->videojuegosConRoles = collect($selectedData)
+            ->filter(fn ($role, $id) => in_array($id, $validGameIds))
+            ->all();
     }
 
     protected function rules(): array
@@ -44,11 +45,20 @@ class ForumIndex extends Component
         return [
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
-            'videojuegos' => 'nullable|array',
-            'videojuegos.*' => 'required|integer|exists:videojuegos,id',
-            'rol_videojuego' => 'required|string|in:principal,secundario,opcional',
+            'videojuegosConRoles' => 'nullable|array',
+            'videojuegosConRoles.*' => 'required|string|in:principal,secundario,opcional',
         ];
     }
+
+    protected function messages(): array
+    {
+        return [
+            'videojuegosConRoles.*.required' => __('The role for each selected game is required.'),
+            'videojuegosConRoles.*.string' => __('The role for each selected game must be a string.'),
+            'videojuegosConRoles.*.in' => __('The role for each selected game must be one of: Main, Secondary, Optional.'),
+        ];
+    }
+
 
     protected function queryString(): array
     {
@@ -98,6 +108,7 @@ class ForumIndex extends Component
         $this->resetFields();
         $this->editMode = false;
         $this->modalOpen = true;
+        $this->dispatch('inicializarJuegosConRol', []);
     }
 
     public function openEditModal(int $id): void
@@ -108,13 +119,15 @@ class ForumIndex extends Component
         $this->selectedId = $id;
         $this->titulo = $foro->titulo;
         $this->descripcion = $foro->descripcion;
-        $this->videojuegos = $foro->videojuegos->pluck('id')->toArray();
-        $pivotData = $foro->videojuegos->first()?->pivot;
-        $this->rol_videojuego = $pivotData?->rol_videojuego ?? 'secundario';
+
+        $this->videojuegosConRoles = $foro->videojuegos->mapWithKeys(function ($videojuego) {
+            return [$videojuego->id => $videojuego->pivot->rol_videojuego ?? 'principal'];
+        })->toArray();
 
         $this->editMode = true;
         $this->modalOpen = true;
         $this->confirmingDeletion = false;
+        $this->dispatch('inicializarJuegosConRol', $this->videojuegosConRoles);
     }
 
     public function save(): void
@@ -141,9 +154,11 @@ class ForumIndex extends Component
         }
 
         $videojuegoSyncData = [];
-        if (!empty($this->videojuegos)) {
-            foreach ($this->videojuegos as $videojuego_id) {
-                $videojuegoSyncData[$videojuego_id] = ['rol_videojuego' => $this->rol_videojuego];
+        if (!empty($this->videojuegosConRoles)) {
+            foreach ($this->videojuegosConRoles as $videojuego_id => $rol) {
+                if (is_int($videojuego_id) && Videojuego::find($videojuego_id)) {
+                    $videojuegoSyncData[$videojuego_id] = ['rol_videojuego' => $rol];
+                }
             }
         }
         $foro->videojuegos()->sync($videojuegoSyncData);
@@ -161,11 +176,12 @@ class ForumIndex extends Component
     public function resetFields(): void
     {
         $this->reset([
-            'titulo', 'descripcion', 'videojuegos', 'rol_videojuego',
+            'titulo', 'descripcion', 'videojuegosConRoles',
             'selectedId', 'editMode', 'confirmingDeletion',
             'foroIdToDelete'
         ]);
         $this->resetValidation();
+        $this->dispatch('inicializarJuegosConRol', []);
     }
 
     public function confirmDeleteAttempt(int $id): void
@@ -198,20 +214,24 @@ class ForumIndex extends Component
         session()->flash('message', __('Forum deleted successfully!'));
         $this->dispatch('forumDeleted');
         $this->cancelDelete();
+        
+        if ($this->foroId && $this->foroId == $this->foroIdToDelete) {
+            $this->redirect(route('foros.index'), navigate:true);
+        }
     }
 
     public function render()
     {
-        $foros = null;
+        $forosPaginados = null;
 
         if (is_null($this->foroId)) {
             $query = Foro::query();
             $query->orderBy('created_at', 'desc');
-            $foros = $query->paginate(10);
+            $forosPaginados = $query->paginate(10);
         }
 
         return view('livewire.foros.forum-index', [
-            'foros' => $foros,
+            'foros' => $forosPaginados,
             'currentForo' => $this->currentForo
         ]);
     }

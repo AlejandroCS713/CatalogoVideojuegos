@@ -41,24 +41,12 @@
                         </div>
 
                         <div style="margin-bottom: 20px; border: 1px solid #555; padding: 15px; border-radius: 5px;">
-                            <label style="display: block; margin-bottom: 10px;">{{ __('Select Related Games') }}</label>
-                            @livewire('buscar-videojuego')
-                            @if (!empty($videojuegos))
-                                <p style="font-size: 0.8em; margin-top: 10px; color: #ccc;">{{ __('Selected IDs:') }} {{ implode(', ', $videojuegos) }}</p>
-                            @endif
-                            @error('videojuegos') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
-                            @error('videojuegos.*') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
+                            <label style="display: block; margin-bottom: 10px;">{{ __('Select Related Games and their Roles') }}</label>
+                            @livewire('buscar-videojuego', ['juegosIniciales' => $videojuegosConRoles])
+                            @error('videojuegosConRoles') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
-                        <div style="margin-bottom: 20px;">
-                            <label for="modal_rol_videojuego">{{ __('Role of Related Games') }}</label>
-                            <select wire:model="rol_videojuego" id="modal_rol_videojuego" class="form-select" style="width: 100%; color: black; padding: 8px; border-radius: 4px;">
-                                <option value="principal">{{ __('Main') }}</option>
-                                <option value="secundario">{{ __('Secondary') }}</option>
-                                <option value="opcional">{{ __('Optional') }}</option>
-                            </select>
-                            @error('rol_videojuego') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
-                        </div>
+                        {{-- ELIMINADO EL SELECT GENERAL DE ROL_VIDEOJUEGO --}}
 
                         <div style="text-align: right; margin-top: 25px;">
                             <button type="submit" class="button primary" style="padding: 10px 20px; margin-right: 10px;">
@@ -106,7 +94,7 @@
                 <ul>
                     @forelse($currentForo->videojuegos as $videojuego)
                         <li>
-                            <strong>{{ $videojuego->nombre }}</strong>
+                            <strong>{{ $videojuego->nombre }}</strong> (Rol: {{ $videojuego->pivot->rol_videojuego ?? __('N/A') }})
                             <br>
                             @php
                                 $imgUrl = $videojuego->multimedia->where('tipo', 'imagen')->first()?->url;
@@ -240,6 +228,5 @@
                 @endif
             </div>
         </div>
-
     @endif
 </div>

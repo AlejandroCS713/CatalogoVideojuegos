@@ -8,46 +8,63 @@ use Livewire\Component;
 class BuscarVideojuego extends Component
 {
     public $searchTerm = '';
-    public $videojuegos = [];
-    public $videojuegosSeleccionados = [];
+   public array $videojuegosConRol = [];
 
-    public function search()
+    protected $listeners = ['inicializarJuegosConRol'];
+
+    public function inicializarJuegosConRol(array $juegos)
     {
-        if (strlen($this->searchTerm) >= 2) {
-            $this->videojuegos = Videojuego::where('nombre', 'LIKE', "%{$this->searchTerm}%")
-                ->orderBy('nombre', 'asc')
-                ->get();
-        } else {
-            $this->videojuegos = [];
-        }
+        $this->videojuegosConRol = $juegos;
     }
+
+    // ELIMINAMOS EL MÉTODO search()
 
     public function seleccionarVideojuego($id)
     {
         $videojuego = Videojuego::find($id);
 
-        if ($videojuego && !in_array($id, $this->videojuegosSeleccionados)) {
-            $this->videojuegosSeleccionados[] = $id;
+        if ($videojuego && !array_key_exists($id, $this->videojuegosConRol)) {
+            $this->videojuegosConRol[$id] = 'principal';
         }
 
         $this->searchTerm = '';
-        $this->videojuegos = [];
 
-        $this->dispatch('videojuegosSeleccionados', $this->videojuegosSeleccionados);
+        $this->dispatch('videojuegosConRolSeleccionados', $this->videojuegosConRol);
     }
 
     public function eliminarVideojuego($id)
     {
-        $this->videojuegosSeleccionados = array_filter($this->videojuegosSeleccionados, fn($videojuegoId) => $videojuegoId != $id);
+        unset($this->videojuegosConRol[$id]);
+        $this->dispatch('videojuegosConRolSeleccionados', $this->videojuegosConRol);
+    }
 
-        $this->dispatch('videojuegosSeleccionados', $this->videojuegosSeleccionados);
+    public function updatedVideojuegosConRol()
+    {
+        $this->dispatch('videojuegosConRolSeleccionados', $this->videojuegosConRol);
     }
 
     public function render()
     {
+        $resultadosBusqueda = [];
+
+        if (strlen($this->searchTerm) >= 2) {
+            $resultadosBusqueda = Videojuego::where('nombre', 'LIKE', "%{$this->searchTerm}%")
+                ->orderBy('nombre', 'asc')
+                ->limit(10)
+                ->get();
+        }
+
+        $videojuegosSeleccionadosModels = collect();
+        if (!empty($this->videojuegosConRol)) {
+            $ids = array_keys($this->videojuegosConRol);
+            if (!empty($ids)) {
+                $videojuegosSeleccionadosModels = Videojuego::whereIn('id', $ids)->get()->keyBy('id');
+            }
+        }
+
         return view('livewire.buscar-videojuego', [
-            'videojuegos' => $this->videojuegos,
-            'videojuegosSeleccionados' => $this->videojuegosSeleccionados,
+            'resultadosBusqueda' => $resultadosBusqueda,
+            'videojuegosSeleccionadosModels' => $videojuegosSeleccionadosModels,
         ]);
     }
 
