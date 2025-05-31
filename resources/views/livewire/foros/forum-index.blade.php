@@ -46,8 +46,6 @@
                             @error('videojuegosConRoles') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
-                        {{-- ELIMINADO EL SELECT GENERAL DE ROL_VIDEOJUEGO --}}
-
                         <div style="text-align: right; margin-top: 25px;">
                             <button type="submit" class="button primary" style="padding: 10px 20px; margin-right: 10px;">
                                 <span wire:loading wire:target="save">{{ $editMode ? __('Updating...') : __('Saving...') }}</span>

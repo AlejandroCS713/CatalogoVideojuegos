@@ -15,7 +15,7 @@
 <h1>{{ $foro->titulo }}</h1>
 <p>{{ $foro->descripcion }}</p>
 
-<h2>Videojuegos Relacionados:</h2>
+<h2>{{__('Related Video Games:')}}</h2>
 <ul>
     @foreach($foro->videojuegos as $videojuego)
         <li>
@@ -30,25 +30,25 @@
                          alt="Imagen de {{ $videojuego->nombre }}"
                          style="width:150px; height:auto; display:block; margin-top:10px;">
                 @else
-                    <p>(Imagen no disponible)</p>
+                    <p>{{__('(Image not available)')}}</p>
                 @endif
             @endif
         </li>
     @endforeach
 </ul>
 
-<h2>Mensajes:</h2>
+<h2>{{__('Messages:')}}</h2>
 @foreach($foro->mensajes as $mensaje)
     <div class="mensaje">
         <p><strong>{{ $mensaje->usuario->name }}</strong>: {{ $mensaje->contenido }}</p>
-        <small>Publicado el {{ $mensaje->created_at->format('d/m/Y H:i') }}</small>
+        <small>{{__('Published on')}} {{ $mensaje->created_at->format('d/m/Y H:i') }}</small>
 
         @if($mensaje->respuestas->count())
-            <h4>Respuestas:</h4>
+            <h4>{{__('Answers:')}}</h4>
             @foreach($mensaje->respuestas as $respuesta)
                 <div class="respuesta">
                     <p><strong>{{ $respuesta->usuario->name }}</strong>: {{ $respuesta->contenido }}</p>
-                    <small>Respondido el {{ $respuesta->created_at->format('d/m/Y H:i') }}</small>
+                    <small>{{__('Answered on ')}}{{ $respuesta->created_at->format('d/m/Y H:i') }}</small>
                 </div>
             @endforeach
         @endif

@@ -11,8 +11,9 @@
         </div>
 
         <div class="message-input">
-            <input type="text" style="color: black" wire:model="newMessage" wire:keydown.enter="sendMessage" placeholder="Escribe un mensaje...">
-            <button wire:click="sendMessage">Enviar</button>
+            <input type="text" style="color: black" wire:model="newMessage" wire:keydown.enter="sendMessage" placeholder="{{__('Write a message...')}}">
+            <button wire:click="sendMessage">{{__('Send')}}</button>
+
         </div>
 
         @if(session()->has('error'))
