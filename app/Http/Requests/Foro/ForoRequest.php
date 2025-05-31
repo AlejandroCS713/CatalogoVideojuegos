@@ -15,10 +15,9 @@ class ForoRequest extends FormRequest
     {
         return [
             'titulo' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'videojuegos' => 'nullable|array',
-            'videojuegos.*' => 'exists:videojuegos,id',
-            'rol_videojuego' => 'nullable|in:principal,secundario,opcional',
+            'descripcion' => 'required|string',
+            'videojuegosConRoles' => 'nullable|array',
+            'videojuegosConRoles.*' => 'required|string|in:principal,secundario,opcional',
         ];
     }
 }

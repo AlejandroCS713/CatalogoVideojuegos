@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Foros;
 
+use App\Http\Requests\Foro\ForoRequest;
 use Livewire\Component;
 
 use App\Models\Foro\Foro;
@@ -42,12 +43,7 @@ class ForumIndex extends Component
 
     protected function rules(): array
     {
-        return [
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'videojuegosConRoles' => 'nullable|array',
-            'videojuegosConRoles.*' => 'required|string|in:principal,secundario,opcional',
-        ];
+        return (new ForoRequest())->rules();
     }
 
     protected function messages(): array
