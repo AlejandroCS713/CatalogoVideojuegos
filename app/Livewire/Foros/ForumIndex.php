@@ -214,7 +214,7 @@ class ForumIndex extends Component
         session()->flash('message', __('Forum deleted successfully!'));
         $this->dispatch('forumDeleted');
         $this->cancelDelete();
-        
+
         if ($this->foroId && $this->foroId == $this->foroIdToDelete) {
             $this->redirect(route('foros.index'), navigate:true);
         }

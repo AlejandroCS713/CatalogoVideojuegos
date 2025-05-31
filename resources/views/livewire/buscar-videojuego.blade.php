@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Str; @endphp
 <div>
     <input type="text" wire:model.live.debounce.100ms="searchTerm"
            placeholder="{{ __('Search video game...') }}" class="form-control"

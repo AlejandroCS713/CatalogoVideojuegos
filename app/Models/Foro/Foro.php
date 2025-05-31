@@ -20,7 +20,9 @@ class Foro extends Model
 
     public function videojuegos()
     {
-        return $this->belongsToMany(Videojuego::class, 'foro_videojuego')->withTimestamps();
+        return $this->belongsToMany(Videojuego::class, 'foro_videojuego', 'foro_id', 'videojuego_id')
+            ->withPivot('rol_videojuego')
+            ->withTimestamps();
     }
 
     public function mensajes()
