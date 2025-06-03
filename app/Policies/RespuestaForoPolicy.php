@@ -2,13 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Foro\MensajeForo;
+use App\Models\Foro\RespuestaForo;
 use App\Models\users\User;
 use Illuminate\Auth\Access\Response;
 
-class MensajeForoPolicy
+class RespuestaForoPolicy
 {
-
     public function create(User $user): Response
     {
         if (! $user->hasVerifiedEmail()) {
@@ -22,29 +21,29 @@ class MensajeForoPolicy
         return Response::allow();
     }
 
-    public function update(User $user, MensajeForo $mensajeForo): Response
+    public function update(User $user, RespuestaForo $respuestaForo): Response
     {
-        if ($user->id === $mensajeForo->usuario_id) {
+        if ($user->id === $respuestaForo->usuario_id) {
             return Response::allow();
         }
 
-        if ($user->hasRole('moderador') && ! $mensajeForo->usuario->hasRole('admin')) {
+        if ($user->hasRole('moderador') && ! $respuestaForo->usuario->hasRole('admin')) {
             return Response::allow();
         }
 
-        return Response::deny('No tienes permiso para actualizar este mensaje.', 403);
+        return Response::deny('No tienes permiso para actualizar esta respuesta.', 403);
     }
 
-    public function delete(User $user, MensajeForo $mensajeForo): Response
+    public function delete(User $user, RespuestaForo $respuestaForo): Response
     {
-        if ($user->id === $mensajeForo->usuario_id) {
+        if ($user->id === $respuestaForo->usuario_id) {
             return Response::allow();
         }
 
-        if ($user->hasRole('moderador') && ! $mensajeForo->usuario->hasRole('admin')) {
+        if ($user->hasRole('moderador') && ! $respuestaForo->usuario->hasRole('admin')) {
             return Response::allow();
         }
 
-        return Response::deny('No tienes permiso para eliminar este mensaje.', 403);
+        return Response::deny('No tienes permiso para eliminar esta respuesta.', 403);
     }
 }
