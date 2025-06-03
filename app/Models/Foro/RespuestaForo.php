@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class RespuestaForo extends Model
 {
     use HasFactory;
-    protected $fillable = ['contenido', 'imagen', 'mensaje_id', 'usuario_id'];
+    protected $fillable = ['contenido', 'mensaje_id', 'usuario_id'];
 
     public function usuario()
     {

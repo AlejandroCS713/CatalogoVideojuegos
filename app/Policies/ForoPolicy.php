@@ -11,22 +11,28 @@ class ForoPolicy
 
     public function create(User $user): Response
     {
-        return $user->hasVerifiedEmail()
-            ? Response::allow()
-            : Response::deny('Debes verificar tu correo electrónico.');
-    }
-    public function update(User $user, Foro $forum): Response
-    {
-        return $user->id === $forum->usuario_id
-            ? Response::allow()
-            : Response::denyWithStatus(404);
+        if (! $user->hasVerifiedEmail()) {
+            return Response::deny('Debes verificar tu correo electrónico para crear foros.', 403);
+        }
+
+        if (! $user->hasRole('user')) {
+            return Response::deny('Debes tener el rol de usuario para crear foros.', 403);
+        }
+
+        return Response::allow();
     }
 
-
-    public function delete(User $user, Foro  $forum): Response
+    public function update(User $user, Foro $foro): Response
     {
-        return $user->id === $forum->usuario_id
+        return $user->id === $foro->usuario_id
             ? Response::allow()
-            : Response::denyWithStatus(404);
+            : Response::deny('No tienes permiso para actualizar este foro.', 403);
+    }
+
+    public function delete(User $user, Foro $foro): Response
+    {
+        return $user->id === $foro->usuario_id
+            ? Response::allow()
+            : Response::deny('No tienes permiso para eliminar este foro.', 403);
     }
 }

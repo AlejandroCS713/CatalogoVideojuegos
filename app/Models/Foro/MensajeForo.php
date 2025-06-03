@@ -10,7 +10,7 @@ class MensajeForo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['contenido', 'imagen', 'foro_id', 'usuario_id'];
+    protected $fillable = ['contenido', 'foro_id', 'usuario_id'];
 
     public function usuario()
     {

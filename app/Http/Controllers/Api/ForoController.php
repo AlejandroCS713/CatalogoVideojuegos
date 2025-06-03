@@ -3,78 +3,106 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Foro\ForoApiRequest;
 use App\Http\Resources\ForoResource;
 use App\Models\Foro\Foro;
-
-/**
- * @OA\Info(
- *     version="1.0.0",
- *     title="API de Foros",
- *     description="API para gestionar foros y mensajes",
- *     @OA\Contact(
- *         email="soporte@webgames.com"
- *     )
- * )
- *
- * @OA\Tag(
- *     name="Foros",
- *     description="Endpoints para la gestión de foros y mensajes"
- * )
- */
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ForoController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/api/foros",
-     *     summary="Obtiene todos los foros",
-     *     tags={"Foros"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Lista de foros",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/Foro")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="No se encontraron foros"
-     *     )
-     * )
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $foros = Foro::paginate(10); // Puede cambiarse según lo que prefieras
+        $foros = Foro::with([
+            'usuario',
+            'videojuegos',
+            'mensajes' => function ($query) {
+                $query->with(['usuario', 'respuestas' => function($qResp) {
+                    $qResp->with('usuario')->orderBy('created_at', 'asc');
+                }])->withCount('respuestas')->orderBy('created_at', 'desc');
+            }
+        ])
+            ->withCount('mensajes')
+            ->orderBy('created_at', 'desc')
+            ->paginate($request->input('per_page', 15));
+
         return ForoResource::collection($foros);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/foros/{foro}",
-     *     summary="Obtiene los detalles de un foro específico",
-     *     tags={"Foros"},
-     *     @OA\Parameter(
-     *         name="foro",
-     *         in="path",
-     *         required=true,
-     *         description="ID del foro",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Detalles del foro",
-     *         @OA\JsonContent(ref="#/components/schemas/Foro")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="No se encontró el foro"
-     *     )
-     * )
-     */
-    public function show($id)
+    public function store(ForoApiRequest $request)
     {
-        $foro = Foro::with(['mensajes.usuario', 'mensajes.respuestas.usuario'])->findOrFail($id);
+
+        $validatedData = $request->validated();
+        $foro = null;
+
+        DB::transaction(function () use ($validatedData, $request, &$foro) {
+            $foroData = [
+                'titulo' => $validatedData['titulo'],
+                'descripcion' => $validatedData['descripcion'],
+                'usuario_id' => $request->user()->id,
+            ];
+
+            $foro = Foro::create($foroData);
+
+            if (!empty($validatedData['videojuegosConRoles'])) {
+                $syncData = [];
+                foreach ($validatedData['videojuegosConRoles'] as $videojuegoId => $rol) {
+                    $syncData[(int)$videojuegoId] = ['rol_videojuego' => $rol];
+                }
+                $foro->videojuegos()->sync($syncData);
+            }
+        });
+
+        $foro->load(['usuario', 'videojuegos', 'mensajes.usuario', 'mensajes.respuestas.usuario']);
         return new ForoResource($foro);
+    }
+
+    public function show(Foro $foro)
+    {
+        $foro->load([
+            'usuario',
+            'videojuegos',
+            'mensajes' => function ($query) {
+                $query->with(['usuario', 'respuestas' => function($qResp) {
+                    $qResp->with('usuario')->orderBy('created_at', 'asc');
+                }])->orderBy('created_at', 'desc');
+            }
+        ]);
+        return new ForoResource($foro);
+    }
+
+    public function update(ForoApiRequest $request, Foro $foro)
+    {
+
+        $validatedData = $request->validated();
+
+        DB::transaction(function () use ($validatedData, $request, $foro) {
+            $foro->fill($validatedData);
+            $foro->save();
+
+            if ($request->has('videojuegosConRoles')) {
+                $syncData = [];
+                if (!empty($validatedData['videojuegosConRoles'])) {
+                    foreach ($validatedData['videojuegosConRoles'] as $videojuegoId => $rol) {
+                        $syncData[(int)$videojuegoId] = ['rol_videojuego' => $rol];
+                    }
+                }
+                $foro->videojuegos()->sync($syncData);
+            }
+        });
+
+        $foro->load(['usuario', 'videojuegos', 'mensajes.usuario', 'mensajes.respuestas.usuario']);
+        return new ForoResource($foro);
+    }
+
+    public function destroy(Foro $foro)
+    {
+
+        DB::transaction(function () use ($foro) {
+            $foro->videojuegos()->detach();
+            $foro->delete();
+        });
+
+        return response()->json(['message' => 'Foro eliminado correctamente.'], 200);
     }
 }

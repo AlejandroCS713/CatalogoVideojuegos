@@ -15,7 +15,6 @@ class RespuestaForoRequest extends FormRequest
     {
         return [
             'contenido' => 'required|string',
-            'imagen' => 'nullable|image|max:2048',
             'mensaje_id' => 'required|exists:mensaje_foros,id',
         ];
     }

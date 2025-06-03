@@ -11,7 +11,7 @@ class Foro extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titulo', 'descripcion', 'imagen', 'usuario_id'];
+    protected $fillable = ['titulo', 'descripcion', 'usuario_id'];
 
     public function usuario()
     {

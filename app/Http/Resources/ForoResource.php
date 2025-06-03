@@ -4,33 +4,22 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
-/**
- * @OA\Schema(
- *     schema="Foro",
- *     type="object",
- *     @OA\Property(property="id", type="integer", description="ID del foro"),
- *     @OA\Property(property="titulo", type="string", description="Título del foro"),
- *     @OA\Property(property="descripcion", type="string", description="Descripción del foro"),
- *     @OA\Property(property="usuario", type="string", description="Nombre del usuario creador del foro"),
- *     @OA\Property(property="mensajes", type="array", @OA\Items(ref="#/components/schemas/MensajeForo"))
- * )
- */
+
 class ForoResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
             'titulo' => $this->titulo,
             'descripcion' => $this->descripcion,
-            'usuario' => $this->usuario->name,
-            'mensajes' => MensajeForoResource::collection($this->mensajes),
+            'creado_por' => new UserLiteResource($this->whenLoaded('usuario')),
+            'videojuegos_asociados' => VideojuegoConRolResource::collection($this->whenLoaded('videojuegos')),
+            'mensajes' => MensajeForoResource::collection($this->whenLoaded('mensajes')),
+            'created_at' => $this->created_at->toIso8601String(),
+            'updated_at' => $this->updated_at->toIso8601String(),
         ];
     }
 }
