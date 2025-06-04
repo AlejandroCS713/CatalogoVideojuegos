@@ -1,24 +1,147 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API de Foros",
-        "description": "API para gestionar foros y mensajes",
+        "title": "API de Foros, Mensajes y Respuestas",
+        "description": "Documentación de la API para la gestión de foros, mensajes, respuestas y autenticación.",
         "contact": {
-            "email": "soporte@webgames.com"
+            "email": "1813370@alu.murciaeduca.es"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://catalogovideojuegos.test/api",
+            "description": "Servidor Principal de la API"
+        }
+    ],
     "paths": {
-        "/api/foros": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Iniciar sesión de usuario",
+                "description": "Retorna un token de API si las credenciales son correctas.",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "description": "Credenciales del usuario",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "usuario@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inicio de sesión exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abcdefghijklmnopqrstuvwxyz"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación o credenciales incorrectas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorValidation"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cerrar sesión del usuario actual",
+                "description": "Invalida el token de API actual del usuario.",
+                "operationId": "logoutUser",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sesión cerrada correctamente."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/foros": {
             "get": {
                 "tags": [
                     "Foros"
                 ],
-                "summary": "Obtiene todos los foros",
-                "operationId": "1f02040d705da811963018c581c78071",
+                "summary": "Obtener lista de foros",
+                "description": "Retorna una lista paginada de foros.",
+                "operationId": "getForosList",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Número de página para la paginación",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Lista de foros",
+                        "description": "Operación exitosa",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -29,20 +152,70 @@
                                 }
                             }
                         }
-                    },
-                    "404": {
-                        "description": "No se encontraron foros"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Foros"
+                ],
+                "summary": "Crear un nuevo foro",
+                "description": "Crea un nuevo foro y retorna los datos del foro creado.",
+                "operationId": "storeForo",
+                "requestBody": {
+                    "description": "Datos del foro a crear",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForoApiRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Foro creado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Foro"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorValidation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/foros/{foro}": {
+        "/foros/{foro}": {
             "get": {
                 "tags": [
                     "Foros"
                 ],
-                "summary": "Obtiene los detalles de un foro específico",
-                "operationId": "2f260b2ff3dce908e4b376c6f30e082d",
+                "summary": "Obtener información de un foro específico",
+                "description": "Retorna los datos de un foro.",
+                "operationId": "getForoById",
                 "parameters": [
                     {
                         "name": "foro",
@@ -56,7 +229,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Detalles del foro",
+                        "description": "Operación exitosa",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -66,87 +239,920 @@
                         }
                     },
                     "404": {
-                        "description": "No se encontró el foro"
+                        "description": "Foro no encontrado"
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "Foros"
+                ],
+                "summary": "Actualizar un foro existente",
+                "description": "Actualiza los datos de un foro y retorna el foro actualizado.",
+                "operationId": "updateForo",
+                "parameters": [
+                    {
+                        "name": "foro",
+                        "in": "path",
+                        "description": "ID del foro a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos del foro a actualizar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForoApiRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Foro actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Foro"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Foro no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorValidation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Foros"
+                ],
+                "summary": "Eliminar un foro",
+                "description": "Elimina un foro existente.",
+                "operationId": "deleteForo",
+                "parameters": [
+                    {
+                        "name": "foro",
+                        "in": "path",
+                        "description": "ID del foro a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Foro eliminado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Foro eliminado correctamente."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Foro eliminado exitosamente (sin contenido)"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Foro no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/foros/{foro}/mensajes": {
+            "get": {
+                "tags": [
+                    "Mensajes de Foro"
+                ],
+                "summary": "Obtener mensajes de un foro específico",
+                "operationId": "getMensajesForo",
+                "parameters": [
+                    {
+                        "name": "foro",
+                        "in": "path",
+                        "description": "ID del foro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Paginado",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MensajeForo"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Foro no encontrado"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Mensajes de Foro"
+                ],
+                "summary": "Crear un nuevo mensaje en un foro",
+                "operationId": "storeMensajeForo",
+                "parameters": [
+                    {
+                        "name": "foro",
+                        "in": "path",
+                        "description": "ID del foro donde crear el mensaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Contenido del mensaje",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MensajeForoStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Mensaje creado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MensajeForo"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado para crear mensajes en este foro (si aplica policy)"
+                    },
+                    "404": {
+                        "description": "Foro no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorValidation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/mensajes/{mensajeForo}": {
+            "get": {
+                "tags": [
+                    "Mensajes de Foro"
+                ],
+                "summary": "Obtener un mensaje específico de un foro",
+                "description": "Retorna los datos de un mensaje de foro.",
+                "operationId": "getMensajeForoById",
+                "parameters": [
+                    {
+                        "name": "mensajeForo",
+                        "in": "path",
+                        "description": "ID del mensaje de foro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MensajeForo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Mensaje no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Mensajes de Foro"
+                ],
+                "summary": "Actualizar un mensaje de foro existente",
+                "operationId": "updateMensajeForo",
+                "parameters": [
+                    {
+                        "name": "mensajeForo",
+                        "in": "path",
+                        "description": "ID del mensaje a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos del mensaje a actualizar. 'contenido' es el campo principal.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MensajeForoStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mensaje actualizado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MensajeForo"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Mensaje no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorValidation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Mensajes de Foro"
+                ],
+                "summary": "Eliminar un mensaje de foro",
+                "operationId": "deleteMensajeForo",
+                "parameters": [
+                    {
+                        "name": "mensajeForo",
+                        "in": "path",
+                        "description": "ID del mensaje a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensaje eliminado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Mensaje eliminado correctamente."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Mensaje no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/mensajes/{mensajeForo}/respuestas": {
+            "get": {
+                "tags": [
+                    "Respuestas de Mensaje"
+                ],
+                "summary": "Obtener respuestas de un mensaje específico",
+                "operationId": "getRespuestasDeMensaje",
+                "parameters": [
+                    {
+                        "name": "mensajeForo",
+                        "in": "path",
+                        "description": "ID del mensaje padre",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Paginado",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RespuestaForo"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Mensaje no encontrado"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Respuestas de Mensaje"
+                ],
+                "summary": "Crear una nueva respuesta a un mensaje",
+                "operationId": "storeRespuestaForo",
+                "parameters": [
+                    {
+                        "name": "mensajeForo",
+                        "in": "path",
+                        "description": "ID del mensaje al que responder",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Contenido de la respuesta",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RespuestaForoStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Respuesta creada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RespuestaForo"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado (si aplica policy)"
+                    },
+                    "404": {
+                        "description": "Mensaje padre no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorValidation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/respuestas/{respuestaForo}": {
+            "get": {
+                "tags": [
+                    "Respuestas de Mensaje"
+                ],
+                "summary": "Obtener una respuesta específica",
+                "operationId": "getRespuestaForoById",
+                "parameters": [
+                    {
+                        "name": "respuestaForo",
+                        "in": "path",
+                        "description": "ID de la respuesta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RespuestaForo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Respuesta no encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Respuestas de Mensaje"
+                ],
+                "summary": "Actualizar una respuesta existente",
+                "operationId": "updateRespuestaForo",
+                "parameters": [
+                    {
+                        "name": "respuestaForo",
+                        "in": "path",
+                        "description": "ID de la respuesta a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos de la respuesta a actualizar. 'contenido' es el campo principal.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RespuestaForoStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Respuesta actualizada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RespuestaForo"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Respuesta no encontrada"
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorValidation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Respuestas de Mensaje"
+                ],
+                "summary": "Eliminar una respuesta",
+                "operationId": "deleteRespuestaForo",
+                "parameters": [
+                    {
+                        "name": "respuestaForo",
+                        "in": "path",
+                        "description": "ID de la respuesta a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta eliminada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Respuesta eliminada correctamente."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Respuesta no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
     "components": {
         "schemas": {
-            "Foro": {
+            "UserLite": {
+                "title": "User Lite Information",
+                "description": "Información básica del usuario",
                 "properties": {
                     "id": {
-                        "description": "ID del foro",
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 1
                     },
-                    "titulo": {
-                        "description": "Título del foro",
-                        "type": "string"
+                    "name": {
+                        "type": "string",
+                        "example": "Nombre Usuario"
+                    }
+                },
+                "type": "object"
+            },
+            "VideojuegoConRol": {
+                "title": "Videojuego con Rol",
+                "description": "Información del videojuego asociado a un foro y su rol",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
                     },
-                    "descripcion": {
-                        "description": "Descripción del foro",
-                        "type": "string"
+                    "nombre": {
+                        "type": "string",
+                        "example": "Nombre del Videojuego"
+                    },
+                    "imagen_url": {
+                        "type": "string",
+                        "format": "url",
+                        "example": "http://example.com/image.jpg",
+                        "nullable": true
+                    },
+                    "rol_en_foro": {
+                        "type": "string",
+                        "enum": [
+                            "principal",
+                            "secundario",
+                            "opcional"
+                        ],
+                        "example": "principal"
+                    }
+                },
+                "type": "object"
+            },
+            "RespuestaForo": {
+                "title": "Respuesta de Mensaje de Foro",
+                "description": "Representación de una respuesta a un mensaje de foro",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 101
+                    },
+                    "contenido": {
+                        "type": "string",
+                        "example": "Esta es una respuesta."
                     },
                     "usuario": {
-                        "description": "Nombre del usuario creador del foro",
-                        "type": "string"
+                        "$ref": "#/components/schemas/UserLite"
                     },
-                    "mensajes": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/MensajeForo"
-                        }
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-06-04T10:30:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-06-04T10:35:00.000000Z"
                     }
                 },
                 "type": "object"
             },
             "MensajeForo": {
+                "title": "Mensaje de Foro",
+                "description": "Representación de un mensaje dentro de un foro",
                 "properties": {
                     "id": {
-                        "description": "ID del mensaje",
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 10
                     },
                     "contenido": {
-                        "description": "Contenido del mensaje",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Contenido del mensaje principal."
                     },
                     "usuario": {
-                        "description": "Nombre del usuario creador del mensaje",
-                        "type": "string"
+                        "$ref": "#/components/schemas/UserLite"
                     },
                     "respuestas": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RespuestaForo"
                         }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-06-04T10:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-06-04T10:05:00.000000Z"
                     }
                 },
                 "type": "object"
             },
-            "RespuestaForo": {
+            "Foro": {
+                "title": "Foro",
+                "description": "Representación de un foro",
                 "properties": {
                     "id": {
-                        "description": "ID de la respuesta",
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 1
                     },
-                    "contenido": {
-                        "description": "Contenido de la respuesta",
-                        "type": "string"
+                    "titulo": {
+                        "type": "string",
+                        "example": "Título del Foro"
                     },
-                    "usuario": {
-                        "description": "Nombre del usuario que creó la respuesta",
-                        "type": "string"
+                    "descripcion": {
+                        "type": "string",
+                        "example": "Descripción detallada del foro."
+                    },
+                    "creado_por": {
+                        "$ref": "#/components/schemas/UserLite"
+                    },
+                    "videojuegos_asociados": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/VideojuegoConRol"
+                        }
+                    },
+                    "mensajes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MensajeForo"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-06-04T09:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-06-04T09:05:00.000000Z"
                     }
                 },
                 "type": "object"
+            },
+            "ErrorValidation": {
+                "title": "Error de Validación",
+                "description": "Objeto de error devuelto en caso de fallos de validación (422)",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "The given data was invalid."
+                    },
+                    "errors": {
+                        "description": "Objeto con los errores de validación por campo",
+                        "type": "object",
+                        "example": {
+                            "titulo": [
+                                "El campo título es obligatorio."
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ForoApiRequest": {
+                "title": "Foro API Request Body",
+                "description": "Cuerpo de la petición para crear o actualizar un foro",
+                "required": [
+                    "titulo",
+                    "descripcion"
+                ],
+                "properties": {
+                    "titulo": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Nuevo Foro Sobre Estrategia"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "maxLength": 5000,
+                        "example": "Discusión sobre tácticas avanzadas."
+                    },
+                    "videojuegosConRoles": {
+                        "description": "Objeto asociativo donde la clave es el ID del videojuego y el valor es el rol. Ejemplo: {'1': 'principal', '2': 'secundario'}",
+                        "type": "object",
+                        "example": {
+                            "1": "principal",
+                            "5": "secundario"
+                        },
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string",
+                            "enum": [
+                                "principal",
+                                "secundario",
+                                "opcional"
+                            ]
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "MensajeForoStoreRequest": {
+                "title": "Mensaje Foro Store Request Body",
+                "description": "Cuerpo de la petición para crear un mensaje de foro",
+                "required": [
+                    "contenido"
+                ],
+                "properties": {
+                    "contenido": {
+                        "type": "string",
+                        "example": "Este es mi nuevo mensaje."
+                    }
+                },
+                "type": "object"
+            },
+            "RespuestaForoStoreRequest": {
+                "title": "Respuesta Foro Store Request Body",
+                "description": "Cuerpo de la petición para crear una respuesta de foro",
+                "required": [
+                    "contenido"
+                ],
+                "properties": {
+                    "contenido": {
+                        "type": "string",
+                        "example": "Estoy de acuerdo con este mensaje."
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Autenticación por Token Bearer (Sanctum)",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },
     "tags": [
         {
+            "name": "Autenticación",
+            "description": "Endpoints para login y logout de usuarios"
+        },
+        {
             "name": "Foros",
-            "description": "Endpoints para la gestión de foros y mensajes"
+            "description": "Operaciones CRUD para Foros"
+        },
+        {
+            "name": "Mensajes de Foro",
+            "description": "Operaciones CRUD para Mensajes dentro de un Foro"
+        },
+        {
+            "name": "Respuestas de Mensaje",
+            "description": "Operaciones CRUD para Respuestas a Mensajes"
         }
     ]
 }

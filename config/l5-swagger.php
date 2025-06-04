@@ -12,7 +12,8 @@ return [
                 /*
                  * Route for accessing api documentation interface
                  */
-                'api' => 'api/documentation',
+                'api' => env('L5_SWAGGER_ROUTE_API', '/api/documentation'),
+                'docs' => env('L5_SWAGGER_ROUTE_DOCS', '/api/docs'),
             ],
             'paths' => [
                 /*
@@ -44,7 +45,11 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                  */
                 'annotations' => [
-                    base_path('app'),
+                    base_path('app/Http/Controllers/Api'),
+                    base_path('app/Http/Resources'),
+                    base_path('app/Http/Requests'),
+                    base_path('app/Models'),
+                    base_path('app/SwaggerAnnotations'),
                 ],
             ],
         ],
@@ -312,7 +317,7 @@ return [
          * Constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://catalogovideojuegos.test'). '/api',
         ],
     ],
 ];
