@@ -53,7 +53,7 @@
                 <p>{{ __('Welcome back! Are you ready to explore even more: keep saving your favorite games, participate in forum discussions, and connect with other players. You are part of an amazing community and the adventure keeps getting better!') }}
                 </p>
                 <ul class="actions">
-                    <li><a href="{{ route('forum.index') }}" class="button next">{{ __('Go to forum') }}</a></li>
+                    <li><a href="{{ route('foro.index') }}" class="button next">{{ __('Go to forum') }}</a></li>
                 </ul>
             </div>
         </section>

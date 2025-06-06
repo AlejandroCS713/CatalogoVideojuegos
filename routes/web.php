@@ -49,7 +49,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 Route::get('/', [VideojuegoController::class, 'mejoresValoraciones'])->name('welcome');
 Route::get('/videojuegos', [VideojuegoController::class, 'index'])->name('videojuegos.index');
-Route::get('/forum', [ForoController::class, 'index'])->name('forum.index');
+Route::get('/foro', [ForoController::class, 'index'])->name('foro.index');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -72,13 +72,13 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     Route::post('/remove-friend/{id}', [FriendList::class, 'removeFriend'])->name('friends.remove');
 
     Route::get('/chat/{friendId}', ChatComponent::class)->name('message.chat');
-    Route::post('/forum/{foro}/mensajes', [MensajeForoController::class, 'store'])->name('mensajes.store');
+    Route::post('/foro/{foro}/mensajes', [MensajeForoController::class, 'store'])->name('mensajes.store');
     Route::post('/mensajes/{mensaje}/respuestas', [RespuestaForoController::class, 'store'])->name('respuestas.store');
 
-    Route::get('/forum/{foro}/pdf', [ForoController::class, 'generarPDF'])->name('forum.pdf');
-    Route::delete('/mensaje-foro/{mensaje}', [MensajeForoController::class, 'destroy'])->name('mensaje-foro.destroy');
+    Route::get('/foro/{foro}/pdf', [ForoController::class, 'generarPDF'])->name('foro.pdf');
+    Route::delete('/mensaje/{mensaje}', [MensajeForoController::class, 'destroy'])->name('mensaje.destroy');
 });
 
-Route::get('/forum/{foro}', [ForoController::class, 'show'])->name('forum.show');
+Route::get('/foro/{foro}', [ForoController::class, 'show'])->name('foro.show');
 Route::get('/videojuegos/{id}', [VideojuegoController::class, 'show'])->name('videojuegos.show');
 

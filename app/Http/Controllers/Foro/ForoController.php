@@ -15,7 +15,7 @@ class ForoController extends Controller
     public function index()
     {
         $foros = Foro::paginate(10);
-        return view('forum.index', compact('foros'));
+        return view('foro.index', compact('foros'));
     }
 
     public function show(Foro $foro)
@@ -25,7 +25,7 @@ class ForoController extends Controller
             'mensajes.respuestas.usuario',
             'videojuegos'
         ]);
-        return view('forum.show', compact('foro'));
+        return view('foro.show', compact('foro'));
     }
 
     public function generarPDF(Foro $foro)
@@ -33,7 +33,7 @@ class ForoController extends Controller
         $nombreUsuario = Str::slug($foro->usuario->name);
         $nombreArchivo = "Foro-{$nombreUsuario}.pdf";
 
-        $pdf = Pdf::loadView('forum.pdf', compact('foro'));
+        $pdf = Pdf::loadView('foro.pdf', compact('foro'));
 
         return $pdf->download($nombreArchivo);
     }

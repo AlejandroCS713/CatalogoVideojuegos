@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title',  __('View Forum'))
+@section('title',  __('View Foro'))
 @section('body_class', 'is-preload')
 
 @section('content')

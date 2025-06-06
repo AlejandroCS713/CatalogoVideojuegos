@@ -26,7 +26,7 @@
             @endif
         </li>
         <li><a href="{{ route('videojuegos.index') }}">{{ __('Video Games') }}</a></li>
-        <li><a href="{{ route('forum.index') }}">{{ __('Forum') }}</a></li>
+        <li><a href="{{ route('foro.index') }}">{{ __('Foro') }}</a></li>
     </ul>
     <ul class="actions stacked">
 

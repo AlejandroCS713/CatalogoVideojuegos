@@ -16,7 +16,7 @@
             <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px;" wire:click.self.prevent="closeModal">
                 <div class="modal-content" style="background: #333; color: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; position: relative; z-index: 1000;">
                     <span wire:click.prevent="closeModal" class="close" style="position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #aaa; line-height: 1;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#aaa'">&times;</span>
-                    <h2>{{ $editMode ? __('Edit Forum') : __('Create Forum') }}</h2>
+                    <h2>{{ $editMode ? __('Edit Foro') : __('Create Foro') }}</h2>
 
                     @if ($errors->any())
                         <div style="background-color: #e74c3c; color: white; padding: 10px; margin-bottom: 15px; border-radius: 4px; font-size: 0.9em;">
@@ -30,13 +30,13 @@
                     <form wire:submit.prevent="save">
                         <div style="margin-bottom: 15px;">
                             <label for="modal_titulo">{{ __('Title') }}</label>
-                            <input type="text" id="modal_titulo" wire:model="titulo" placeholder="{{ __('Forum Title') }}" class="form-input" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc;">
+                            <input type="text" id="modal_titulo" wire:model="titulo" placeholder="{{ __('Foro Title') }}" class="form-input" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc;">
                             @error('titulo') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
                         <div style="margin-bottom: 15px;">
                             <label for="modal_descripcion">{{ __('Description') }}</label>
-                            <textarea id="modal_descripcion" wire:model="descripcion" placeholder="{{ __('Forum Description') }}" class="form-textarea" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc; min-height: 100px;"></textarea>
+                            <textarea id="modal_descripcion" wire:model="descripcion" placeholder="{{ __('Foro Description') }}" class="form-textarea" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc; min-height: 100px;"></textarea>
                             @error('descripcion') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
@@ -49,7 +49,7 @@
                         <div style="text-align: right; margin-top: 25px;">
                             <button type="submit" class="button primary" style="padding: 10px 20px; margin-right: 10px;">
                                 <span wire:loading wire:target="save">{{ $editMode ? __('Updating...') : __('Saving...') }}</span>
-                                <span wire:loading.remove wire:target="save">{{ $editMode ? __('Update Forum') : __('Create Forum') }}</span>
+                                <span wire:loading.remove wire:target="save">{{ $editMode ? __('Update Foro') : __('Create Foro') }}</span>
                             </button>
                             <button type="button" wire:click.prevent="closeModal" class="button" style="padding: 10px 20px; background-color: #666; border-color: #555;">{{ __('Cancel') }}</button>
                         </div>
@@ -113,7 +113,7 @@
             </div>
 
             <div style="margin-top: 30px; margin-bottom: 20px; border-top: 1px solid #444; padding-top: 20px;">
-                <a href="{{ route('forum.pdf', $currentForo) }}" class="button" target="_blank">
+                <a href="{{ route('foro.pdf', $currentForo) }}" class="button" target="_blank">
                     <i class="fas fa-file-pdf"></i> {{ __('Download PDF') }}
                 </a>
             </div>
@@ -191,7 +191,7 @@
             @can('create', App\Models\Foro\Foro::class)
                 <div style="display: flex; justify-content: center; margin-bottom: 40px;">
                     <button wire:click="openCreateModal" class="button fit" style="width: 250px;">
-                        <i class="fas fa-plus"></i> {{ __('Create Forum') }}
+                        <i class="fas fa-plus"></i> {{ __('Create Foro') }}
                     </button>
                 </div>
             @endcan
@@ -203,7 +203,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $foro->titulo }}</h5>
                         <p class="card-text">{{ Str::limit($foro->descripcion, 150) }}</p>
-                        <a href="{{ route('forum.show', $foro->id) }}" wire:navigate class="button" style="margin-right: 10px;">{{ __('View Forum') }}</a>
+                        <a href="{{ route('foro.show', $foro->id) }}" wire:navigate class="button" style="margin-right: 10px;">{{ __('View Foro') }}</a>
                         <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;">
                             @can('update', $foro)
                                 <button wire:click="openEditModal({{ $foro->id }})" class="button small" style="padding: 5px 8px;" title="{{ __('Edit') }}"><i class="fas fa-edit"></i></button>

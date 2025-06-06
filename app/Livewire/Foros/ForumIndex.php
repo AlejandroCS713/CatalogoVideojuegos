@@ -142,11 +142,11 @@ class ForumIndex extends Component
         if ($this->editMode) {
             $foro = Foro::findOrFail($this->selectedId);
             $foro->update($foroData);
-            session()->flash('message', __('Forum updated successfully!'));
+            session()->flash('message', __('Foro updated successfully!'));
         } else {
             $foroData['usuario_id'] = auth()->id();
             $foro = Foro::create($foroData);
-            session()->flash('message', __('Forum created successfully!'));
+            session()->flash('message', __('Foro created successfully!'));
         }
 
         $videojuegoSyncData = [];
@@ -212,7 +212,7 @@ class ForumIndex extends Component
         $this->cancelDelete();
 
         if ($this->foroId && $this->foroId == $this->foroIdToDelete) {
-            $this->redirect(route('foros.index'), navigate:true);
+            $this->redirect(route('foro.index'), navigate:true);
         }
     }
 

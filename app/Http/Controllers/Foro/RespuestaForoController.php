@@ -14,12 +14,11 @@ class RespuestaForoController extends Controller
 
         $respuesta = RespuestaForo::create([
             'contenido' => $validated['contenido'],
-            'imagen' => $request->imagen,
             'mensaje_id' => $request->mensaje_id,
             'usuario_id' => auth()->id(),
         ]);
 
-        return redirect()->route('forum.show', $respuesta->mensaje->foro_id)->with('success', '¡Respuesta enviada!');
+        return redirect()->route('foro.show', $respuesta->mensaje->foro_id)->with('success', '¡Respuesta enviada!');
     }
 
 }

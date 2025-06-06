@@ -15,12 +15,11 @@ class MensajeForoController extends Controller
 
         $mensaje = MensajeForo::create([
             'contenido' => $validated['contenido'],
-            'imagen' => $request->imagen,
             'foro_id' => $request->foro_id,
             'usuario_id' => auth()->id(),
         ]);
 
-        return redirect()->route('forum.show', $mensaje->foro_id)->with('success', '¡Mensaje enviado!');
+        return redirect()->route('foro.show', $mensaje->foro_id)->with('success', '¡Mensaje enviado!');
     }
 
     public function destroy(MensajeForo $mensaje)
