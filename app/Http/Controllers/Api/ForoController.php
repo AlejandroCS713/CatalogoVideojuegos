@@ -49,10 +49,10 @@ class ForoController extends Controller
             'mensajes' => function ($query) {
                 $query->with(['usuario', 'respuestas' => function($qResp) {
                     $qResp->with('usuario')->orderBy('created_at', 'asc');
-                }])->withCount('respuestas')->orderBy('created_at', 'desc');
+                }])
+                    ->orderBy('created_at', 'desc');
             }
         ])
-            ->withCount('mensajes')
             ->orderBy('created_at', 'desc')
             ->paginate($request->input('per_page', 15));
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\Forum;
+namespace Database\Factories\Foro;
 
 use App\Models\Foro\Foro;
 use App\Models\Foro\MensajeForo;
@@ -19,8 +19,7 @@ class MensajeForoFactory extends Factory
         return [
             'usuario_id' => User::factory(),
             'foro_id' => Foro::factory(),
-            'contenido' => $this->faker->paragraph(),
-            'imagen' => $this->faker->optional()->imageUrl()
+            'contenido' => $this->faker->paragraph()
         ];
     }
 }

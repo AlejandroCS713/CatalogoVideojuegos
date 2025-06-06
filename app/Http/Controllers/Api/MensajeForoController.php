@@ -34,7 +34,6 @@ class MensajeForoController extends Controller
     {
         $mensajes = $foro->mensajes()
             ->with(['usuario', 'respuestas.usuario'])
-            ->withCount('respuestas')
             ->orderBy('created_at', $request->input('sort_direction', 'desc'))
             ->paginate($request->input('per_page', 15));
 
