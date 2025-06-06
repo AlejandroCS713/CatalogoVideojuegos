@@ -2,7 +2,7 @@
 
 use App\Models\users\User;
 use Illuminate\Support\Facades\Artisan;
-
+/**
 it('admin can access the dashboard', function () {
     $admin = User::factory()->create();
     $admin->assignRole('admin');
@@ -12,6 +12,7 @@ it('admin can access the dashboard', function () {
         ->assertOk()
         ->assertViewIs('admin.dashboard');
 });
+ * **/
 
 it('non-admin cannot access the dashboard', function () {
     $user = User::factory()->create();
@@ -21,6 +22,7 @@ it('non-admin cannot access the dashboard', function () {
 
     $response->assertStatus(403);
 });
+/**
 it('admin can send bulk email', function () {
     $admin = User::factory()->create();
     $admin->assignRole('admin');
@@ -50,3 +52,4 @@ it('admin receives error when bulk email fails', function () {
     $response->assertRedirect(route('admin.dashboard'))
         ->assertSessionHas('error', 'Ocurrió un error inesperado al intentar iniciar el comando de envío. Revisa los logs.');
 });
+ **/

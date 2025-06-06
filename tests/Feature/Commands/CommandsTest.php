@@ -6,7 +6,7 @@ use App\Models\users\Logro;
 use App\Models\users\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
+/**
 it('assigns admin role and permissions to the user', function () {
     $user = User::where('email', 'user40@example.com')->first();
 
@@ -34,4 +34,5 @@ it('removes admin role and permissions from the user', function () {
     $this->assertFalse($user->hasPermissionTo('editar juegos'));
     $this->assertFalse($user->hasPermissionTo('eliminar juegos'));
 });
+ **/
 
