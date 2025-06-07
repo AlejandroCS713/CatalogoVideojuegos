@@ -4,6 +4,7 @@ use App\Listeners\DesbloquearLogroPrimerAmigo;
 use App\Models\games\Videojuego;
 use App\Models\users\Logro;
 use App\Models\users\User;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
@@ -12,6 +13,7 @@ use Spatie\Permission\Models\Role;
 beforeEach(function () {
     Role::firstOrCreate(['name' => 'admin']);
     Role::firstOrCreate(['name' => 'user']);
+    Role::firstOrCreate(['name' => 'moderador']);
     Permission::firstOrCreate(['name' => 'crear juegos']);
     Permission::firstOrCreate(['name' => 'editar juegos']);
     Permission::firstOrCreate(['name' => 'eliminar juegos']);
@@ -95,4 +97,70 @@ it('removes admin role and permissions from the user', function () {
     $this->assertFalse($user->hasPermissionTo('eliminar juegos'));
 });
 
+it('fails if user not found', function () {
+    $email = 'nonexistent@example.com';
 
+    $this->artisan('app:moderate-user', ['email' => $email])
+        ->assertExitCode(Command::FAILURE)
+        ->expectsOutput("Usuario con el correo {$email} no encontrado.");
+});
+
+it('assigns moderator role to user', function () {
+    $user = User::factory()->create(['email' => 'assign@example.com']);
+
+    $this->assertFalse($user->hasRole('moderador'));
+
+    $this->artisan('app:moderate-user', ['email' => $user->email])
+        ->assertExitCode(Command::SUCCESS)
+        ->expectsOutput("El usuario {$user->email} ahora tiene el rol de moderador.");
+
+    $user->refresh();
+    $this->assertTrue($user->hasRole('moderador'));
+});
+
+it('does not reassign moderator role if already present', function () {
+    $user = User::factory()->create(['email' => 'already_moderator@example.com']);
+    $user->assignRole('moderador');
+
+    $this->assertTrue($user->hasRole('moderador'));
+
+    $this->artisan('app:moderate-user', ['email' => $user->email])
+        ->assertExitCode(Command::SUCCESS)
+        ->expectsOutput("El usuario {$user->email} ya tiene el rol de moderador.");
+
+    $user->refresh();
+    $this->assertTrue($user->hasRole('moderador'));
+});
+
+it('revokes moderator role from user', function () {
+    $user = User::factory()->create(['email' => 'revoke@example.com']);
+    $user->assignRole('moderador');
+
+    $this->assertTrue($user->hasRole('moderador'));
+
+    $this->artisan('app:moderate-user', [
+        'email' => $user->email,
+        '--revoke' => true,
+    ])
+        ->assertExitCode(Command::SUCCESS)
+        ->expectsOutput("El usuario {$user->email} ya no tiene el rol de moderador.");
+
+    $user->refresh();
+    $this->assertFalse($user->hasRole('moderador'));
+});
+
+it('does not revoke moderator role if not present', function () {
+    $user = User::factory()->create(['email' => 'not_moderator@example.com']);
+
+    $this->assertFalse($user->hasRole('moderador'));
+
+    $this->artisan('app:moderate-user', [
+        'email' => $user->email,
+        '--revoke' => true,
+    ])
+        ->assertExitCode(Command::SUCCESS)
+        ->expectsOutput("El usuario {$user->email} no tiene el rol de moderador para revocar.");
+
+    $user->refresh();
+    $this->assertFalse($user->hasRole('moderador'));
+});

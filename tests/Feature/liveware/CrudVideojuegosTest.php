@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Videojuegos\ManageGameAdminComponent;
+use App\Livewire\Videojuegos\VideoGamesViewComponent;
 use App\Models\users\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -12,6 +13,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
+beforeEach(function () {
+    Mockery::close();
+});
 function createAdminUserWithPermissions(array $permissions = [
     'Crear Videojuegos',
     'Actualizar Videojuegos',
@@ -378,5 +382,477 @@ describe('Manage Game Admin Component', function () {
             ->assertSet('gameIdToDelete', null);
 
         cleanupTestData(['adminData' => $adminData]);
+    });
+
+    it('resets all fields when resetFields is called', function () {
+        $component = Livewire::test(ManageGameAdminComponent::class)
+            ->set('nombre', 'Some Name')
+            ->set('descripcion', 'Some Description')
+            ->set('selectedId', 1)
+            ->set('editMode', true)
+            ->set('confirmingDeletion', true)
+            ->set('gameIdToDelete', 1);
+
+        $component->call('resetFields')
+            ->assertSet('nombre', null)
+            ->assertSet('descripcion', null)
+            ->assertSet('selectedId', null)
+            ->Set('editMode', false)
+            ->assertSet('confirmingDeletion', false)
+            ->assertSet('gameIdToDelete', null);
+    });
+
+    it('deletes existing image from storage if not http and exists', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $oldImagePath = 'videojuegos/old_cover_to_delete.jpg';
+        Storage::disk('public')->put($oldImagePath, 'dummy content');
+        $videojuego = Videojuego::factory()->create();
+        $oldMultimedia = Multimedia::factory()->create([
+            'videojuego_id' => $videojuego->id,
+            'tipo' => 'imagen',
+            'url' => 'storage/' . $oldImagePath
+        ]);
+        $newFakeImage = UploadedFile::fake()->image('new_cover.png');
+        $cleanupData = [
+            'adminData' => $adminData,
+            'gameIds' => [$videojuego->id],
+        ];
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->dispatch('openEditModalEvent', id: $videojuego->id)
+            ->set('imagen', $newFakeImage)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        Storage::disk('public')->assertMissing($oldImagePath);
+        cleanupTestData($cleanupData);
+    });
+
+    it('does not attempt to delete non-existent local image from storage on delete confirmed', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $imagePath = 'videojuegos/non_existent_local_image.jpg';
+        $videojuego = Videojuego::factory()->create(['nombre' => 'Game To Delete Non-Existent Local Image']);
+        $multimedia = Multimedia::factory()->create([
+            'videojuego_id' => $videojuego->id,
+            'tipo' => 'imagen',
+            'url' => 'storage/' . $imagePath
+        ]);
+        $cleanupData = [
+            'adminData' => $adminData,
+        ];
+
+        Storage::shouldReceive('disk->exists')->with($imagePath)->andReturn(false);
+        Storage::shouldNotReceive('disk->delete')->with($imagePath);
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->dispatch('confirmDeleteEvent', id: $videojuego->id)
+            ->call('deleteConfirmed')
+            ->assertDispatched('gameDeleted');
+
+        $this->assertDatabaseMissing('videojuegos', ['id' => $videojuego->id]);
+        $this->assertDatabaseMissing('multimedia', ['id' => $multimedia->id]);
+        cleanupTestData($cleanupData);
+    });
+
+    it('allows saving without image when not in edit mode and image is null', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $plataforma = Plataforma::factory()->create();
+        $genero = Genero::factory()->create();
+        $cleanupData = [
+            'adminData' => $adminData,
+            'plataformaIds' => [$plataforma->id],
+            'generoIds' => [$genero->id],
+            'gameIds' => [],
+        ];
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->dispatch('openCreateModalEvent')
+            ->set('nombre', 'Game No Image')
+            ->set('plataformas', [$plataforma->id])
+            ->set('generos', [$genero->id])
+            ->set('imagen', null)
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertSet('modalOpen', false)
+            ->assertDispatched('gameSaved');
+
+        $game = Videojuego::where('nombre', 'Game No Image')->first();
+        $cleanupData['gameIds'][] = $game->id;
+        $this->assertDatabaseMissing('multimedia', ['videojuego_id' => $game->id, 'tipo' => 'imagen']);
+
+        cleanupTestData($cleanupData);
+    });
+
+    it('allows saving without new image when in edit mode and image is null', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $videojuego = Videojuego::factory()->create(['nombre' => 'Game Edit No New Image']);
+        $cleanupData = [
+            'adminData' => $adminData,
+            'gameIds' => [$videojuego->id],
+        ];
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->dispatch('openEditModalEvent', id: $videojuego->id)
+            ->set('nombre', 'Game Edit No New Image Updated')
+            ->set('imagen', null)
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertSet('modalOpen', false)
+            ->assertDispatched('gameSaved');
+
+        $videojuego->refresh();
+        expect($videojuego->nombre)->toBe('Game Edit No New Image Updated');
+        $this->assertDatabaseMissing('multimedia', ['videojuego_id' => $videojuego->id, 'tipo' => 'imagen']);
+
+        cleanupTestData($cleanupData);
+    });
+
+    it('resets all fields including collections when resetFields is called', function () {
+        $plataforma = Plataforma::factory()->create();
+        $genero = Genero::factory()->create();
+        $component = Livewire::test(ManageGameAdminComponent::class)
+            ->set('nombre', 'Test Game')
+            ->set('descripcion', 'Test Desc')
+            ->set('fecha_lanzamiento', '2023-01-01')
+            ->set('desarrollador', 'Dev')
+            ->set('publicador', 'Pub')
+            ->set('plataformas', [$plataforma->id])
+            ->set('generos', [$genero->id])
+            ->set('imagen', UploadedFile::fake()->image('test.jpg'))
+            ->set('selectedId', 1)
+            ->set('editMode', true)
+            ->set('existingImageUrl', 'http://example.com/image.jpg')
+            ->set('confirmingDeletion', true)
+            ->set('gameIdToDelete', 10);
+
+        $component->call('resetFields')
+            ->assertSet('nombre', null)
+            ->assertSet('descripcion', null)
+            ->assertSet('fecha_lanzamiento', null)
+            ->assertSet('desarrollador', null)
+            ->assertSet('publicador', null)
+            ->assertSet('plataformas', [])
+            ->assertSet('generos', [])
+            ->assertSet('imagen', null)
+            ->assertSet('selectedId', null)
+            ->assertSet('editMode', false)
+            ->assertSet('existingImageUrl', null)
+            ->assertSet('confirmingDeletion', false)
+            ->assertSet('gameIdToDelete', null);
+    });
+
+    it('sets modalOpen to false when closeModal is called', function () {
+        $component = Livewire::test(ManageGameAdminComponent::class)
+            ->set('modalOpen', true)
+            ->call('closeModal')
+            ->assertSet('modalOpen', false);
+    });
+
+    it('resets fields when closeModal is called', function () {
+        $plataforma = Plataforma::factory()->create();
+        $component = Livewire::test(ManageGameAdminComponent::class)
+            ->set('nombre', 'Filled Name')
+            ->set('plataformas', [$plataforma->id])
+            ->set('editMode', true)
+            ->call('closeModal')
+            ->assertSet('nombre', null)
+            ->assertSet('plataformas', [])
+            ->assertSet('editMode', false);
+    });
+
+    it('does not delete multimedia if image is null during update', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $videojuego = Videojuego::factory()->create(['nombre' => 'Game Without Image']);
+        $cleanupData = [
+            'adminData' => $adminData,
+            'gameIds' => [$videojuego->id],
+        ];
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->dispatch('openEditModalEvent', id: $videojuego->id)
+            ->set('imagen', null)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseMissing('multimedia', ['videojuego_id' => $videojuego->id]);
+        cleanupTestData($cleanupData);
+    });
+
+    it('handles saving a game without platforms or genres', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $cleanupData = [
+            'adminData' => $adminData,
+            'gameIds' => [],
+        ];
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->dispatch('openCreateModalEvent')
+            ->set('nombre', 'Game No Relations')
+            ->set('plataformas', [])
+            ->set('generos', [])
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertSet('modalOpen', false)
+            ->assertDispatched('gameSaved');
+
+        $game = Videojuego::where('nombre', 'Game No Relations')->first();
+        $cleanupData['gameIds'][] = $game->id;
+        $this->assertDatabaseMissing('videojuego_plataforma', ['videojuego_id' => $game->id]);
+        $this->assertDatabaseMissing('videojuego_genero', ['videojuego_id' => $game->id]);
+
+        cleanupTestData($cleanupData);
+    });
+
+    it('ensures loadModalData populates allPlataformas and allGeneros only once', function () {
+        Plataforma::factory(1)->create();
+        Genero::factory(1)->create();
+
+        $component = Livewire::test(ManageGameAdminComponent::class);
+        $component->call('loadModalData');
+
+        $this->assertNotEmpty($component->get('allPlataformas'));
+        $this->assertNotEmpty($component->get('allGeneros'));
+
+        $component->set('allPlataformas', []);
+        $component->set('allGeneros', []);
+        $component->call('loadModalData');
+
+        $this->assertNotEmpty($component->get('allPlataformas'));
+
+    });
+
+    it('validates imagen with mimes rule on updatedImagen', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $notAValidMimeType = UploadedFile::fake()->create('document.txt', 100);
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->set('imagen', $notAValidMimeType)
+            ->assertHasErrors(['imagen' => 'mimes']);
+
+        cleanupTestData(['adminData' => $adminData]);
+    });
+
+    it('validates imagen with image rule on updatedImagen', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $notAnImageFile = UploadedFile::fake()->create('archive.zip', 100);
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->set('imagen', $notAnImageFile)
+            ->assertHasErrors(['imagen' => 'image']);
+
+        cleanupTestData(['adminData' => $adminData]);
+    });
+
+    it('validates imagen with max size rule on updatedImagen', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $tooLargeImage = UploadedFile::fake()->image('large.jpg')->size(3000);
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->set('imagen', $tooLargeImage)
+            ->assertHasErrors(['imagen' => 'max']);
+
+        cleanupTestData(['adminData' => $adminData]);
+    });
+
+    it('does not delete image from storage if existingImageUrl is http-based', function () {
+        Storage::fake('public');
+        $adminData = createAdminUserWithPermissions();
+        $videojuego = Videojuego::factory()->create();
+        $externalMultimedia = Multimedia::factory()->create([
+            'videojuego_id' => $videojuego->id,
+            'tipo' => 'imagen',
+            'url' => 'http://example.com/external/image.jpg',
+        ]);
+        $newFakeImage = UploadedFile::fake()->image('new.jpg');
+        $cleanupData = [
+            'adminData' => $adminData,
+            'gameIds' => [$videojuego->id],
+        ];
+
+        Livewire::actingAs($adminData['user'])
+            ->test(ManageGameAdminComponent::class)
+            ->dispatch('openEditModalEvent', id: $videojuego->id)
+            ->set('imagen', $newFakeImage)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseMissing('multimedia', ['id' => $externalMultimedia->id]);
+
+        $newMultimedia = Multimedia::where('videojuego_id', $videojuego->id)->where('tipo', 'imagen')->first();
+        if ($newMultimedia) {
+            $cleanupData['mediaIds'][] = $newMultimedia->id;
+            $cleanupData['filePaths'][] = str_replace('storage/', '', $newMultimedia->url);
+        }
+        cleanupTestData($cleanupData);
+    });
+
+    afterEach(function() {
+        Mockery::close();
+    });
+});
+describe('VideoGamesViewComponent', function () {
+
+    it('renders successfully with default state when no game is selected', function () {
+        Videojuego::factory(5)->create();
+        Livewire::test(VideoGamesViewComponent::class)
+            ->assertStatus(200)
+            ->assertSet('videojuegoId', null)
+            ->assertSet('currentGame', null)
+            ->assertSet('sort', 'newest')
+            ->assertSet('page', 1)
+            ->assertViewHas('videojuegos', function ($videojuegos) {
+                return $videojuegos->count() > 0 && $videojuegos->perPage() === 30;
+            });
+    });
+
+    it('renders successfully and loads a specific game when videojuegoId is provided', function () {
+        $videojuego = Videojuego::factory()->create();
+        Livewire::test(VideoGamesViewComponent::class, ['videojuegoId' => $videojuego->id])
+            ->assertStatus(200)
+            ->assertSet('videojuegoId', $videojuego->id)
+            ->assertSet('currentGame.id', $videojuego->id)
+            ->assertViewHas('currentGame', function ($game) use ($videojuego) {
+                return $game->id === $videojuego->id;
+            })
+            ->assertViewHas('videojuegos', null);
+    });
+
+    it('aborts with 404 if provided videojuegoId does not exist', function () {
+        Livewire::test(VideoGamesViewComponent::class, ['videojuegoId' => 99999])
+            ->assertStatus(404);
+    });
+
+
+    it('applies "oldest" sort order', function () {
+        $oldestGame = Videojuego::factory()->create(['created_at' => now()->subDays(5)]);
+        $newestGame = Videojuego::factory()->create(['created_at' => now()]);
+
+        Livewire::test(VideoGamesViewComponent::class)
+            ->set('sort', 'oldest')
+            ->assertSeeInOrder([$oldestGame->nombre, $newestGame->nombre]);
+    });
+
+    it('applies "alphabetical" sort order', function () {
+        $gameB = Videojuego::factory()->create(['nombre' => 'Beta Game']);
+        $gameA = Videojuego::factory()->create(['nombre' => 'Alpha Game']);
+
+        Livewire::test(VideoGamesViewComponent::class)
+            ->set('sort', 'alphabetical')
+            ->assertSeeInOrder([$gameA->nombre, $gameB->nombre]);
+    });
+
+    it('applies "reverse_alphabetical" sort order', function () {
+        $gameB = Videojuego::factory()->create(['nombre' => 'Beta Game']);
+        $gameA = Videojuego::factory()->create(['nombre' => 'Alpha Game']);
+
+        Livewire::test(VideoGamesViewComponent::class)
+            ->set('sort', 'reverse_alphabetical')
+            ->assertSeeInOrder([$gameB->nombre, $gameA->nombre]);
+    });
+
+    it('applies "top_rated_aaa" sort order', function () {
+        $game1 = Videojuego::factory()->create(['nombre' => 'AAA Game 1']);
+        $game2 = Videojuego::factory()->create(['nombre' => 'AAA Game 2']);
+        Livewire::test(VideoGamesViewComponent::class)
+            ->set('sort', 'top_rated_aaa')
+            ->assertStatus(200);
+    });
+
+    it('applies "exclusive_games" sort order', function () {
+        $game1 = Videojuego::factory()->create(['nombre' => 'Exclusive Game 1']);
+        $game2 = Videojuego::factory()->create(['nombre' => 'Exclusive Game 2']);
+        Livewire::test(VideoGamesViewComponent::class)
+            ->set('sort', 'exclusive_games')
+            ->assertStatus(200);
+    });
+
+
+    it('refreshes current game data on "gameSaved" event when a game is selected', function () {
+        $videojuego = Videojuego::factory()->create(['nombre' => 'Original Name']);
+        $component = Livewire::test(VideoGamesViewComponent::class, ['videojuegoId' => $videojuego->id])
+            ->assertSet('currentGame.nombre', 'Original Name');
+
+        $videojuego->update(['nombre' => 'Updated Name']);
+
+        $component->dispatch('gameSaved')
+            ->assertSet('currentGame.nombre', 'Updated Name');
+    });
+
+
+    it('does not redirect or show flash message on "gameDeleted" if no specific game is selected', function () {
+        Videojuego::factory(5)->create();
+        $component = Livewire::test(VideoGamesViewComponent::class)
+            ->assertSet('videojuegoId', null);
+
+        $component->dispatch('gameDeleted')
+            ->assertSessionMissing('message')
+            ->assertNoRedirect();
+    });
+
+    it('loads game with all relationships for single view', function () {
+        $videojuego = Videojuego::factory()->create();
+        Multimedia::factory()->create(['videojuego_id' => $videojuego->id, 'tipo' => 'imagen']);
+        Plataforma::factory(2)->create()->each(function ($plataforma) use ($videojuego) {
+            $videojuego->plataformas()->attach($plataforma);
+        });
+        Genero::factory(2)->create()->each(function ($genero) use ($videojuego) {
+            $videojuego->generos()->attach($genero);
+        });
+
+        Livewire::test(VideoGamesViewComponent::class, ['videojuegoId' => $videojuego->id])
+            ->assertSet('currentGame.id', $videojuego->id)
+            ->assertViewHas('currentGame', function ($game) {
+                return $game->relationLoaded('multimedia') &&
+                    $game->relationLoaded('generos') &&
+                    $game->relationLoaded('plataformas') &&
+                    $game->relationLoaded('precios');
+            });
+    });
+
+    it('loads paginated games with multimedia relationship for index view', function () {
+        Videojuego::factory(2)->create()->each(function ($game) {
+            Multimedia::factory()->create(['videojuego_id' => $game->id, 'tipo' => 'imagen']);
+        });
+
+        Livewire::test(VideoGamesViewComponent::class)
+            ->assertViewHas('videojuegos', function ($paginatedGames) {
+                foreach ($paginatedGames as $game) {
+                    if (!$game->relationLoaded('multimedia')) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+    });
+
+    it('applies "newest" sort order by default', function () {
+        $oldestGame = Videojuego::factory()->create(['nombre' => 'Z-Game Oldest', 'fecha_lanzamiento' => '2020-01-01']);
+        $middleGame = Videojuego::factory()->create(['nombre' => 'M-Game Middle', 'fecha_lanzamiento' => '2022-06-01']);
+        $newestGame = Videojuego::factory()->create(['nombre' => 'A-Game Newest', 'fecha_lanzamiento' => '2024-05-15']);
+
+        Livewire::test(VideoGamesViewComponent::class)
+            ->assertSeeInOrder([
+                $newestGame->nombre,
+                $middleGame->nombre,
+                $oldestGame->nombre,
+            ]);
     });
 });

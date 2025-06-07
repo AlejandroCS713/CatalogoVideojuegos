@@ -144,7 +144,7 @@
                             </small>
 
                             @can('delete', $mensaje)
-                                <form action="{{ route('mensaje-foro.destroy', $mensaje->id) }}" method="POST" style="display: inline; margin-left: 10px;" onsubmit="return confirm('{{ __('Are you sure you want to delete this message and its replies?') }}')">
+                                <form action="{{ route('mensaje.destroy', $mensaje->id) }}" method="POST" style="display: inline; margin-left: 10px;" onsubmit="return confirm('{{ __('Are you sure you want to delete this message and its replies?') }}')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit">
