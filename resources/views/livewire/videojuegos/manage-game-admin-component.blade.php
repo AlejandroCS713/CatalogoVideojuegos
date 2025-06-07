@@ -32,32 +32,32 @@
 
                     <form wire:submit.prevent="save">
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_nombre">{{ __('Name') }}</label>
-                            <input type="text" id="modal_nombre" wire:model="nombre" placeholder="{{ __('Name') }}" class="form-input" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc;">
+                            <x-form.label for="modal_nombre">{{ __('Name') }}</x-form.label>
+                            <x-form.text-input id="modal_nombre" wire-model="nombre" placeholder="{{ __('Name') }}" />
                             @error('nombre') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_descripcion">{{ __('Description') }}</label>
-                            <textarea id="modal_descripcion" wire:model="descripcion" placeholder="{{ __('Description') }}" class="form-textarea" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc; min-height: 100px;"></textarea>
+                            <x-form.label for="modal_descripcion">{{ __('Description') }}</x-form.label>
+                            <x-form.text-area id="modal_descripcion" wire-model="descripcion" placeholder="{{ __('Description') }}"></x-form.text-area>
                             @error('descripcion') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_fecha_lanzamiento">{{ __('Release Date') }}</label>
-                            <input type="date" id="modal_fecha_lanzamiento" wire:model="fecha_lanzamiento" class="form-input" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc;">
+                            <x-form.label for="modal_fecha_lanzamiento">{{ __('Release Date') }}</x-form.label>
+                            <x-form.date-input id="modal_fecha_lanzamiento" wire-model="fecha_lanzamiento" />
                             @error('fecha_lanzamiento') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_desarrollador">{{ __('Developer') }}</label>
-                            <input type="text" id="modal_desarrollador" wire:model="desarrollador" placeholder="{{ __('Developer') }}" class="form-input" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc;">
+                            <x-form.label for="modal_desarrollador">{{ __('Developer') }}</x-form.label>
+                            <x-form.text-input id="modal_desarrollador" wire-model="desarrollador" placeholder="{{ __('Developer') }}" />
                             @error('desarrollador') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_publicador">{{ __('Publisher') }}</label>
-                            <input type="text" id="modal_publicador" wire:model="publicador" placeholder="{{ __('Publisher') }}" class="form-input" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc;">
+                            <x-form.label for="modal_publicador">{{ __('Publisher') }}</x-form.label>
+                            <x-form.text-input id="modal_publicador" wire-model="publicador" placeholder="{{ __('Publisher') }}" />
                             @error('publicador') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
@@ -80,25 +80,17 @@
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_plataformas">{{ __('Platforms') }}:</label>
+                            <x-form.label for="modal_plataformas">{{ __('Platforms') }}:</x-form.label>
                             <div wire:ignore>
-                                <select multiple wire:model="plataformas" id="modal_plataformas" class="form-select" style="width: 100%; color: black; min-height: 100px;">
-                                    @foreach($allPlataformas as $plataforma)
-                                        <option value="{{ $plataforma->id }}">{{ $plataforma->nombre }}</option>
-                                    @endforeach
-                                </select>
+                                <x-form.select-input id="modal_plataformas" wire-model="plataformas" :options="$allPlataformas" />
                             </div>
-                            @error('plataformas') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
+                            @error('plataformas') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span>@enderror
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_generos">{{ __('Genres') }}:</label>
+                            <x-form.label for="modal_generos">{{ __('Genres') }}:</x-form.label>
                             <div wire:ignore>
-                                <select multiple wire:model="generos" id="modal_generos" class="form-select" style="width: 100%; color: black; min-height: 100px;">
-                                    @foreach($allGeneros as $genero)
-                                        <option value="{{ $genero->id }}">{{ $genero->nombre }}</option>
-                                    @endforeach
-                                </select>
+                                <x-form.select-input id="modal_generos" wire-model="generos" :options="$allGeneros" />
                             </div>
                             @error('generos') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
