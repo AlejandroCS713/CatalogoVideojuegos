@@ -54,7 +54,7 @@ class ChatComponent extends Component
             ->where('status', 'accepted')->exists();
 
         if (!$isFriend) {
-            session()->flash('error', 'Solo puedes enviar mensajes a tus amigos.');
+            session()->flash('error', __('You can only send messages to your friends'));
             return;
         }
 
@@ -74,7 +74,7 @@ class ChatComponent extends Component
 
         $this->newMessage = '';
         $this->dispatch('message-sent');
-        session()->flash('success', 'Mensaje enviado correctamente.');
+        session()->flash('success', __('Message sent successfully'));
     }
 
     public function render()

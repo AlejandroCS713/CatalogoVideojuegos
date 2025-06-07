@@ -20,7 +20,7 @@ class SearchUsers extends Component
                 ->where('id', '!=', Auth::id())
                 ->get();
 
-            $this->message = $this->users->isEmpty() ? 'No se encontraron usuarios' : null;
+            $this->message = $this->users->isEmpty() ? __('No users found') : null;
         } else {
             $this->users = [];
             $this->message = null;
@@ -44,9 +44,9 @@ class SearchUsers extends Component
                 'status' => 'pending'
             ]);
             $this->dispatch('friend-request-sent');
-            session()->flash('message', 'Solicitud de amistad enviada');
+            session()->flash('message', __('Friend request sent'));
         } else {
-            session()->flash('message', 'Ya has enviado una solicitud a este usuario.');
+            session()->flash('message', __('You have already sent a request to this user'));
         }
     }
 

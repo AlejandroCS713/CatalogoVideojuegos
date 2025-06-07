@@ -53,7 +53,7 @@ class AcceptFriendRequests extends Component
             $this->dispatch('friend-request-accepted');
             $this->dispatch('friend-added');
 
-            session()->flash('message', 'Solicitud aceptada');
+            session()->flash('message', __('Application accepted'));
         }
     }
 

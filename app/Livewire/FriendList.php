@@ -52,7 +52,7 @@ class FriendList extends Component
                 $reverseFriendship->delete();
             }
 
-            session()->flash('message', 'Amigo eliminado correctamente');
+            session()->flash('message', __('Friend successfully removed'));
             $this->dispatch('friend-removed');
             return redirect()->route('profile');
         }

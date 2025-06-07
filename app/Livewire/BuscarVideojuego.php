@@ -17,7 +17,6 @@ class BuscarVideojuego extends Component
         $this->videojuegosConRol = $juegos;
     }
 
-    // ELIMINAMOS EL MÉTODO search()
 
     public function seleccionarVideojuego($id)
     {

@@ -92,7 +92,7 @@ class ForumIndex extends Component
             if ($foro) {
                 $this->loadCurrentForo();
             } else {
-                session()->flash('message', __('The forum you were viewing has been deleted.'));
+                session()->flash('message', __('The forum you were viewing has been deleted'));
                 $this->redirect(route('foros.index'), navigate: true);
             }
         }

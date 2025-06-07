@@ -29,16 +29,17 @@
 
                     <form wire:submit.prevent="save">
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_titulo">{{ __('Title') }}</label>
-                            <input type="text" id="modal_titulo" wire:model="titulo" placeholder="{{ __('Foro Title') }}" class="form-input" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc;">
+                            <x-form.label for="modal_titulo">{{ __('Title') }}</x-form.label>
+                            <x-form.text-input id="modal_titulo" wire-model="titulo" placeholder="{{ __('Foro Title') }}" />
                             @error('titulo') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label for="modal_descripcion">{{ __('Description') }}</label>
-                            <textarea id="modal_descripcion" wire:model="descripcion" placeholder="{{ __('Foro Description') }}" class="form-textarea" style="width: 100%; padding: 8px; color: black; border-radius: 4px; border: 1px solid #ccc; min-height: 100px;"></textarea>
+                            <x-form.label for="modal_descripcion">{{ __('Description') }}</x-form.label>
+                            <x-form.text-area id="modal_descripcion" wire-model="descripcion" placeholder="{{ __('Foro Description') }}"></x-form.text-area>
                             @error('descripcion') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
+
 
                         <div style="margin-bottom: 20px; border: 1px solid #555; padding: 15px; border-radius: 5px;">
                             <label style="display: block; margin-bottom: 10px;">{{ __('Select Related Games and their Roles') }}</label>

@@ -106,10 +106,10 @@ class ManageGameAdminComponent extends Component
             $this->confirmingDeletion = false;
 
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Videojuego no encontrado.');
+            session()->flash('error', __('Video game not found'));
             $this->closeModal();
         } catch (Exception $e) {
-            session()->flash('error', 'Ocurrió un error al intentar editar el videojuego: ' . $e->getMessage());
+            session()->flash('error', __('An error occurred while trying to edit the game: ' . $e->getMessage()));
             $this->closeModal();
         }
     }
@@ -128,10 +128,10 @@ class ManageGameAdminComponent extends Component
             if ($this->editMode) {
                 $videojuego = Videojuego::findOrFail($this->selectedId);
                 $videojuego->update($validated);
-                session()->flash('message', 'Videojuego actualizado correctamente.');
+                session()->flash('message', __('Video game updated successfully'));
             } else {
                 $videojuego = Videojuego::create($validated);
-                session()->flash('message', 'Videojuego creado correctamente.');
+                session()->flash('message', __('Video game created correctly'));
             }
 
             $videojuego->plataformas()->sync($this->plataformas ?? []);
@@ -162,10 +162,10 @@ class ManageGameAdminComponent extends Component
             $this->dispatch('gameSaved');
 
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Error: Videojuego no encontrado durante la operación.');
+            session()->flash('error', __('Error: Game not found during operation'));
             $this->closeModal();
         } catch (Exception $e) {
-            session()->flash('error', 'Ocurrió un error al guardar el videojuego: ' . $e->getMessage());
+            session()->flash('error', __('An error occurred while saving the game: ' . $e->getMessage()));
         }
     }
 
@@ -222,15 +222,15 @@ class ManageGameAdminComponent extends Component
             $videojuego->generos()->detach();
             $videojuego->delete();
 
-            session()->flash('message', 'Videojuego eliminado correctamente.');
+            session()->flash('message', __('Video game deleted successfully'));
             $this->dispatch('gameDeleted');
             $this->cancelDelete();
 
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Error: Videojuego no encontrado al intentar eliminar.');
+            session()->flash('error', __('Error: Game not found during operation'));
             $this->cancelDelete();
         } catch (Exception $e) {
-            session()->flash('error', 'Ocurrió un error al eliminar el videojuego: ' . $e->getMessage());
+            session()->flash('error', __('An error occurred while deleting the video game:' . $e->getMessage()));
             $this->cancelDelete();
         }
     }

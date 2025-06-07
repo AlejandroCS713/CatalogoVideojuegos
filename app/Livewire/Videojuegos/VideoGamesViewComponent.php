@@ -66,7 +66,7 @@ class VideoGamesViewComponent extends Component
             if ($gameExists) {
                 $this->loadCurrentGame();
             } else {
-                session()->flash('message', 'El videojuego que estabas viendo ha sido eliminado.');
+                session()->flash('message', __('The video game you were watching has been deleted'));
                 $this->redirect(route('videojuegos.index'), navigate: true);
                 return;
             }
