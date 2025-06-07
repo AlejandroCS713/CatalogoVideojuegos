@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Events\AmigoAgregado;
+use App\Events\PerfilActualizado;
 use App\Events\PrimerMensajeEnviado;
 use App\Listeners\DesbloquearLogroPrimerAmigo;
+use App\Listeners\SincronizarDatosExternos;
 use Illuminate\Support\ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -15,6 +17,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         PrimerMensajeEnviado::class =>[
             PrimerMensajeEnviado::class,
+        ],PerfilActualizado::class => [
+            SincronizarDatosExternos::class,
         ],
     ];
 

@@ -2,7 +2,10 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Events\PerfilActualizado;
 use App\Models\users\User;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
@@ -13,6 +16,7 @@ beforeEach(function () {
     if (!Role::where('name', 'admin')->exists()) {
         Role::create(['name' => 'admin']);
     }
+        Event::fake();
 });
 
 it('user with role user can access profile', function () {
@@ -38,7 +42,7 @@ it('non user role cannot access profile', function () {
     $admin->delete();
 });
 
-it('edit avatar returns avatar view', function () {
+it('returns the unified profile edit view with avatars', function () {
     $user = User::factory()->create();
     $user->assignRole('user');
 
@@ -46,23 +50,112 @@ it('edit avatar returns avatar view', function () {
         ->get(route('profile.avatar'))
         ->assertOk()
         ->assertViewIs('profile.avatar')
-        ->assertViewHas('avatars');
-
-    $user->delete();
+        ->assertViewHas('avatars')
+        ->assertViewHas('user');
 });
 
-it('update avatar changes user avatar', function () {
-    $user = User::factory()->create();
+
+it('updates user avatar and dispatches event', function () {
+    $user = User::factory()->create(['avatar' => 'avatarAngel.png']);
+    $user->assignRole('user');
+
+    $newAvatar = 'avatarPro.png';
+
+    $this->actingAs($user)
+        ->put(route('profile.update-avatar'), ['avatar' => $newAvatar])
+        ->assertRedirect(route('profile.avatar'))
+        ->assertSessionHas('success');
+
+    $user->refresh();
+    expect($user->avatar)->toBe($newAvatar);
+
+    Event::assertDispatched(PerfilActualizado::class, function ($event) use ($user) {
+        return $event->user->is($user) && in_array('avatar', $event->cambiosRealizados);
+    });
+});
+
+
+it('updates user nickname and dispatches event', function () {
+    $user = User::factory()->create(['name' => 'OldNick']);
+    $user->assignRole('user');
+
+    $newNickname = 'NewNick';
+
+    $this->actingAs($user)
+        ->put(route('profile.update'), ['name' => $newNickname])
+        ->assertRedirect(route('profile.avatar'))
+        ->assertSessionHas('success');
+
+    $user->refresh();
+    expect($user->name)->toBe($newNickname);
+
+    Event::assertDispatched(PerfilActualizado::class, function ($event) use ($user) {
+        return $event->user->is($user) && in_array('name', $event->cambiosRealizados);
+    });
+});
+
+it('updates user password and dispatches event', function () {
+    $user = User::factory()->create(['password' => Hash::make('old_password')]);
+    $user->assignRole('user');
+
+    $newPassword = 'new_strong_password';
+
+    $this->actingAs($user)
+        ->put(route('profile.update'), [
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword
+        ])
+        ->assertRedirect(route('profile.avatar'))
+        ->assertSessionHas('success');
+
+    $user->refresh();
+    expect(Hash::check($newPassword, $user->password))->toBeTrue();
+
+    Event::assertDispatched(PerfilActualizado::class, function ($event) use ($user) {
+        return $event->user->is($user) && in_array('password', $event->cambiosRealizados);
+    });
+});
+
+it('updates both nickname and password and dispatches event', function () {
+    $user = User::factory()->create(['name' => 'OldName', 'password' => Hash::make('old_pass')]);
+    $user->assignRole('user');
+
+    $newNickname = 'CombinedNick';
+    $newPassword = 'super_new_password';
+
+    $this->actingAs($user)
+        ->put(route('profile.update'), [
+            'name' => $newNickname,
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword
+        ])
+        ->assertRedirect(route('profile.avatar'))
+        ->assertSessionHas('success');
+
+    $user->refresh();
+    expect($user->name)->toBe($newNickname);
+    expect(Hash::check($newPassword, $user->password))->toBeTrue();
+
+    Event::assertDispatched(PerfilActualizado::class, function ($event) use ($user) {
+        return $event->user->is($user) &&
+            in_array('name', $event->cambiosRealizados) &&
+            in_array('password', $event->cambiosRealizados);
+    });
+});
+
+it('does not update profile if no changes are made', function () {
+    $user = User::factory()->create(['name' => 'CurrentNick']);
     $user->assignRole('user');
 
     $this->actingAs($user)
-        ->post(route('profile.avatar.update'), ['avatar' => 'avatarPro.png'])
-        ->assertRedirect(route('profile'))
-        ->assertSessionHas('success');
+        ->put(route('profile.update'), ['name' => 'CurrentNick'])
+        ->assertRedirect(route('profile.avatar'))
+        ->assertSessionHas('info');
 
-    expect($user->fresh()->avatar)->toBe('avatarPro.png');
+    $user->refresh();
+    expect($user->name)->toBe('CurrentNick');
 
-    $user->delete();
+    Event::assertNotDispatched(PerfilActualizado::class);
 });
 
 

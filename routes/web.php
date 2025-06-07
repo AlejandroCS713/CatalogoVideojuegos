@@ -62,7 +62,8 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     Route::get('/mis-logros/pdf', [LogroController::class, 'generarPDF'])->name('logros.pdf');
     Route::get('/profile/logros', [LogroController::class, 'index'])->name('logros.perfil');
     Route::get('/profile/avatar', [ProfileController::class, 'editAvatar'])->name('profile.avatar');
-    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update-avatar');
 
     Route::get('/friends', FriendList::class)->name('friends.list');
     Route::get('/search-users', SearchUsers::class)->name('friends.search');
