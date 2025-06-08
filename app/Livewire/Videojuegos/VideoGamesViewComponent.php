@@ -135,6 +135,7 @@ class VideoGamesViewComponent extends Component
                     'reverse_alphabetical' => fn($q) => $q->reverseAlphabetically(),
                     'top_rated_aaa' => fn($q) => $q->topRatedAAA(),
                     'exclusive_games' => fn($q) => $q->exclusiveGames(),
+                    'highly_rated_new_exclusive_games' => fn($q) => $q->highlyRatedNewExclusiveGames(),
                 ];
                 $action = $sortActions[$this->sort] ?? $sortActions['newest'];
                 $action($query);

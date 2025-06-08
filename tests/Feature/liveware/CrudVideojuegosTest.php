@@ -3,6 +3,7 @@
 use App\Livewire\Videojuegos\ManageGameAdminComponent;
 use App\Livewire\Videojuegos\VideoGamesViewComponent;
 use App\Models\users\User;
+use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\games\Videojuego;
@@ -854,5 +855,53 @@ describe('VideoGamesViewComponent', function () {
                 $middleGame->nombre,
                 $oldestGame->nombre,
             ]);
+    });
+
+    it('filters games by specific launch date', function () {
+        $targetDate = '2023-12-25';
+        $matchingGame = Videojuego::factory()->create(['fecha_lanzamiento' => $targetDate]);
+        $nonMatchingGame = Videojuego::factory()->create(['fecha_lanzamiento' => '2020-01-01']);
+
+        Livewire::test(VideoGamesViewComponent::class)
+            ->set('filterDate', $targetDate)
+            ->assertSee($matchingGame->nombre)
+            ->assertDontSee($nonMatchingGame->nombre);
+    });
+
+    it('filters only highly rated games (rating > 4.0)', function () {
+        $highRated = Videojuego::factory()->create(['nombre' => 'Top Game', 'rating_usuario' => 4.5]);
+        $lowRated = Videojuego::factory()->create(['nombre' => 'Low Game', 'rating_usuario' => 3.0]);
+
+        Livewire::test(VideoGamesViewComponent::class)
+            ->set('showOnlyHighlyRated', true)
+            ->assertSee('Top Game')
+            ->assertDontSee('Low Game');
+    });
+
+    it('filters games released in current year', function () {
+        $thisYear = Carbon::now()->year;
+        $recentGame = Videojuego::factory()->create([
+            'nombre' => 'New Game',
+            'fecha_lanzamiento' => Carbon::create($thisYear, 1, 1),
+        ]);
+        $oldGame = Videojuego::factory()->create([
+            'nombre' => 'Old Game',
+            'fecha_lanzamiento' => '2020-01-01',
+        ]);
+
+        Livewire::test(VideoGamesViewComponent::class)
+            ->set('filterThisYear', true)
+            ->assertSee('New Game')
+            ->assertDontSee('Old Game');
+    });
+
+    it('resets other filters when a new filter is set', function () {
+        $component = Livewire::test(VideoGamesViewComponent::class)
+            ->set('showOnlyHighlyRated', true);
+
+        $component->set('filterDate', '2024-01-01')
+            ->assertSet('sort', 'newest')
+            ->assertSet('showOnlyHighlyRated', false)
+            ->assertSet('filterThisYear', false);
     });
 });

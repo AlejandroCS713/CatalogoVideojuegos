@@ -86,6 +86,7 @@
                         <option value="reverse_alphabetical">{{ __('Z to A') }}</option>
                         <option value="top_rated_aaa">{{ __('Top Rated AAA Games') }}</option>
                         <option value="exclusive_games">{{ __('Exclusive Games') }}</option>
+                        <option value="highly_rated_new_exclusive_games">{{ __('Highly Rated New Exclusive Games') }}</option>
                     </select>
                 </div>
 

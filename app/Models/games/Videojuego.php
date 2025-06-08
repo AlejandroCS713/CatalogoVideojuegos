@@ -55,6 +55,18 @@ class Videojuego extends Model
     {
         return $query->orderBy('nombre', 'desc');
     }
+
+    public function scopeHighlyRatedNewExclusiveGames($query)
+    {
+        return $query->whereHas('plataformas', function ($q) {
+            $q->select('videojuego_plataforma.videojuego_id')
+                ->groupBy('videojuego_plataforma.videojuego_id')
+                ->havingRaw('COUNT(videojuego_plataforma.plataforma_id) = 1');
+        })
+            ->orderByDesc('fecha_lanzamiento')
+            ->orderByDesc('rating_usuario')
+            ->limit(10);
+    }
     public function multimedia()
     {
         return $this->hasMany(Multimedia::class, 'videojuego_id');
