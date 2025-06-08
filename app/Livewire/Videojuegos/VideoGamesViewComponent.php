@@ -4,6 +4,7 @@ namespace App\Livewire\Videojuegos;
 use AllowDynamicProperties;
 use App\Models\games\Videojuego;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -20,14 +21,54 @@ class VideoGamesViewComponent extends Component
     public $sort = 'newest';
     public $page = 1;
 
-    public function updatingSort()
+    public $filterDate = null;
+    public $showOnlyHighlyRated = false;
+    public $filterThisYear = false;
+    public function updatingSort($value)
     {
+        $this->filterDate = null;
+        $this->showOnlyHighlyRated = false;
+        $this->filterThisYear = false;
+        $this->resetPage();
+    }
+
+    public function updatingFilterDate($value)
+    {
+        $this->sort = 'newest';
+        $this->showOnlyHighlyRated = false;
+        $this->filterThisYear = false;
+        $this->resetPage();
+    }
+
+    public function updatingShowOnlyHighlyRated($value)
+    {
+        $this->sort = 'newest';
+        $this->filterDate = null;
+        if ($value) {
+            $this->filterThisYear = false;
+        }
+        $this->resetPage();
+    }
+
+    public function updatingFilterThisYear($value)
+    {
+        $this->sort = 'newest';
+        $this->filterDate = null;
+        if ($value) {
+            $this->showOnlyHighlyRated = false;
+        }
         $this->resetPage();
     }
 
     protected function queryString()
     {
-        return $this->videojuegoId ? [] : ['sort' => ['except' => 'newest'], 'page' => ['except' => 1]];
+        return $this->videojuegoId ? [] : [
+            'sort' => ['except' => 'newest'],
+            'page' => ['except' => 1],
+            'filterDate' => ['except' => null],
+            'showOnlyHighlyRated' => ['except' => false],
+            'filterThisYear' => ['except' => false],
+        ];
     }
 
     public function mount($videojuegoId = null)
@@ -73,23 +114,31 @@ class VideoGamesViewComponent extends Component
         }
     }
 
-
     public function render()
     {
         $videojuegos = null;
         if (is_null($this->videojuegoId)) {
             $query = Videojuego::with('multimedia');
 
-            $sortActions = [
-                'newest' => fn($q) => $q->newest(),
-                'oldest' => fn($q) => $q->oldest(),
-                'alphabetical' => fn($q) => $q->alphabetically(),
-                'reverse_alphabetical' => fn($q) => $q->reverseAlphabetically(),
-                'top_rated_aaa' => fn($q) => $q->topRatedAAA(),
-                'exclusive_games' => fn($q) => $q->exclusiveGames(),
-            ];
-            $action = $sortActions[$this->sort] ?? $sortActions['newest'];
-            $action($query);
+            if ($this->filterDate) {
+                $query->whereDate('fecha_lanzamiento', $this->filterDate);
+            } elseif ($this->showOnlyHighlyRated) {
+                $query->where('rating_usuario', '>', 4.0);
+            } elseif ($this->filterThisYear) {
+                $currentYear = Carbon::now()->year;
+                $query->whereYear('fecha_lanzamiento', $currentYear);
+            } else {
+                $sortActions = [
+                    'newest' => fn($q) => $q->newest(),
+                    'oldest' => fn($q) => $q->oldest(),
+                    'alphabetical' => fn($q) => $q->alphabetically(),
+                    'reverse_alphabetical' => fn($q) => $q->reverseAlphabetically(),
+                    'top_rated_aaa' => fn($q) => $q->topRatedAAA(),
+                    'exclusive_games' => fn($q) => $q->exclusiveGames(),
+                ];
+                $action = $sortActions[$this->sort] ?? $sortActions['newest'];
+                $action($query);
+            }
 
             $videojuegos = $query->paginate(30);
         }

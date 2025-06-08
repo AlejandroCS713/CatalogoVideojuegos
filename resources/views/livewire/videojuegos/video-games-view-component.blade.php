@@ -75,20 +75,42 @@
     @else
         <div class="videojuegos-container">
             <h1 class="text-center mb-5 title-games">{{ __('Available Video Games') }}</h1>
+            <div class="filters-container mb-4" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
 
-            <form wire:submit.prevent class="mb-4">
-                <label for="sort">{{ __('Sort by:') }}</label>
-                <select wire:model.live="sort" id="sort" style="color: black;">
-                    <option value="newest">{{ __('Newest') }}</option>
-                    <option value="oldest">{{ __('Oldest') }}</option>
-                    <option value="alphabetical">{{ __('A to Z') }}</option>
-                    <option value="reverse_alphabetical">{{ __('Z to A') }}</option>
-                    <option value="top_rated_aaa">{{ __('Top Rated AAA Games') }}</option>
-                    <option value="exclusive_games">{{ __('Exclusive Games') }}</option>
-                </select>
-            </form>
+                <div style="flex: 1; min-width: 150px;">
+                    <x-form.label for="sort">{{ __('Sort by:') }}</x-form.label>
+                    <select wire:model.live="sort" id="sort" class="form-select w-full p-2 text-black border border-gray-300 rounded-md">
+                        <option value="newest">{{ __('Newest') }}</option>
+                        <option value="oldest">{{ __('Oldest') }}</option>
+                        <option value="alphabetical">{{ __('A to Z') }}</option>
+                        <option value="reverse_alphabetical">{{ __('Z to A') }}</option>
+                        <option value="top_rated_aaa">{{ __('Top Rated AAA Games') }}</option>
+                        <option value="exclusive_games">{{ __('Exclusive Games') }}</option>
+                    </select>
+                </div>
 
-            @can('Crear Videojuegos')
+                <div style="flex: 1; min-width: 150px;">
+                    <x-form.label for="filter_date">{{ __('Release Date Filter:') }}</x-form.label>
+                    <x-form.date-input id="filter_date" wire:model.live="filterDate" />
+                    @error('filterDate') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
+                </div>
+
+                <div style="flex: 1; min-width: 200px; display: flex; align-items: center; justify-content: flex-start; padding-bottom: 8px;">
+                    <label for="filter_this_year">
+                        <x-form.checkbox id="filter_this_year" wire:model.live="filterThisYear" class="mr-2" />
+                        <span style="font-size: 17px">{{ __('Show Games Released This Year') }}</span>
+                    </label>
+                </div>
+
+                <div style="flex: 1; min-width: 200px; display: flex; align-items: center; justify-content: flex-start; padding-bottom: 8px;">
+                    <label for="show_highly_rated">
+                        <x-form.checkbox id="show_highly_rated" wire:model.live="showOnlyHighlyRated" class="mr-2" />
+                        <span style="font-size: 18px">{{ __('Show Only Highly Rated Games') }}</span>
+                    </label>
+                </div>
+            </div>
+
+        @can('Crear Videojuegos')
                 <button wire:click="$dispatch('openCreateModalEvent')" class="button fit mb-4" style="width: auto ;padding: 0 10px 20px; margin-top: 10px;">
                     {{ __('Create Game') }}
                 </button>

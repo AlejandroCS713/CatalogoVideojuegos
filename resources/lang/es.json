@@ -192,5 +192,8 @@
     "An error occurred while deleting the video game:": "Ocurrió un error al eliminar el videojuego:",
     "Video game not found": "Videojuego no encontrado",
     "An error occurred while trying to edit the game:": "Ocurrió un error al intentar editar el videojuego:",
-    "The video game you were watching has been deleted": "El videojuego que estabas viendo ha sido eliminado"
+    "The video game you were watching has been deleted": "El videojuego que estabas viendo ha sido eliminado",
+    "Release Date Filter:": "Filtro de fecha de lanzamiento:",
+    "Show Games Released This Year": "Mostrar juegos lanzados este año",
+    "Show Only Highly Rated Games": "Mostrar solo juegos con alta calificación"
 }
