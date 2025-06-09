@@ -5,7 +5,6 @@ use AllowDynamicProperties;
 use App\Models\games\Videojuego;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
@@ -95,8 +94,6 @@ class VideoGamesViewComponent extends Component
         }
     }
 
-    #[On('gameSaved')]
-    #[On('gameDeleted')]
     #[On('gameSaved')]
     #[On('gameDeleted')]
     public function refreshData(): void

@@ -44,7 +44,6 @@ class ForumTableSeeder extends Seeder
                 'usuario_id' => $user->id,
             ]);
 
-            // Crear respuestas para esos mensajes
             RespuestaForo::create([
                 'contenido' => 'A mí también me gustó mucho el final. Pero me hubiera gustado más si...',
                 'mensaje_id' => $mensaje1->id,

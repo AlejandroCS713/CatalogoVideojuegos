@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Genero extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'nombre',
-         ];
+    protected $fillable = ['nombre'];
     public function videojuegos()
     {
         return $this->belongsToMany(Videojuego::class);

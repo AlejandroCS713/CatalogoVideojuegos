@@ -22,7 +22,7 @@ class GeneroFactory extends Factory
     public function definition()
     {
         return [
-            'nombre' => $this->faker->word(),  // Genera una palabra aleatoria como nombre del género
+            'nombre' => $this->faker->word(),
         ];
     }
 }

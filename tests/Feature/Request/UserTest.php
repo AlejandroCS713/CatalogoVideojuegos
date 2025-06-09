@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Requests\Users\SendMessageRequest;
-use App\Http\Requests\users\StoreUserAdminRequest;
 use App\Http\Requests\Users\UpdateAvatarRequest;
-use App\Http\Requests\users\UpdateUserAdminRequest;
 use App\Models\users\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

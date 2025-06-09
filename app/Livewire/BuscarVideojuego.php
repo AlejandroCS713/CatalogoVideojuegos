@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\games\Videojuego;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class BuscarVideojuego extends Component
@@ -10,8 +11,7 @@ class BuscarVideojuego extends Component
     public $searchTerm = '';
    public array $videojuegosConRol = [];
 
-    protected $listeners = ['inicializarJuegosConRol'];
-
+    #[On('inicializarJuegosConRol')]
     public function inicializarJuegosConRol(array $juegos)
     {
         $this->videojuegosConRol = $juegos;
