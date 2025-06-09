@@ -33,7 +33,7 @@ it('shows message when no users are found', function () {
         ->test(SearchUsers::class)
         ->set('searchTerm', 'NoExiste')
         ->call('search')
-        ->assertSee('No se encontraron usuarios');
+        ->assertSee(__('No users found'));
 });
 
 it('sends a friend request if not already sent', function () {

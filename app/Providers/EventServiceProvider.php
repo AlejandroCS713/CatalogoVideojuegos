@@ -17,7 +17,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         PrimerMensajeEnviado::class =>[
             PrimerMensajeEnviado::class,
-        ],PerfilActualizado::class => [
+        ],
+        PerfilActualizado::class => [
             SincronizarDatosExternos::class,
         ],
     ];

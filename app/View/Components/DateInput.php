@@ -21,6 +21,6 @@ class DateInput extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.date-input');
+        return view('components.Form.date-input');
     }
 }

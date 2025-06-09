@@ -21,6 +21,6 @@ class TextArea extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.text-area');
+        return view('components.Form.text-area');
     }
 }
