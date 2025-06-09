@@ -29,12 +29,12 @@ class NewMessageNotification extends Notification
         $chatUrl = url("/chat/{$senderId}");
 
         return (new MailMessage)
-            ->subject('Tienes un nuevo mensaje')
-            ->greeting('¡Hola!')
-            ->line('Has recibido un nuevo mensaje en tu cuenta.')
-            ->line('Mensaje: ' . $this->message->message)
-            ->action('Ver mensaje', $chatUrl)
-            ->line('¡No dudes en responder a tu amigo!');
+            ->subject(__('You have a new message'))
+            ->greeting(__('Hello!'))
+            ->line(__('You have received a new message in your account.'))
+            ->line(__('Message: ') . $this->message->message)
+            ->action(__('View message'), $chatUrl)
+            ->line(__('Feel free to reply to your friend!'));
     }
     public function toArray($notifiable)
     {

@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
                 'avatar' => 'avatarAngel.png',
             ],
             [
-                'id' => 1000,
+                'id' => 1001,
                 'name' => 'CarlosAbrisqueta',
                 'email' => 'abrisqueta@gmail.com',
                 'password' => bcrypt('123456'),

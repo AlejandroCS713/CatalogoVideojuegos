@@ -22,18 +22,19 @@ class LogroNotification extends Notification {
 
     public function toMail($notifiable) {
         return (new MailMessage)
-            ->subject('¡Has desbloqueado un logro!')
-            ->greeting('¡Felicidades!')
-            ->line("Has desbloqueado el logro: {$this->logro->nombre}")
+            ->subject(__('You have unlocked an achievement!'))
+            ->greeting(__('Congratulations!'))
+            ->line(__('You have unlocked the achievement: ') . $this->logro->nombre)
             ->line($this->logro->descripcion)
-            ->line('¡Sigue jugando y desbloquea más logros!')
-            ->line('Ves a tu perfil y mira tu nuevo logro!.')
-            ->line('Gracias por ser parte de la comunidad.');
+            ->line(__('Keep playing and unlock more achievements!'))
+            ->line(__('Go to your profile and see your new achievement.'))
+            ->line(__('Thank you for being part of the community.'));
     }
+
     public function toDatabase($notifiable) {
         return [
             'logro_nombre' => $this->logro->nombre,
-            'mensaje' => '¡Has desbloqueado el logro: ' . $this->logro->nombre . '!',
+            'mensaje' => __('You have unlocked the achievement: ') . $this->logro->nombre . '!',
         ];
     }
 }
