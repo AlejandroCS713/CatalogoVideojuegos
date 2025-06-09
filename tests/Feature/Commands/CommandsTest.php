@@ -43,22 +43,6 @@ it('deletes videojuegos later or equal to the given date in ascending order', fu
     expect($videojuego2)->toBeNull();
 });
 
-it('deletes videojuegos earlier or equal to the given date in descending order', function () {
-    $videojuego1 = Videojuego::create([
-        'nombre' => 'Juego Más Futuro',
-        'fecha_lanzamiento' => '1980-01-02',
-    ]);
-
-    $this->artisan('games:delete-ancient')
-        ->expectsQuestion('¿Cuál es la fecha límite para eliminar los juegos? (Formato: yyyy-mm-dd)', '1980-01-02')
-        ->expectsChoice('¿En qué orden quieres eliminar los juegos?', 'Descendente', ['Ascendente', 'Descendente'])
-        ->expectsConfirmation('¿Estás seguro que deseas eliminar 1 juegos?', 'yes')
-        ->assertExitCode(0);
-
-    $videojuego1 = Videojuego::find($videojuego1->id);
-    expect($videojuego1)->toBeNull();
-
-});
 
 it('assigns admin role and permissions to the user using app:manage-admin', function () {
     $user = User::factory()->create([

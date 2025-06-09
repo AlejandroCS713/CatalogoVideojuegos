@@ -97,7 +97,7 @@
                             <br>
                             @php
                                 $imgUrl = $videojuego->multimedia->where('tipo', 'imagen')->first()?->url;
-                                $displayUrl = asset('images/default-game.png');
+                                $displayUrl = asset('images/default-game.jpeg');
                                 if ($imgUrl) {
                                     if (str_starts_with($imgUrl, 'http')) { $displayUrl = $imgUrl; }
                                     else { $displayUrl = asset($imgUrl); }

@@ -45,7 +45,12 @@
 
                         <div style="margin-bottom: 15px;">
                             <x-form.label for="modal_fecha_lanzamiento">{{ __('Release Date') }}</x-form.label>
-                            <x-form.date-input id="modal_fecha_lanzamiento" wire-model="fecha_lanzamiento" />
+                            <input type="date"
+                                   id="modal_fecha_lanzamiento"
+                                   wire:model="fecha_lanzamiento"
+                                   class="form-input"
+                                   style="width: 100%; padding: 8px; color: black; background-color: #f0f0f0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box;"
+                            />
                             @error('fecha_lanzamiento') <span style="color: #e74c3c; font-size: 0.9em;">{{ $message }}</span> @enderror
                         </div>
 

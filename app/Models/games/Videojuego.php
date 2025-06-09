@@ -18,7 +18,9 @@ class Videojuego extends Model
         'desarrollador',
         'publicador',
     ];
-
+    protected $casts = [
+        'fecha_lanzamiento' => 'date',
+    ];
     public function scopeTopRatedAAA($query)
     {
         return $query->where('publicador', ['Nintendo', 'Sony', 'Microsoft', 'EA', 'Ubisoft'])

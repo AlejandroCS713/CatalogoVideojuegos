@@ -13,13 +13,13 @@
                             $imagenUrl = $videojuego->multimedia->where('tipo', 'imagen')->first()?->url;
                             $imagen = $imagenUrl
                                 ? (Str::startsWith($imagenUrl, ['http://', 'https://']) ? $imagenUrl : asset($imagenUrl))
-                                : asset('images/default-game.png');
+                                : asset('images/default-game.jpeg');
                         @endphp
                         <img style="width: 50px; height: auto; vertical-align: middle; margin-right: 10px;"
                              class="imagenes"
                              src="{{ $imagen }}"
                              alt="{{ __('Image of') }} {{ $videojuego->nombre }}"
-                             onerror="this.onerror=null; this.src='{{ asset('images/default-game.png') }}';"
+                             onerror="this.onerror=null; this.src='{{ asset('images/default-game.jpeg') }}';"
                         />
                         <span>{{ $videojuego->nombre }}</span>
                     </div>

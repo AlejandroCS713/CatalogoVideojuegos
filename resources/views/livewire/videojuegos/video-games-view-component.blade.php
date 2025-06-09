@@ -19,7 +19,7 @@
                     @foreach ($currentGame->multimedia as $media)
                         @if ($media->tipo === 'imagen')
                             @php
-                                $mediaUrl = asset('images/default-game.png');
+                                $mediaUrl = asset('images/default-game.jpeg');
                                 if (isset($media->url) && !empty($media->url)) {
                                     if (str_starts_with($media->url, 'http')) {
                                         $mediaUrl = $media->url;
@@ -123,7 +123,7 @@
                 @forelse($videojuegos as $videojuego)
                     <div style="position: relative;">
                         @php
-                            $imageUrl = asset('images/default-game.png');
+                            $imageUrl = asset('images/default-game.jpeg');
                             $firstMedia = null;
 
                             if ($videojuego->relationLoaded('multimedia') && $videojuego->multimedia->isNotEmpty()) {
