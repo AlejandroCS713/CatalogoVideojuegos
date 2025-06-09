@@ -49,7 +49,6 @@ it('deletes videojuegos earlier or equal to the given date in descending order',
         'fecha_lanzamiento' => '1980-01-02',
     ]);
 
-
     $this->artisan('games:delete-ancient')
         ->expectsQuestion('¿Cuál es la fecha límite para eliminar los juegos? (Formato: yyyy-mm-dd)', '1980-01-02')
         ->expectsChoice('¿En qué orden quieres eliminar los juegos?', 'Descendente', ['Ascendente', 'Descendente'])
@@ -61,40 +60,91 @@ it('deletes videojuegos earlier or equal to the given date in descending order',
 
 });
 
-it('assigns admin role and permissions to the user', function () {
+it('assigns admin role and permissions to the user using app:manage-admin', function () {
     $user = User::factory()->create([
-        'email' => 'user40@example.com',
+        'email' => 'test_user_admin@example.com',
     ]);
 
-    $this->artisan('make:admin', ['email' => 'user40@example.com'])
-        ->expectsOutput("El usuario {$user->email} ahora tiene el rol de admin y los permisos necesarios.")
+    Permission::firstOrCreate(['name' => 'crear juegos']);
+    Permission::firstOrCreate(['name' => 'editar juegos']);
+    Permission::firstOrCreate(['name' => 'eliminar juegos']);
+
+    $this->artisan('app:manage-admin', ['email' => $user->email])
+        ->expectsOutput("User {$user->email} now has the admin role and associated permissions.")
         ->assertExitCode(0);
 
     $user->refresh();
 
-    $this->assertTrue($user->hasRole('admin'));
-    $this->assertTrue($user->hasPermissionTo('crear juegos'));
-    $this->assertTrue($user->hasPermissionTo('editar juegos'));
-    $this->assertTrue($user->hasPermissionTo('eliminar juegos'));
+    expect($user->hasRole('admin'))->toBeTrue();
+
+    expect($user->hasPermissionTo('crear juegos'))->toBeTrue();
+    expect($user->hasPermissionTo('editar juegos'))->toBeTrue();
+    expect($user->hasPermissionTo('eliminar juegos'))->toBeTrue();
 });
 
-it('removes admin role and permissions from the user', function () {
+it('revokes admin role and permissions from the user using app:manage-admin --revoke', function () {
     $user = User::factory()->create([
-        'email' => 'user40@example.com',
+        'email' => 'test_user_remove_admin@example.com',
     ]);
-    $user->assignRole('admin');
-    $user->givePermissionTo(['crear juegos', 'editar juegos', 'eliminar juegos']);
+    $adminRole = Role::firstOrCreate(['name' => 'admin']);
+    $permissions = ['crear juegos', 'editar juegos', 'eliminar juegos'];
 
-    $this->artisan('remove:admin', ['email' => 'user40@example.com'])
-        ->expectsOutput("El usuario {$user->email} ya no es un admin.")
+    foreach ($permissions as $permissionName) {
+        Permission::firstOrCreate(['name' => $permissionName]);
+    }
+
+    $user->assignRole($adminRole);
+    $user->givePermissionTo($permissions);
+
+    expect($user->hasRole('admin'))->toBeTrue();
+    expect($user->hasPermissionTo('crear juegos'))->toBeTrue();
+
+    $this->artisan('app:manage-admin', ['email' => $user->email, '--revoke' => true])
+        ->expectsOutput("User {$user->email} no longer has the admin role and its associated permissions have been revoked.")
         ->assertExitCode(0);
 
     $user->refresh();
 
-    $this->assertFalse($user->hasRole('admin'));
-    $this->assertFalse($user->hasPermissionTo('crear juegos'));
-    $this->assertFalse($user->hasPermissionTo('editar juegos'));
-    $this->assertFalse($user->hasPermissionTo('eliminar juegos'));
+    expect($user->hasRole('admin'))->toBeFalse();
+
+    expect($user->hasPermissionTo('crear juegos'))->toBeFalse();
+    expect($user->hasPermissionTo('editar juegos'))->toBeFalse();
+    expect($user->hasPermissionTo('eliminar juegos'))->toBeFalse();
+});
+
+it('informs if trying to assign admin role to an already admin user', function () {
+    $user = User::factory()->create([
+        'email' => 'existing_admin@example.com',
+    ]);
+    $user->assignRole('admin');
+
+    $this->artisan('app:manage-admin', ['email' => $user->email])
+        ->expectsOutput("User {$user->email} already has the admin role.")
+        ->assertExitCode(0);
+
+    $user->refresh();
+    expect($user->hasRole('admin'))->toBeTrue();
+});
+
+it('informs if trying to revoke admin role from a non-admin user', function () {
+    $user = User::factory()->create([
+        'email' => 'non_admin_user@example.com',
+    ]);
+
+    $this->artisan('app:manage-admin', ['email' => $user->email, '--revoke' => true])
+        ->expectsOutput("User {$user->email} does not have the admin role to revoke.")
+        ->assertExitCode(0);
+
+    $user->refresh();
+    expect($user->hasRole('admin'))->toBeFalse();
+});
+
+it('fails if the user email is not found', function () {
+    $nonExistentEmail = 'nonexistent@example.com';
+
+    $this->artisan('app:manage-admin', ['email' => $nonExistentEmail])
+        ->expectsOutput("User with email {$nonExistentEmail} not found.")
+        ->assertExitCode(1);
 });
 
 it('fails if user not found', function () {

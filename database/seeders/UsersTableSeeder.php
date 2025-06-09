@@ -26,7 +26,15 @@ class UsersTableSeeder extends Seeder
             [
                 'id' => 1000,
                 'name' => 'alex',
-                'email' => 'alex@alex.com',
+                'email' => 'alex@gmail.com',
+                'password' => bcrypt('123456'),
+                'email_verified_at' => Carbon::now(),
+                'avatar' => 'avatarAngel.png',
+            ],
+            [
+                'id' => 1000,
+                'name' => 'CarlosAbrisqueta',
+                'email' => 'abrisqueta@gmail.com',
                 'password' => bcrypt('123456'),
                 'email_verified_at' => Carbon::now(),
                 'avatar' => 'avatarAngel.png',
